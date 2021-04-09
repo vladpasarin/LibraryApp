@@ -1,0 +1,24 @@
+<nav class="navbar">
+    <a routerLink="/home" class="navbar-brand">
+        <p class="logo">LibraryApp &nbsp; <fa-icon [icon]="faLibrary"></fa-icon></p>
+    </a>
+    <div>
+        <ul class="nav">
+            <li>
+                <a class="nav-link" routerLink="/home"> <fa-icon [icon]="faHome"></fa-icon> Home </a>
+            </li>
+            <li>
+                <a class="nav-link" href="#"> <fa-icon [icon]="faBook"></fa-icon> Books </a>
+            </li>
+        </ul>
+    </div>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <fa-icon [icon]="faUser"></fa-icon> My Account
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" routerLink="/login">  Sign in </a>
+            <a class="dropdown-item" routerLink="/register"> Create Account </a>
+        </div>
+    </div>
+</nav>

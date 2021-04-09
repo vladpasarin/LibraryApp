@@ -1,0 +1,39 @@
+<app-header></app-header>
+<div class="container-fluid">
+  <form class="text-center border border-light p-5">
+
+      <p class="h4 mb-4">Sign in</p>
+    
+      <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+    
+      <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
+    
+      <div class="d-flex justify-content-around">
+        <div>
+          <a href="">Forgot password?</a>
+        </div>
+      </div>
+
+      <button  class="btn btn-secondary" type="submit">Sign in</button>
+
+      <p>Not a member?
+        <a routerLink="/register">Register</a>
+      </p>
+      <p>or sign in with:</p>
+    
+      <a type="button" class="light-blue-text mx-2">
+        <fa-icon [icon]="faFacebook"></fa-icon>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <fa-icon [icon]="faTwitter"></fa-icon>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <fa-icon [icon]="faLinkedin"></fa-icon>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <fa-icon [icon]="faGithub"></fa-icon>
+      </a>
+    
+    </form>
+</div>
+
