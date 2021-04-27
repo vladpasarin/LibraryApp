@@ -1,39 +1,47 @@
 <app-header></app-header>
 <div class="container-fluid">
-  <form class="text-center border border-light p-5">
+  <form class="text-center p-5" [formGroup]="loginForm" (ngSubmit)="login()">
 
-      <p class="h4 mb-4">Sign in</p>
-    
-      <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
-    
-      <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
-    
-      <div class="d-flex justify-content-around">
-        <div>
-          <a href="">Forgot password?</a>
-        </div>
+    <p class="h4 mb-4">Sign in</p>
+  
+    <input type="email" id="defaultLoginFormEmail" formControlName="email" 
+    class="form-control mb-4" placeholder="E-mail">
+    <span *ngIf="email.invalid && email.touched">
+      Wrong email format
+    </span>
+  
+    <input type="password" id="defaultLoginFormPassword" formControlName="password"
+    class="form-control mb-4" placeholder="Password">
+    <span *ngIf="password.invalid && password.touched">
+      Think of a safer password!
+    </span>
+  
+    <div class="d-flex justify-content-around">
+      <div>
+        <a href="">Forgot password?</a>
       </div>
+    </div>
 
-      <button  class="btn btn-secondary" type="submit">Sign in</button>
+    <button [disabled]="loginForm.invalid"  class="btn btn-secondary" type="submit">Sign in</button>
 
-      <p>Not a member?
-        <a routerLink="/register">Register</a>
-      </p>
-      <p>or sign in with:</p>
+    <p>Not a member?
+      <a routerLink="/register">Register</a>
+    </p>
+    <p>or sign in with:</p>
+  
+    <a type="button" class="light-blue-text mx-2">
+      <fa-icon [icon]="faFacebook"></fa-icon>
+    </a>
+    <a type="button" class="light-blue-text mx-2">
+      <fa-icon [icon]="faTwitter"></fa-icon>
+    </a>
+    <a type="button" class="light-blue-text mx-2">
+      <fa-icon [icon]="faLinkedin"></fa-icon>
+    </a>
+    <a type="button" class="light-blue-text mx-2">
+      <fa-icon [icon]="faGithub"></fa-icon>
+    </a>
     
-      <a type="button" class="light-blue-text mx-2">
-        <fa-icon [icon]="faFacebook"></fa-icon>
-      </a>
-      <a type="button" class="light-blue-text mx-2">
-        <fa-icon [icon]="faTwitter"></fa-icon>
-      </a>
-      <a type="button" class="light-blue-text mx-2">
-        <fa-icon [icon]="faLinkedin"></fa-icon>
-      </a>
-      <a type="button" class="light-blue-text mx-2">
-        <fa-icon [icon]="faGithub"></fa-icon>
-      </a>
-    
-    </form>
+  </form>
 </div>
 

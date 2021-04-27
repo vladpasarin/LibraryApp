@@ -12,13 +12,24 @@
             </li>
         </ul>
     </div>
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div *ngIf="!loggedIn()" class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <fa-icon [icon]="faUser"></fa-icon> My Account
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" routerLink="/login">  Sign in </a>
             <a class="dropdown-item" routerLink="/register"> Create Account </a>
+        </div>
+    </div>
+    <div *ngIf="loggedIn()" class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <fa-icon [icon]="faUser"></fa-icon> {{ email }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" routerLink="/profile">  My Profile </a>
+            <a class="dropdown-item" (click)="logout()" routerLink="/home"> Logout </a>
         </div>
     </div>
 </nav>
