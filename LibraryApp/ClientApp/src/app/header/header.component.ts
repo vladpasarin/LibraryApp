@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {faBookReader, faHome, faBook, faUser} from '@fortawesome/free-solid-svg-icons';
-import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
+import { SharedDataService } from '../shared/services/shared-data.service';
 
 @Component({
   selector: 'app-header',
@@ -9,8 +10,11 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  userEmail: string;
 
-  constructor(public authService: AuthService, private router: Router) { }
+  constructor(private route: ActivatedRoute, public authService: AuthService, 
+    private router: Router, private data: SharedDataService) {
+  }
 
   faLibrary = faBookReader;
   faHome = faHome;
@@ -18,24 +22,23 @@ export class HeaderComponent implements OnInit {
   faUser = faUser;
   email: string;
   userId: string;
+  message: string;
+  success: boolean;
 
   ngOnInit(): void {
-    this.loggedIn();
+    this.isLoggedIn();
     this.email = sessionStorage.getItem('email');
     this.userId = sessionStorage.getItem('userId');
+    this.data.currentMessage.subscribe(message => this.message = message);
+  }
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
   }
 
   logout() {
     this.authService.logout();
-    localStorage.removeItem('token');
     this.router.navigate(["/home"]);
-  } 
-
-  loggedIn() {
-    const token = localStorage.getItem('token');
-    console.log(token);
-    console.log(this.email, this.userId);
-    return !!token;
   }
 
   toProfile() {

@@ -9,7 +9,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenAuthInterceptor } from './shared/interceptors/token-auth.interceptor';
+import {ToastrModule} from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -24,9 +26,14 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenAuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

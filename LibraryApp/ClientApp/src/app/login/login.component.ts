@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {faFacebook, faTwitter, faLinkedinIn, faGithub} from '@fortawesome/free-brands-svg-icons';
 import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
-import { AuthService } from '../auth.service';
+import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { ApiService } from '../shared/api.service';
+import { ApiService } from '../shared/services/api.service';
 import { User } from '../shared/user.model';
 import { AuthRequest } from "../shared/authRequest";
 import { RequestResponse } from "../shared/requestResponse";
+import { SharedDataService } from "../shared/services/shared-data.service";
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ import { RequestResponse } from "../shared/requestResponse";
 export class LoginComponent implements OnInit {
 
   constructor(public authService: AuthService, public fb: FormBuilder,
-      private router: Router, private api: ApiService
+      private router: Router, private api: ApiService, private data: SharedDataService
   ) { }
 
   faFacebook = faFacebook;
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
   authReq = new AuthRequest();
   requestResponse = new RequestResponse();
   loginForm: FormGroup;
+  message: string;
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -40,23 +42,27 @@ export class LoginComponent implements OnInit {
         Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')
       ]]
     });
+
+    this.data.currentMessage.subscribe(message => this.message = message)
+  }
+
+  newMessage() {
+    this.data.changeMessage(this.authReq.email);
   }
 
   login() {
     this.authReq.email = this.f.email.value;
     this.authReq.password = this.f.password.value;
+    this.newMessage();
 
     this.authService.login(this.authReq).subscribe(next => {
       console.log('Logged in successfully');
     }, error => {
       console.log('Failed to login');
     });
+    setTimeout(() => {
+    }, 3000);
     this.router.navigate(["/home"]);
-  }
-
-  loggedIn() {
-    const token = localStorage.getItem('token');
-    return !!token;
   }
 
   logout() {
