@@ -15,8 +15,26 @@
       <span *ngIf="password.invalid && password.touched">
         Think of a safer password!
       </span>
+
+      <input type="text" id="defaultLoginFormFirstName" formControlName="firstName"
+      class="form-control mb-4" placeholder="First Name">
+
+      <input type="text" id="defaultLoginFormLastName" formControlName="lastName"
+      class="form-control mb-4" placeholder="Last Name">
+
+      <input type="tel" id="defaultLoginFormPhoneNr" formControlName="phoneNr"
+      class="form-control mb-4" placeholder="Phone Number">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Birth Date</mat-label>
+        <input matInput [matDatepicker]="picker" (dateInput)="addEvent($event)"
+              (dateChange)="addEvent($event)" >
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field><br>
   
-      <button [disabled]="registrationForm.invalid"  class="btn btn-secondary" type="submit">Register</button>
+      <button [disabled]="registrationForm.invalid"  class="btn btn-secondary" type="submit"
+      (click)="openSnackBar()">Register</button>
       <p>or sign in with:</p>
     
       <a type="button" class="light-blue-text mx-2">

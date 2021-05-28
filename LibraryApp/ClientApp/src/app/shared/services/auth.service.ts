@@ -30,7 +30,7 @@ export class AuthService {
     return !!token;
   }
 
-  login(authReq: AuthRequest) {
+  login(authReq: AuthRequest): Observable<any> {
     return this.http.post(this.baseUrl + 'login', authReq).pipe(
       map((response: RequestResponse) => {
         localStorage.setItem('token', response.token);        
