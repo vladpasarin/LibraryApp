@@ -6,7 +6,7 @@ import { faFacebook, faGithub, faLinkedinIn, faTwitter } from '@fortawesome/free
 import { RegisterReq } from '../shared/registerReq';
 import { ApiService } from '../shared/services/api.service';
 import { AuthService } from '../shared/services/auth.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+//import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -34,15 +34,16 @@ export class RegisterComponent implements OnInit {
 
   constructor(public authService: AuthService, public fb: FormBuilder,
     private router: Router, private api: ApiService,
-    private _snackBar: MatSnackBar) { }
+    //private _snackBar: MatSnackBar
+    ) { }
 
   ngOnInit(): void {
     this.date = new Date();
   }
 
-  openSnackBar() {
+  /*openSnackBar() {
     this._snackBar.open('Register succesful!', 'OK');
-  }
+  }*/
 
   register() {
     this.registerRequest.email = this.f.email.value;
