@@ -12,6 +12,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenAuthInterceptor } from './shared/interceptors/token-auth.interceptor';
 import {ToastrModule} from 'ngx-toastr';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -27,7 +33,14 @@ import {ToastrModule} from 'ngx-toastr';
     FontAwesomeModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSnackBarModule,
+    FontAwesomeModule,
+    BrowserAnimationsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

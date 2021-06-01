@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LibraryApp.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -80,11 +80,14 @@ namespace LibraryApp.Migrations
                     UpdatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
-                    Username = table.Column<string>(type: "text", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: true),
                     Address = table.Column<string>(type: "text", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     PhoneNr = table.Column<string>(type: "text", nullable: true),
+                    Password = table.Column<string>(type: "text", nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "bytea", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "bytea", nullable: true),
                     LibraryCardId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>

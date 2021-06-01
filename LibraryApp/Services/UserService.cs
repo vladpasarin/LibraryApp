@@ -91,7 +91,7 @@ namespace LibraryApp.Services
                 Password = request.Password,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Username = request.Username,
+                //Username = request.Username,
                 Address = request.Address,
                 PhoneNr = request.PhoneNr,
                 DateOfBirth = request.DateOfBirth,

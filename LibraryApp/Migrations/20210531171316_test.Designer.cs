@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20210322201724_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210531171316_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -563,6 +563,15 @@ namespace LibraryApp.Migrations
                     b.Property<int?>("LibraryCardId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("bytea");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("bytea");
+
                     b.Property<string>("PhoneNr")
                         .HasColumnType("text");
 
@@ -570,7 +579,6 @@ namespace LibraryApp.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

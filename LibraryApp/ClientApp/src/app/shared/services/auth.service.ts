@@ -26,7 +26,7 @@ export class AuthService {
 
   isLoggedIn() {
     const token = localStorage.getItem('token');
-    console.log('Auth Token: ', token);
+    //console.log('Auth Token: ', token);
     return !!token;
   }
 

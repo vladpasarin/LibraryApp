@@ -577,7 +577,6 @@ namespace LibraryApp.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
