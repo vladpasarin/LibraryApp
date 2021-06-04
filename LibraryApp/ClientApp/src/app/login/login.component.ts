@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
   faGithub = faGithub;
 
   success: boolean;
-  authReq = new AuthRequest();
-  requestResponse = new RequestResponse();
+  authReq: AuthRequest;
+  requestResponse: RequestResponse;
   loginForm: FormGroup;
   message: string;
 

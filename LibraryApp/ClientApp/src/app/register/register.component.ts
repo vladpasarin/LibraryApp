@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
   faGithub = faGithub;
 
   date: Date;
-  registerRequest = new RegisterReq();
+  registerRequest: RegisterReq;
 
   constructor(public authService: AuthService, public fb: FormBuilder,
     private router: Router, private api: ApiService,

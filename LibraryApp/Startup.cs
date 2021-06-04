@@ -3,6 +3,7 @@ using LibraryApp.Data;
 using LibraryApp.IServices;
 using LibraryApp.Models;
 using LibraryApp.Repositories;
+using LibraryApp.Repositories.Assets;
 using LibraryApp.Repositories.IRepositories;
 using LibraryApp.Serialization;
 using LibraryApp.Services;
@@ -51,6 +52,9 @@ namespace LibraryApp
             // Registering services
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IAssetRepository, AssetRepository>();
             // Adding authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

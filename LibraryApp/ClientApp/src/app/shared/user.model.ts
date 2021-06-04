@@ -1,4 +1,4 @@
-export class User {
+export interface User {
     id: number; 
     firstName: string;
     lastName: string;
@@ -8,7 +8,4 @@ export class User {
     email: string;
     phoneNr: string;
     overdueFees: number;
-    constructor(input?: any) {
-        Object.assign(this, input);
-    }
 }

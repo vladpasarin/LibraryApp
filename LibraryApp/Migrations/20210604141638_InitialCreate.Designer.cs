@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20210531171316_test")]
-    partial class test
+    [Migration("20210604141638_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -126,7 +126,8 @@ namespace LibraryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
+                    b.HasIndex("AssetId")
+                        .IsUnique();
 
                     b.ToTable("AudioBooks");
                 });
@@ -149,6 +150,26 @@ namespace LibraryApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AvailabilityStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "The item is available",
+                            Name = "Available"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "The item is currently on hold",
+                            Name = "On Hold"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "The item is unavailable",
+                            Name = "Unavailable"
+                        });
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Badge", b =>
@@ -158,7 +179,7 @@ namespace LibraryApp.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("ChallengeId")
+                    b.Property<int>("ChallengeId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DateAcquired")
@@ -173,7 +194,8 @@ namespace LibraryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChallengeId");
+                    b.HasIndex("ChallengeId")
+                        .IsUnique();
 
                     b.ToTable("Badges");
                 });
@@ -220,7 +242,8 @@ namespace LibraryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
+                    b.HasIndex("AssetId")
+                        .IsUnique();
 
                     b.ToTable("Books");
                 });
@@ -419,7 +442,8 @@ namespace LibraryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
+                    b.HasIndex("AssetId")
+                        .IsUnique();
 
                     b.ToTable("EBooks");
                 });
@@ -560,7 +584,7 @@ namespace LibraryApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("LibraryCardId")
+                    b.Property<int>("LibraryCardId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Password")
@@ -578,12 +602,10 @@ namespace LibraryApp.Migrations
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Username")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("LibraryCardId");
+                    b.HasIndex("LibraryCardId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -619,8 +641,8 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.AudioBook", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.AudioBook", "AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -630,8 +652,10 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.Badge", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Challenge", "Challenge")
-                        .WithMany()
-                        .HasForeignKey("ChallengeId");
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.Badge", "ChallengeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Challenge");
                 });
@@ -639,8 +663,8 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.Book", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.Book", "AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -719,8 +743,8 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.EBook", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.EBook", "AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -769,8 +793,10 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.User", b =>
                 {
                     b.HasOne("LibraryApp.Entities.LibraryCard", "LibraryCard")
-                        .WithMany()
-                        .HasForeignKey("LibraryCardId");
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.User", "LibraryCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("LibraryCard");
                 });

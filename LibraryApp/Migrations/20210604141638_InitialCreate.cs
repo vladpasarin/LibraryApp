@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LibraryApp.Migrations
 {
-    public partial class test : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -80,7 +80,6 @@ namespace LibraryApp.Migrations
                     UpdatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
-                    Username = table.Column<string>(type: "text", nullable: true),
                     Address = table.Column<string>(type: "text", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
@@ -88,7 +87,7 @@ namespace LibraryApp.Migrations
                     Password = table.Column<string>(type: "text", nullable: true),
                     PasswordHash = table.Column<byte[]>(type: "bytea", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "bytea", nullable: true),
-                    LibraryCardId = table.Column<int>(type: "integer", nullable: true)
+                    LibraryCardId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,7 +97,7 @@ namespace LibraryApp.Migrations
                         column: x => x.LibraryCardId,
                         principalTable: "LibraryCards",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -384,7 +383,7 @@ namespace LibraryApp.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
                     DateAcquired = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ChallengeId = table.Column<int>(type: "integer", nullable: true)
+                    ChallengeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -451,6 +450,16 @@ namespace LibraryApp.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AvailabilityStatuses",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "The item is available", "Available" },
+                    { 2, "The item is currently on hold", "On Hold" },
+                    { 3, "The item is unavailable", "Unavailable" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Assets_AvailabilityStatusId",
                 table: "Assets",
@@ -469,17 +478,20 @@ namespace LibraryApp.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AudioBooks_AssetId",
                 table: "AudioBooks",
-                column: "AssetId");
+                column: "AssetId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Badges_ChallengeId",
                 table: "Badges",
-                column: "ChallengeId");
+                column: "ChallengeId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_AssetId",
                 table: "Books",
-                column: "AssetId");
+                column: "AssetId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Challenges_UserId",
@@ -529,7 +541,8 @@ namespace LibraryApp.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_EBooks_AssetId",
                 table: "EBooks",
-                column: "AssetId");
+                column: "AssetId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Holds_AssetId",
@@ -559,7 +572,8 @@ namespace LibraryApp.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_LibraryCardId",
                 table: "Users",
-                column: "LibraryCardId");
+                column: "LibraryCardId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

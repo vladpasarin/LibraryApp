@@ -99,7 +99,7 @@ namespace LibraryApp.Services
                 UpdatedOn = DateTime.Now
             };
 
-            _userRepo.Create(entity);
+            await _userRepo.Create(entity);
             await _userRepo.Register(entity, entity.Password);
             return await _userRepo.SaveChanges();
         }

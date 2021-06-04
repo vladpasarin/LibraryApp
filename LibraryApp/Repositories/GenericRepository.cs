@@ -20,9 +20,10 @@ namespace LibraryApp.Repositories
             _table = context.Set<T>();
         }
 
-        public void Create(T entity)
+        public async Task<bool> Create(T entity)
         {
-            _context.Set<T>().Add(entity);
+            await _context.Set<T>().AddAsync(entity);
+            return true;
         }
 
         public void CreateRange(List<T> entities)

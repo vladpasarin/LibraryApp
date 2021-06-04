@@ -32,5 +32,78 @@ namespace LibraryApp.Data
         public virtual DbSet<ReadingLog> ReadingLogs { get; set; }
         public virtual DbSet<ReplyTo> ReplyTos { get; set; }
         public virtual DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            LoadDefaultAssetStatuses(builder);
+            LinkAssets(builder);
+            LinkAssetTags(builder);
+            LinkOneToOne(builder);
+
+            base.OnModelCreating(builder);
+        }
+
+        private static void LinkAssets(ModelBuilder builder)
+        {
+            // One to One
+            builder.Entity<Book>().HasOne(b => b.Asset).WithOne()
+                .HasForeignKey<Book>(b => b.AssetId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<EBook>().HasOne(eb => eb.Asset).WithOne()
+                .HasForeignKey<EBook>(eb => eb.AssetId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<AudioBook>().HasOne(ab => ab.Asset).WithOne()
+                .HasForeignKey<AudioBook>(ab => ab.AssetId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+
+        private static void LinkAssetTags(ModelBuilder builder)
+        {
+            builder.Entity<AssetTag>().HasOne(at => at.Asset)
+                .WithMany(a => a.AssetTags).HasForeignKey(at => at.AssetId);
+
+            builder.Entity<AssetTag>().HasOne(at => at.Tag)
+                .WithMany(t => t.AssetTags).HasForeignKey(at => at.TagId);
+        }
+
+        private static void LinkOneToOne(ModelBuilder builder)
+        {
+            builder.Entity<User>().HasOne(u => u.LibraryCard).WithOne()
+                .HasForeignKey<User>(u => u.LibraryCardId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Badge>().HasOne(b => b.Challenge)
+                .WithOne().HasForeignKey<Badge>(b => b.ChallengeId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+
+        private static void LoadDefaultAssetStatuses(ModelBuilder builder)
+        {
+            var defaultStatuses = new List<AvailabilityStatus>
+            {
+                new AvailabilityStatus()
+                {
+                    Id = 1,
+                    Name = "Available",
+                    Description = "The item is available"
+                },
+                new AvailabilityStatus()
+                {
+                    Id = 2,
+                    Name = "On Hold",
+                    Description = "The item is currently on hold"
+                },
+                new AvailabilityStatus()
+                {
+                    Id = 3,
+                    Name = "Unavailable",
+                    Description = "The item is unavailable"
+                },
+            };
+
+            builder.Entity<AvailabilityStatus>().HasData(defaultStatuses);
+        }
     }
 }

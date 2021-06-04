@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace LibraryApp.Repositories.IRepositories
 {
-    public interface IAssetRepository: IGenericRepository<Asset>
+    public interface IBookRepository: IGenericRepository<Book>
     {
-        public Task<AssetDto> Get(int id);
+        public Task<BookDto> Get(int id);
+        //public Task<bool> Add(BookDto newBookDto);
     }
 }
