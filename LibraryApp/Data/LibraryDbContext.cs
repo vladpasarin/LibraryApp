@@ -83,19 +83,19 @@ namespace LibraryApp.Data
         {
             var defaultStatuses = new List<AvailabilityStatus>
             {
-                new AvailabilityStatus()
+                new AvailabilityStatus
                 {
                     Id = 1,
                     Name = "Available",
                     Description = "The item is available"
                 },
-                new AvailabilityStatus()
+                new AvailabilityStatus
                 {
                     Id = 2,
                     Name = "On Hold",
                     Description = "The item is currently on hold"
                 },
-                new AvailabilityStatus()
+                new AvailabilityStatus
                 {
                     Id = 3,
                     Name = "Unavailable",
