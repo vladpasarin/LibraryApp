@@ -37,5 +37,37 @@ namespace LibraryApp.Services
             await _repo.Create(book);
             return await _repo.SaveChanges();
         }
+
+        public async Task<IEnumerable<EBookDto>> GetAllEBooks()
+        {
+            var eBooks = await _repo.GetAllEBooks();
+            return _mapper.Map<IEnumerable<EBookDto>>(eBooks);
+        }
+
+        public async Task<IEnumerable<AudioBookDto>> GetAllAudioBooks()
+        {
+            var audioBooks = await _repo.GetAllAudioBooks();
+            return _mapper.Map<IEnumerable<AudioBookDto>>(audioBooks);
+        }
+
+        public async Task<EBookDto> GetEBook(int id)
+        {
+            return await _repo.GetEBook(id);
+        }
+
+        public async Task<AudioBookDto> GetAudioBook(int id)
+        {
+            return await _repo.GetAudioBook(id);
+        }
+
+        public async Task<bool> AddEBook(EBookDto newEBook)
+        {
+            return await _repo.AddEBook(newEBook);
+        }
+
+        public async Task<bool> AddAudioBook(AudioBookDto newAudioBook)
+        {
+            return await _repo.AddAudioBook(newAudioBook);
+        }
     }
 }

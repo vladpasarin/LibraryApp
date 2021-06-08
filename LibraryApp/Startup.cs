@@ -55,6 +55,14 @@ namespace LibraryApp
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IAssetRepository, AssetRepository>();
+            services.AddScoped<IAssetService, AssetService>();
+            services.AddScoped<IAssetTagRepository, AssetTagRepository>();
+            services.AddScoped<IAssetTagService, AssetTagService>();
+            services.AddScoped<ICheckoutRepository, CheckoutRepository>();
+            services.AddScoped<IHoldRepository, HoldRepository>();
+            services.AddScoped<IHoldService, HoldService>();
+            services.AddScoped<ILibraryCardRepository, LibraryCardRepository>();
+            services.AddScoped<ILibraryCardService, LibraryCardService>();
             // Adding authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

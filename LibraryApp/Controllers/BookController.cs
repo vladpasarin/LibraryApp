@@ -30,6 +30,26 @@ namespace LibraryApp.Controllers
             return Ok(books);
         }
 
+        [HttpGet("ebook/all")]
+        public async Task<IActionResult> GetAllEBooks()
+        {
+            var eBooks = await _service.GetAllEBooks();
+            if (eBooks == null)
+                return StatusCode(500);
+
+            return Ok(eBooks);
+        }
+
+        [HttpGet("audiobook/all")]
+        public async Task<IActionResult> GetAllAudioBooks()
+        {
+            var audioBooks = await _service.GetAllAudioBooks();
+            if (audioBooks == null)
+                return StatusCode(500);
+
+            return Ok(audioBooks);
+        }
+
         // GET api/<BookController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -41,11 +61,43 @@ namespace LibraryApp.Controllers
             return Ok(book);
         }
 
+        [HttpGet("ebook/{id}")]
+        public async Task<IActionResult> GetEBookById(int id)
+        {
+            var eBook = await _service.GetEBook(id);
+            if (eBook == null)
+                return StatusCode(500);
+
+            return Ok(eBook);
+        }
+
+        [HttpGet("audiobook/{id}")]
+        public async Task<IActionResult> GetAudioBookById(int id)
+        {
+            var audioBook = await _service.GetAudioBook(id);
+            if (audioBook == null)
+                return StatusCode(500);
+
+            return Ok(audioBook);
+        }
+
         // POST api/<BookController>
         [HttpPost("add")]
         public async Task<IActionResult> Post(BookDto newBookDto)
         {
             return Ok(await _service.Add(newBookDto));
+        }
+
+        [HttpPost("ebook/add")]
+        public async Task<IActionResult> Post(EBookDto newEBook)
+        {
+            return Ok(await _service.AddEBook(newEBook));
+        }
+
+        [HttpPost("audiobook/add")]
+        public async Task<IActionResult> Post(AudioBookDto newAudioBook)
+        {
+            return Ok(await _service.AddAudioBook(newAudioBook));
         }
 
         // PUT api/<BookController>/5

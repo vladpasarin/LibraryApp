@@ -11,5 +11,11 @@ namespace LibraryApp.IServices
         Task<IEnumerable<BookDto>> GetAll();
         Task<BookDto> Get(int id);
         Task<bool> Add(BookDto newBook);
+        Task<IEnumerable<EBookDto>> GetAllEBooks();
+        Task<IEnumerable<AudioBookDto>> GetAllAudioBooks();
+        Task<EBookDto> GetEBook(int id);
+        Task<AudioBookDto> GetAudioBook(int id);
+        Task<bool> AddEBook(EBookDto newEBook);
+        Task<bool> AddAudioBook(AudioBookDto newAudioBook);
     }
 }

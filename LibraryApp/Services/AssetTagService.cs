@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using LibraryApp.DTOs.Assets;
 using LibraryApp.Entities.Assets.Tags;
-using LibraryApp.IService;
+using LibraryApp.IServices;
 using LibraryApp.Repositories.IRepositories;
 using System;
 using System.Collections.Generic;
