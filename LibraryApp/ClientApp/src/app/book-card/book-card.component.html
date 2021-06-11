@@ -1,0 +1,23 @@
+<carousel
+    [height] = "600"
+    [cellWidth] = "350"
+>
+    <div class="carousel-cell">
+        <mat-card class="book-card">
+            <mat-card-header class="header">
+                <mat-card-title> Available </mat-card-title>
+            </mat-card-header>
+            <img class="cover-img" mat-card-image src="../../assets/images/book-cover.jpg"
+                alt="Book cover photo">
+            <mat-card-content>
+                <p class="title">My Book Cover</p>
+                <p class="author">by Danez Smith</p>
+                <p class="type"><fa-icon [icon]="faBookOpen"></fa-icon> EBOOK</p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button class="borrow">BORROW</button>
+                <button mat-button class="bookmark"><fa-icon [icon]="faBookmark"></fa-icon></button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</carousel>

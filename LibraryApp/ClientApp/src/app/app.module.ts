@@ -19,6 +19,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCarouselModule } from '@ngbmodule/material-carousel';
+import { MatCardModule } from '@angular/material/card';
+import { BookCardComponent } from './book-card/book-card.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,8 @@ import { MatCarouselModule } from '@ngbmodule/material-carousel';
     HeaderComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    BookCardComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +48,11 @@ import { MatCarouselModule } from '@ngbmodule/material-carousel';
     MatSnackBarModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
-    MatCarouselModule.forRoot()
+    MatCarouselModule.forRoot(),
+    MatCardModule,
+    MatButtonModule,
+    MDBBootstrapModule.forRoot(),
+    IvyCarouselModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
