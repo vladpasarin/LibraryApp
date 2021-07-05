@@ -25,7 +25,24 @@
         ></mat-carousel-slide>
     </mat-carousel>
   </div>
-  <div class="card-container">
-    <app-book-card></app-book-card>
+
+  <!-- TODO: ML based suggestion system section -->
+
+  <div class="books-preview">
+    <h3>Popular books to choose from...</h3>
+    <br>
+  </div>
+
+  <carousel
+    [height] = "600"
+    [cellWidth] = "350"
+  >
+    <div *ngFor="let book of books" class="carousel-cell">
+      <app-book-card [book]="book"></app-book-card>
+    </div>
+  </carousel>
+
+  <div class="books-preview">
+    <h3>Popular ebooks to download...</h3>
   </div>
 </div>

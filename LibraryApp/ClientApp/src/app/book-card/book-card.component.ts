@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { faBookOpen, faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { Input } from '@angular/core';
+import { GenericBook } from '../models/genericBook';
 
 @Component({
   selector: 'app-book-card',
@@ -9,8 +11,8 @@ import { faBookOpen, faBookmark } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./book-card.component.scss']
 })
 export class BookCardComponent implements OnInit {
-  private readonly endpoint = 'book';
-  books: any[];
+  @Input() book: GenericBook;
+
   faBookOpen = faBookOpen;
   faBookmark = faBookmark;
   //userToken: string;
@@ -42,17 +44,7 @@ export class BookCardComponent implements OnInit {
 
   ngOnInit(): void {
     //this.userToken = localStorage.getItem('token');
-    this.loadBooks();
     this.slides = this.chunk(this.cards, 3);
-  }
-
-  loadBooks() {
-    this.apiService.get<any>(`${this.endpoint}/all`)
-      .subscribe(response => {
-        this.books = response;
-      }, error => {
-        console.log(error);
-      });
   }
 
   chunk(arr: any, chunkSize:any) {
