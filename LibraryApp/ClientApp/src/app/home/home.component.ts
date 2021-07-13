@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.loadBooks();
     this.loadEBooks();
-    this.loadEBooks();
+    this.loadAudioBooks();
   }
 
   loadBooks() {

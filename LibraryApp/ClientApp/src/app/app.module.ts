@@ -24,6 +24,11 @@ import { BookCardComponent } from './book-card/book-card.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
+import { BookListComponent } from './book-list/book-list.component';
+import { EbookListComponent } from './ebook-list/ebook-list.component';
+import { AudiobookListComponent } from './audiobook-list/audiobook-list.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,7 +37,11 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    BookCardComponent
+    BookCardComponent,
+    BookListComponent,
+    EbookListComponent,
+    AudiobookListComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +62,7 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
     MatButtonModule,
     MDBBootstrapModule.forRoot(),
     IvyCarouselModule,
+    FormsModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

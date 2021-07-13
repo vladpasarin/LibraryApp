@@ -8,7 +8,17 @@
                 <a class="nav-link" routerLink="/home"> <fa-icon [icon]="faHome"></fa-icon> Home </a>
             </li>
             <li>
-                <a class="nav-link" href="#"> <fa-icon [icon]="faBook"></fa-icon> Books </a>
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                        <fa-icon [icon]="faBook"></fa-icon> Books 
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" routerLink="/books">Books</a>
+                        <a class="dropdown-item" routerLink="/ebooks">EBooks</a>
+                        <a class="dropdown-item" routerLink="/audiobooks">AudioBooks</a>
+                    </div>
+                </div>
             </li>
         </ul>
     </div>
