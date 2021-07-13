@@ -28,5 +28,16 @@ namespace LibraryApp.Repositories
                 .FirstAsync(a => a.Id == id);
             return _mapper.Map<AssetDto>(asset);
         }
+
+        public async Task<IEnumerable<AssetDto>> GetAllAssets()
+        {
+            IEnumerable<Asset> assets = new List<Asset>();
+            assets = await _context.Assets
+                .Include(a => a.AvailabilityStatus)
+                .Include(a => a.AssetTags)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<AssetDto>>(assets);
+        }
     }
 }

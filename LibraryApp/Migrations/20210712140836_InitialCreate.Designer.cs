@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20210604141638_InitialCreate")]
+    [Migration("20210712140836_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace LibraryApp.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("AvailabilityStatusId")
+                    b.Property<int>("AvailabilityStatusId")
                         .HasColumnType("integer");
 
                     b.Property<double>("Cost")
@@ -613,8 +613,10 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.Asset", b =>
                 {
                     b.HasOne("LibraryApp.Entities.AvailabilityStatus", "AvailabilityStatus")
-                        .WithMany()
-                        .HasForeignKey("AvailabilityStatusId");
+                        .WithMany("Assets")
+                        .HasForeignKey("AvailabilityStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AvailabilityStatus");
                 });
@@ -663,7 +665,7 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.Book", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
-                        .WithOne()
+                        .WithOne("Book")
                         .HasForeignKey("LibraryApp.Entities.Book", "AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -804,11 +806,18 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.Asset", b =>
                 {
                     b.Navigation("AssetTags");
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Assets.Tags.Tag", b =>
                 {
                     b.Navigation("AssetTags");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.AvailabilityStatus", b =>
+                {
+                    b.Navigation("Assets");
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.LibraryCard", b =>

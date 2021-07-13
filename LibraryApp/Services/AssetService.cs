@@ -35,8 +35,7 @@ namespace LibraryApp.Services
 
         public async Task<IEnumerable<AssetDto>> GetAll()
         {
-            var assets = await _repo.GetAll();
-            return _mapper.Map<IEnumerable<AssetDto>>(assets);
+            return await _repo.GetAllAssets();
         }
     }
 }

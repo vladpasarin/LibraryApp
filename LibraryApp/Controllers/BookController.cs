@@ -19,6 +19,8 @@ namespace LibraryApp.Controllers
             _service = service;
         }
 
+        //TODO: Make a get availability status method for books
+
         // GET: api/<BookController>
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()

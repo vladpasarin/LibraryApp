@@ -57,7 +57,7 @@ namespace LibraryApp.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Cost = table.Column<double>(type: "double precision", nullable: false),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
-                    AvailabilityStatusId = table.Column<int>(type: "integer", nullable: true)
+                    AvailabilityStatusId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,7 +67,7 @@ namespace LibraryApp.Migrations
                         column: x => x.AvailabilityStatusId,
                         principalTable: "AvailabilityStatuses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

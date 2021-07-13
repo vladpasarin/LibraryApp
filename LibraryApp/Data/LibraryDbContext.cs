@@ -46,7 +46,7 @@ namespace LibraryApp.Data
         private static void LinkAssets(ModelBuilder builder)
         {
             // One to One
-            builder.Entity<Book>().HasOne(b => b.Asset).WithOne()
+            builder.Entity<Book>().HasOne(b => b.Asset).WithOne(a => a.Book)
                 .HasForeignKey<Book>(b => b.AssetId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -57,6 +57,10 @@ namespace LibraryApp.Data
             builder.Entity<AudioBook>().HasOne(ab => ab.Asset).WithOne()
                 .HasForeignKey<AudioBook>(ab => ab.AssetId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // One to Many
+            builder.Entity<Asset>().HasOne(a => a.AvailabilityStatus)
+                .WithMany(a => a.Assets).HasForeignKey(a => a.AvailabilityStatusId);
         }
 
         private static void LinkAssetTags(ModelBuilder builder)

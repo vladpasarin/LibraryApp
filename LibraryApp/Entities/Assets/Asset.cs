@@ -12,5 +12,6 @@ namespace LibraryApp.Entities
         public int AvailabilityStatusId { get; set; }
         public AvailabilityStatus AvailabilityStatus { get; set; }
         public List<AssetTag> AssetTags { get; set; }
+        public Book Book { get; set; }
     }
 }

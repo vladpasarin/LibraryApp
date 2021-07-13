@@ -10,5 +10,6 @@ namespace LibraryApp.Repositories.IRepositories
     public interface IAssetRepository: IGenericRepository<Asset>
     {
         public Task<AssetDto> Get(int id);
+        public Task<IEnumerable<AssetDto>> GetAllAssets();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace LibraryApp.DTOs
 {
-    public class StatusDto
+    public class AvailabilityStatusDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

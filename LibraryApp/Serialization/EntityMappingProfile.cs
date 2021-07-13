@@ -17,7 +17,7 @@ namespace LibraryApp.Serialization
             CreateMap<Book, BookDto>().ReverseMap();
             CreateMap<AudioBook, AudioBookDto>().ReverseMap();
             CreateMap<EBook, EBookDto>().ReverseMap();
-            CreateMap<AvailabilityStatus, StatusDto>().ReverseMap();
+            CreateMap<AvailabilityStatus, AvailabilityStatusDto>().ReverseMap();
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Badge, BadgeDto>().ReverseMap();
             CreateMap<Challenge, ChallengeDto>().ReverseMap();
