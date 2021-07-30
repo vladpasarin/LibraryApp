@@ -32,6 +32,7 @@ namespace LibraryApp.Data
         public virtual DbSet<ReadingLog> ReadingLogs { get; set; }
         public virtual DbSet<ReplyTo> ReplyTos { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Bookmark> Bookmarks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -39,6 +40,7 @@ namespace LibraryApp.Data
             LinkAssets(builder);
             LinkAssetTags(builder);
             LinkOneToOne(builder);
+            LinkManyToMany(builder);
 
             base.OnModelCreating(builder);
         }
@@ -46,7 +48,7 @@ namespace LibraryApp.Data
         private static void LinkAssets(ModelBuilder builder)
         {
             // One to One
-            builder.Entity<Book>().HasOne(b => b.Asset).WithOne(a => a.Book)
+            builder.Entity<Book>().HasOne(b => b.Asset).WithOne()
                 .HasForeignKey<Book>(b => b.AssetId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -81,6 +83,20 @@ namespace LibraryApp.Data
             builder.Entity<Badge>().HasOne(b => b.Challenge)
                 .WithOne().HasForeignKey<Badge>(b => b.ChallengeId)
                 .OnDelete(DeleteBehavior.Restrict);
+        }
+
+        private static void LinkManyToMany(ModelBuilder builder)
+        {
+            builder.Entity<Bookmark>()
+                .HasOne(b => b.Asset)
+                .WithMany(a => a.Bookmarks)
+                .HasForeignKey(b => b.AssetId);
+
+
+            builder.Entity<Bookmark>()
+                .HasOne(b => b.User)
+                .WithMany(u => u.Bookmarks)
+                .HasForeignKey(b => b.UserId);
         }
 
         private static void LoadDefaultAssetStatuses(ModelBuilder builder)

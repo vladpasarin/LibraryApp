@@ -6,14 +6,25 @@
     <input id="searchBar" 
     type="text"
     placeholder="Search..."
-    [(ngModel)]="searchText">
+    [(ngModel)]="searchValue">
 </div>
 
 <div class="container">
     <div class="row">
-        <div *ngFor="let book of books" class="col-lg-3 col-md-6 col-sm-8">
+        <div *ngFor="let book of books | searchFilter: {title: searchValue}" class="col-lg-3 col-md-6 col-sm-8">
             <app-book-card [book]="book"></app-book-card>
             <br>
-          </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div *ngIf="searchValue.length == null">
+            <div *ngFor="let book of books" class="col-lg-3 col-md-6 col-sm-8">
+                <app-book-card [book]="book"></app-book-card>
+                <br>
+            </div>
+        </div>
     </div>
 </div>

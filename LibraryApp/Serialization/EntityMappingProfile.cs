@@ -30,6 +30,7 @@ namespace LibraryApp.Serialization
             CreateMap<ReadingLog, ReadingLogDto>().ReverseMap();
             CreateMap<ReplyTo, ReplyToDto>().ReverseMap();
             CreateMap<UserDto, User>();
+            CreateMap<BookmarkDto, Bookmark>().ReverseMap();
         }
     }
 }

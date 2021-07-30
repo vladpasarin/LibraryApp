@@ -11,7 +11,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 export class BookListComponent implements OnInit {
   private readonly endpoint = 'book';
   books: any[];
-  searchText: string = "";
+  searchValue: string = "";
   faSearch = faSearch;
 
   constructor(private apiService: ApiService,

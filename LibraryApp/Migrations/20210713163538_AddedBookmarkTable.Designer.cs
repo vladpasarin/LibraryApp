@@ -3,15 +3,17 @@ using System;
 using LibraryApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210713163538_AddedBookmarkTable")]
+    partial class AddedBookmarkTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -685,7 +687,7 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.Book", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
-                        .WithOne()
+                        .WithOne("Book")
                         .HasForeignKey("LibraryApp.Entities.Book", "AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -696,13 +698,13 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.Bookmark", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
-                        .WithMany("Bookmarks")
+                        .WithMany()
                         .HasForeignKey("AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LibraryApp.Entities.User", "User")
-                        .WithMany("Bookmarks")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -846,7 +848,7 @@ namespace LibraryApp.Migrations
                 {
                     b.Navigation("AssetTags");
 
-                    b.Navigation("Bookmarks");
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Assets.Tags.Tag", b =>
@@ -862,11 +864,6 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.LibraryCard", b =>
                 {
                     b.Navigation("Checkouts");
-                });
-
-            modelBuilder.Entity("LibraryApp.Entities.User", b =>
-                {
-                    b.Navigation("Bookmarks");
                 });
 #pragma warning restore 612, 618
         }

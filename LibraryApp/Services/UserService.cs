@@ -21,12 +21,14 @@ namespace LibraryApp.Services
         private readonly IUserRepository _userRepo;
         private readonly AppSettings _appSettings;
         private readonly IMapper _mapper;
+        private readonly ILibraryCardService _lcService;
 
-        public UserService(IUserRepository userRepo, IOptions<AppSettings> options, IMapper mapper)
+        public UserService(IUserRepository userRepo, IOptions<AppSettings> options, IMapper mapper, ILibraryCardService lcService)
         {
             _userRepo = userRepo;
             _appSettings = options.Value;
             _mapper = mapper;
+            _lcService = lcService;
         }
 
         public async Task<bool> Add(UserDto newUserDto)
@@ -85,6 +87,11 @@ namespace LibraryApp.Services
 
         public async Task<bool> Register(RegisterRequest request)
         {
+            var libraryCard = new LibraryCard
+            {
+                CurrentFees = 0.0,
+                DateIssued = DateTime.Now
+            };
             var entity = new User
             {
                 Email = request.Email,
@@ -96,7 +103,9 @@ namespace LibraryApp.Services
                 PhoneNr = request.PhoneNr,
                 DateOfBirth = request.DateOfBirth,
                 CreatedOn = DateTime.Now,
-                UpdatedOn = DateTime.Now
+                UpdatedOn = DateTime.Now,
+                LibraryCard = libraryCard,
+                LibraryCardId = libraryCard.Id
             };
 
             await _userRepo.Create(entity);

@@ -29,6 +29,7 @@ import { EbookListComponent } from './ebook-list/ebook-list.component';
 import { AudiobookListComponent } from './audiobook-list/audiobook-list.component';
 import { ProfileComponent } from './profile/profile.component';
 import { FormsModule } from '@angular/forms';
+import { SearchFilterPipe } from './searchfilter.pipe';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { FormsModule } from '@angular/forms';
     BookListComponent,
     EbookListComponent,
     AudiobookListComponent,
-    ProfileComponent
+    ProfileComponent,
+    SearchFilterPipe
   ],
   imports: [
     BrowserModule,

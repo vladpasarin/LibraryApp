@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Router } from '@angular/router';
 import { faFacebook, faGithub, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -14,16 +14,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  public registrationForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required,
-      Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')]
-    ],
-    firstName: ['', [Validators.required, Validators.maxLength]],
-    lastName: ['', [Validators.required, Validators.maxLength]],
-    phoneNr: ['', Validators.pattern('[0-9]{3}-[0-9]{2}-[0-9]{3}')]
-  });
-  
+  registrationForm: FormGroup;
   faFacebook = faFacebook;
   faTwitter = faTwitter;
   faLinkedin = faLinkedinIn;
@@ -39,13 +30,31 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.date = new Date();
+    this.registerRequest = {
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      phoneNr: '',
+      dateOfBirth: null
+    };
+    this.registrationForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required,
+        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')]
+      ],
+      firstName: ['', [Validators.required, Validators.maxLength]],
+      lastName: ['', [Validators.required, Validators.maxLength]],
+      phoneNr: ['', Validators.pattern('[0-9]{3}-[0-9]{2}-[0-9]{3}')]
+    });
   }
 
   openSnackBar() {
-    this._snackBar.open('Register succesful!', 'Sign in');
+    this._snackBar.open('Register succesful!', 'Sign in', { duration: 3000});
   }
 
   register() {
+    console.log(this.f.email.value);
     this.registerRequest.email = this.f.email.value;
     this.registerRequest.firstName = this.f.firstName.value;
     this.registerRequest.lastName = this.f.lastName.value;
@@ -53,10 +62,12 @@ export class RegisterComponent implements OnInit {
     this.registerRequest.phoneNr = this.f.phoneNr.value;
     this.registerRequest.dateOfBirth = this.date;
     console.log(this.date);
+    console.log(this.registerRequest.email);
 
     this.authService.register(this.registerRequest)
     .subscribe(data => {
       console.log('Succesfully registered', data);
+      this.openSnackBar();
       this.router.navigateByUrl('login');
     });
   }

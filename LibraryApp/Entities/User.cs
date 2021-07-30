@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibraryApp.Entities
@@ -23,5 +24,6 @@ namespace LibraryApp.Entities
         public byte[] PasswordSalt { get; set; }
         public int LibraryCardId { get; set; }
         public LibraryCard LibraryCard { get; set; }
+        public List<Bookmark> Bookmarks { get; set; }
     }
 }
