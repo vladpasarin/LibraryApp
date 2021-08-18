@@ -11,5 +11,7 @@ namespace LibraryApp.IServices
         Task<BookmarkDto> Get(int id);
         Task<bool> Add(BookmarkDto newBookmark);
         Task<IEnumerable<BookmarkDto>> GetAll();
+        Task<BookmarkDto> FindBookmarkByUserAndAsset(int userId, int assetId);
+        Task<bool> Delete(BookmarkDto deletedBookmark);
     }
 }

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthRequest } from '../authRequest';
@@ -15,7 +16,8 @@ export class AuthService {
   private readonly endpoint = 'auth';
 
   constructor(private http: HttpClient,
-              private apiService: ApiService  
+              private apiService: ApiService,
+              private router: Router  
   ) { }
 
   logout(): void {
@@ -36,6 +38,7 @@ export class AuthService {
         localStorage.setItem('token', response.token);        
         sessionStorage.setItem('email', response.email);
         sessionStorage.setItem('userId', response.id);
+        this.router.navigate(["/home"]);
       })
     );
   }

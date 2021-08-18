@@ -1,4 +1,5 @@
-﻿using LibraryApp.DTOs.Assets;
+﻿using LibraryApp.DTOs;
+using LibraryApp.DTOs.Assets;
 using LibraryApp.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace LibraryApp.Repositories.IRepositories
     {
         public Task<AssetDto> Get(int id);
         public Task<IEnumerable<AssetDto>> GetAllAssets();
+        public Task<AvailabilityStatusDto> GetStatus(int assetId);
     }
 }

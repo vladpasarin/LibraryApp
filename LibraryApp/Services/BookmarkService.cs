@@ -38,5 +38,17 @@ namespace LibraryApp.Services
             var bookmarks = await _repo.GetAll();
             return _mapper.Map<IEnumerable<BookmarkDto>>(bookmarks);
         }
+
+        public async Task<BookmarkDto> FindBookmarkByUserAndAsset(int userId, int assetId)
+        {
+            return await _repo.FindBookmarkBy(userId, assetId);
+        }
+
+        public async Task<bool> Delete(BookmarkDto deletedBookmark)
+        {
+            var bookmark = _mapper.Map<Bookmark>(deletedBookmark);
+            _repo.Delete(bookmark);
+            return await _repo.SaveChanges();
+        }
     }
 }

@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
-import { faBookOpen, faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookOpen, faBookmark as faBookmarkSolid } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as faBookmarkRegular } from '@fortawesome/free-regular-svg-icons';
 import { Input } from '@angular/core';
 import { GenericBook } from '../models/genericBook';
+import { Bookmark } from '../models/bookmark';
+import { AuthService } from '../shared/services/auth.service';
+import { map } from 'rxjs/operators';
+import { Status } from '../models/status';
 
 @Component({
   selector: 'app-book-card',
@@ -13,8 +18,17 @@ import { GenericBook } from '../models/genericBook';
 export class BookCardComponent implements OnInit {
   @Input() book: GenericBook;
 
+  private readonly bookmarkEndpoint = 'bookmark';
+  private readonly assetEndpoint = 'asset';
   faBookOpen = faBookOpen;
-  faBookmark = faBookmark;
+  faBookmarkSolid = faBookmarkSolid;
+  faBookmarkRegular = faBookmarkRegular;
+  isBookmarked: boolean;
+  currentUserId: string;
+  bookmarkCheck: Bookmark;
+  bookmark = {} as Bookmark;
+  deletedBookmarkId: number;
+  status = {} as Status;
   //userToken: string;
   cards = [
     {
@@ -38,13 +52,18 @@ export class BookCardComponent implements OnInit {
   ]
   slides: any = [[]];
 
-  constructor(private apiService: ApiService,
+  constructor(private apiService: ApiService, public authService: AuthService,
               private router: Router) { 
   }
 
   ngOnInit(): void {
     //this.userToken = localStorage.getItem('token');
+    this.isLoggedIn();
     this.slides = this.chunk(this.cards, 3);
+    this.currentUserId = sessionStorage.getItem("userId");
+    this.loadBookmarks();
+    this.getBookStatus();
+    console.log(this.currentUserId);
   }
 
   chunk(arr: any, chunkSize:any) {
@@ -53,5 +72,55 @@ export class BookCardComponent implements OnInit {
       R.push(arr.slice(i, i + chunkSize));
     }
     return R;
+  }
+
+  loadBookmarks() {
+    this.apiService.get<Bookmark>(`${this.bookmarkEndpoint}/` + this.currentUserId + '/' + this.book.assetId)
+      .subscribe((response: Bookmark) => {
+        this.bookmarkCheck = response;
+        console.log(response);
+        this.isBookmarked = true;
+      }, error => {
+        console.log(error);
+        this.isBookmarked = false;
+    });
+  }
+
+  addBookmark() {
+    this.bookmark.userId = parseInt(this.currentUserId);
+    this.bookmark.assetId = this.book.assetId;
+    this.apiService.post<Bookmark>(`${this.bookmarkEndpoint}`, this.bookmark)
+      .subscribe(() => {
+        console.log("Bookmark added successfully");
+        this.loadBookmarks();
+    });
+  }
+
+  removeBookmark() {
+    this.apiService.get<Bookmark>(`${this.bookmarkEndpoint}/` + this.currentUserId +'/' + this.book.assetId)
+      .subscribe((response: Bookmark) => {
+        this.deletedBookmarkId = response.id;
+        console.log(this.deletedBookmarkId);
+        this.apiService.delete(`${this.bookmarkEndpoint}/` + this.deletedBookmarkId)
+          .subscribe(() => {
+            console.log("Bookmark deleted");
+            this.loadBookmarks();
+          });
+      }, error => {
+        console.log(error);
+    });
+  }
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
+  }
+
+  getBookStatus() {
+    this.apiService.get<Status>(`${this.assetEndpoint}/` + 'status/' + this.book.assetId)
+      .subscribe((response: Status) => {
+        this.status = response;
+      }, error => {
+        console.log(error);
+    });
   }
 }

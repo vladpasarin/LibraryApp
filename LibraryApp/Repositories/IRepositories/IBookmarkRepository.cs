@@ -10,5 +10,6 @@ namespace LibraryApp.Repositories.IRepositories
     public interface IBookmarkRepository : IGenericRepository<Bookmark>
     {
         public Task<BookmarkDto> Get(int id);
+        public Task<BookmarkDto> FindBookmarkBy(int userId, int assetId);
     }
 }

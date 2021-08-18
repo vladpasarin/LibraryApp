@@ -5,6 +5,7 @@ using LibraryApp.Models;
 using LibraryApp.Repositories;
 using LibraryApp.Repositories.Assets;
 using LibraryApp.Repositories.IRepositories;
+using LibraryApp.Repositories.Users;
 using LibraryApp.Serialization;
 using LibraryApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,8 +40,11 @@ namespace LibraryApp
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            services.AddDbContext<LibraryDbContext>(options => options
-                .UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LibraryDbContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                options.EnableSensitiveDataLogging();
+            });
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             // Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
@@ -63,6 +67,8 @@ namespace LibraryApp
             services.AddScoped<IHoldService, HoldService>();
             services.AddScoped<ILibraryCardRepository, LibraryCardRepository>();
             services.AddScoped<ILibraryCardService, LibraryCardService>();
+            services.AddScoped<IBookmarkRepository, BookmarkRepository>();
+            services.AddScoped<IBookmarkService, BookmarkService>();
             // Adding authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

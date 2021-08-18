@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LibraryApp.DTOs;
 using LibraryApp.DTOs.Assets;
 using LibraryApp.Entities;
 using LibraryApp.IServices;
@@ -36,6 +37,11 @@ namespace LibraryApp.Services
         public async Task<IEnumerable<AssetDto>> GetAll()
         {
             return await _repo.GetAllAssets();
+        }
+
+        public async Task<AvailabilityStatusDto> GetStatus(int assetId)
+        {
+            return await _repo.GetStatus(assetId);
         }
     }
 }

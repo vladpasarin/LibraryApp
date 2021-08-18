@@ -90,13 +90,15 @@ namespace LibraryApp.Data
             builder.Entity<Bookmark>()
                 .HasOne(b => b.Asset)
                 .WithMany(a => a.Bookmarks)
-                .HasForeignKey(b => b.AssetId);
+                .HasForeignKey(b => b.AssetId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             builder.Entity<Bookmark>()
                 .HasOne(b => b.User)
                 .WithMany(u => u.Bookmarks)
-                .HasForeignKey(b => b.UserId);
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         private static void LoadDefaultAssetStatuses(ModelBuilder builder)

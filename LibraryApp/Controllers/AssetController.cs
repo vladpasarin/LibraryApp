@@ -43,6 +43,16 @@ namespace LibraryApp.Controllers
             return Ok(asset);
         }
 
+        [HttpGet("status/{id}")]
+        public async Task<IActionResult> GetAssetStatus(int assetId)
+        {
+            var status = await _service.GetStatus(assetId);
+            if (status == null)
+                return StatusCode(500);
+
+            return Ok(status);
+        }
+
         // POST api/<AssetController>
         [HttpPost]
         public async Task<IActionResult> Post(AssetDto newAssetDto)

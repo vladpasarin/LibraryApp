@@ -23,9 +23,22 @@ namespace LibraryApp.Repositories.Users
         public async Task<BookmarkDto> Get(int id)
         {
             var bookmark = await _context.Bookmarks
+                .AsNoTracking()
                 .Include(b => b.Asset)
                 .Include(b => b.User)
-                .FirstAsync(b => b.Id == id);
+                .FirstOrDefaultAsync(b => b.Id == id);
+            return _mapper.Map<BookmarkDto>(bookmark);
+        }
+
+        public async Task<BookmarkDto> FindBookmarkBy(int userId, int assetId)
+        {
+            var bookmark = await _context.Bookmarks
+                .AsNoTracking()
+                .Include(b => b.Asset)
+                .Include(b => b.User)
+                .Where(b => b.UserId == userId)
+                .Where(b => b.AssetId == assetId)
+                .FirstAsync();
             return _mapper.Map<BookmarkDto>(bookmark);
         }
     }

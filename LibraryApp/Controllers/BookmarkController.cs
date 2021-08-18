@@ -45,9 +45,20 @@ namespace LibraryApp.Controllers
             return Ok(bookmark);
         }
 
+        [HttpGet("{userId}/{assetId}")]
+        public async Task<IActionResult> FindByUserAndAssetIds(int userId, int assetId)
+        {
+            var bookmark = await _service.FindBookmarkByUserAndAsset(userId, assetId);
+            if (bookmark == null)
+            {
+                return StatusCode(500);
+            }
+            return Ok(bookmark);
+        }
+
         // POST api/<BookmarkController>
         [HttpPost]
-        public async Task<IActionResult> Post(BookmarkDto newBookmark)
+        public async Task<IActionResult> Add(BookmarkDto newBookmark)
         {
             return Ok(await _service.Add(newBookmark));
         }
@@ -60,8 +71,14 @@ namespace LibraryApp.Controllers
 
         // DELETE api/<BookmarkController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var deletedBookmark = await _service.Get(id);
+            if (deletedBookmark == null)
+            {
+                return StatusCode(500);
+            }
+            return Ok(await _service.Delete(deletedBookmark));
         }
     }
 }
