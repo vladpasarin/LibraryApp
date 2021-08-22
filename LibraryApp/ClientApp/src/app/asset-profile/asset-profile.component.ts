@@ -60,7 +60,8 @@ export class AssetProfileComponent implements OnInit {
 
   getTagsByAssetId() {
     this.api.get<Tag[]>(`${this.tagEndpoing}/` + 'asset/' + this.assetId).subscribe((response: Tag[]) => {
-      response.map(val => this.tags.push(Object.assign({}, val)));
+      console.log(response);
+      this.tags = cloneDeep(response);
       console.log(this.tags);
     }, error => {
       console.log(error);

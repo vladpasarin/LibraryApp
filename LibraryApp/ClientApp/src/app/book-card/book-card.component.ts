@@ -58,10 +58,11 @@ export class BookCardComponent implements OnInit {
 
   ngOnInit(): void {
     //this.userToken = localStorage.getItem('token');
-    this.isLoggedIn();
     this.slides = this.chunk(this.cards, 3);
     this.currentUserId = sessionStorage.getItem("userId");
-    this.loadBookmarks();
+    if (this.isLoggedIn()) {
+      this.loadBookmarks();
+    }
     this.getBookStatus();
     console.log(this.currentUserId);
   }

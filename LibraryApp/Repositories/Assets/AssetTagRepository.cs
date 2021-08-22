@@ -49,10 +49,11 @@ namespace LibraryApp.Repositories.Assets
                 .Include(a => a.Asset)
                 .Include(a => a.Tag)
                 .Where(a => a.AssetId == assetId).ToListAsync();
-            IEnumerable<Tag> tags = Enumerable.Empty<Tag>();
+            List<Tag> tags = new List<Tag>();
             foreach (var tag in assetTags)
             {
-                tags.Append(tag.Tag);
+
+                tags.Add(tag.Tag);
             }
             return _mapper.Map<IEnumerable<TagDto>>(tags);
         }
