@@ -69,5 +69,10 @@ namespace LibraryApp.Services
         {
             return await _repo.AddAudioBook(newAudioBook);
         }
+
+        public async Task<GenericBookDto> GetGenericBook(int assetId)
+        {
+            return await _repo.GetGenericBook(assetId);
+        }
     }
 }

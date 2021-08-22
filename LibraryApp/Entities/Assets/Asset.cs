@@ -11,6 +11,7 @@ namespace LibraryApp.Entities
         public string ImageUrl { get; set; }
         public int AvailabilityStatusId { get; set; }
         public AvailabilityStatus AvailabilityStatus { get; set; }
+        public string Type { get; set; }
         public List<AssetTag> AssetTags { get; set; }
         public List<Bookmark> Bookmarks { get; set; }
     }

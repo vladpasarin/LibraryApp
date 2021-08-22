@@ -123,4 +123,8 @@ export class BookCardComponent implements OnInit {
         console.log(error);
     });
   }
+
+  toBookProfile(assetId: number) {
+    this.router.navigate(["asset", assetId]);
+  }
 }

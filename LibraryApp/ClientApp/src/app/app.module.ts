@@ -30,6 +30,10 @@ import { AudiobookListComponent } from './audiobook-list/audiobook-list.componen
 import { ProfileComponent } from './profile/profile.component';
 import { FormsModule } from '@angular/forms';
 import { SearchFilterPipe } from './searchfilter.pipe';
+import { AssetProfileComponent } from './asset-profile/asset-profile.component';
+import { MatLabel } from '@angular/material/form-field';
+import { MatTabNav, MatTabsModule } from '@angular/material/tabs';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -43,7 +47,8 @@ import { SearchFilterPipe } from './searchfilter.pipe';
     EbookListComponent,
     AudiobookListComponent,
     ProfileComponent,
-    SearchFilterPipe
+    SearchFilterPipe,
+    AssetProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +70,8 @@ import { SearchFilterPipe } from './searchfilter.pipe';
     MDBBootstrapModule.forRoot(),
     IvyCarouselModule,
     FormsModule,
+    MatTabsModule,
+    MatChipsModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -15,6 +15,7 @@ namespace LibraryApp.IServices
         Task<IEnumerable<AudioBookDto>> GetAllAudioBooks();
         Task<EBookDto> GetEBook(int id);
         Task<AudioBookDto> GetAudioBook(int id);
+        Task<GenericBookDto> GetGenericBook(int assetId);
         Task<bool> AddEBook(EBookDto newEBook);
         Task<bool> AddAudioBook(AudioBookDto newAudioBook);
     }

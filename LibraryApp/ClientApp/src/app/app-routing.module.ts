@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AssetProfileComponent } from './asset-profile/asset-profile.component';
 import { AudiobookListComponent } from './audiobook-list/audiobook-list.component';
 import { BookListComponent } from './book-list/book-list.component';
 import { EbookListComponent } from './ebook-list/ebook-list.component';
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: "ebooks", component: EbookListComponent },
   { path: "audiobooks", component: AudiobookListComponent },
   { path: "profile", component: ProfileComponent },
+  { path: "asset/:id", component: AssetProfileComponent }, 
 ];
 
 @NgModule({

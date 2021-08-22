@@ -9,6 +9,6 @@ namespace LibraryApp.DTOs.Assets
         public int AvailabilityStatusId { get; set; }
         public Double Cost { get; set; }
         public string ImageUrl { get; set; }
-        public string AssetType { get; set; }
+        public string Type { get; set; }
     }
 }

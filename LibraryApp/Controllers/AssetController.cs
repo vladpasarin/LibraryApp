@@ -43,7 +43,7 @@ namespace LibraryApp.Controllers
             return Ok(asset);
         }
 
-        [HttpGet("status/{id}")]
+        [HttpGet("status/{assetId:int}")]
         public async Task<IActionResult> GetAssetStatus(int assetId)
         {
             var status = await _service.GetStatus(assetId);

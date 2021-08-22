@@ -69,6 +69,13 @@ namespace LibraryApp
             services.AddScoped<ILibraryCardService, LibraryCardService>();
             services.AddScoped<IBookmarkRepository, BookmarkRepository>();
             services.AddScoped<IBookmarkService, BookmarkService>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagService, TagService>();
+
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             // Adding authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

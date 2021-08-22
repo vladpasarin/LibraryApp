@@ -5,5 +5,5 @@ export interface Asset {
     status: Status;
     cost: number;
     imageUrl: string;
-    assetType: string;
+    type: string;
 }

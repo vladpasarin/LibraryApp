@@ -94,5 +94,39 @@ namespace LibraryApp.Repositories.Assets
         {
             _audioBooksTable.Update(audioBook);
         }
+
+        public async Task<GenericBookDto> GetGenericBook(int assetId)
+        {
+            var book = await _context.Books
+                .Include(b => b.Asset)
+                .FirstAsync(b => b.AssetId == assetId);
+
+            if (book != null)
+            {
+                return _mapper.Map<GenericBookDto>(book);
+            }
+
+            var ebook = await _context.EBooks
+                .Include(b => b.Asset)
+                .FirstAsync(b => b.AssetId == assetId);
+
+            if (ebook != null)
+            {
+                return _mapper.Map<GenericBookDto>(ebook);
+            }
+
+            var audioBook = await _context.AudioBooks
+                .Include(b => b.Asset)
+                .FirstAsync(b => b.AssetId == assetId);
+
+            if (audioBook != null)
+            {
+                return _mapper.Map<GenericBookDto>(audioBook);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

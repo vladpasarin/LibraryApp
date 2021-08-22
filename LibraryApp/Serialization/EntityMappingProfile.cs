@@ -2,6 +2,7 @@
 using LibraryApp.DTOs;
 using LibraryApp.DTOs.Assets;
 using LibraryApp.Entities;
+using LibraryApp.Entities.Assets.Tags;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,10 @@ namespace LibraryApp.Serialization
             CreateMap<ReplyTo, ReplyToDto>().ReverseMap();
             CreateMap<UserDto, User>();
             CreateMap<BookmarkDto, Bookmark>().ReverseMap();
+            CreateMap<Book, GenericBookDto>().ReverseMap();
+            CreateMap<EBook, GenericBookDto>().ReverseMap();
+            CreateMap<AudioBook, GenericBookDto>().ReverseMap();
+            CreateMap<TagDto, Tag>().ReverseMap();
         }
     }
 }

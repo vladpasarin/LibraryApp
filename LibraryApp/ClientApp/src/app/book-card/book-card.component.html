@@ -3,9 +3,9 @@
         <mat-card-title> {{status.name}} </mat-card-title> <!-- TODO: Make a get availability status method for assets or get an Asset object -->
     </mat-card-header>
     <img class="cover-img" mat-card-image src="../../assets/images/book-cover.jpg"
-        alt="Book cover photo">                      <!-- TODO: src="{{book.asset.ImageUrl}}" -->
+        alt="Book cover photo" (click)=toBookProfile(book.assetId)>                      <!-- TODO: src="{{book.asset.ImageUrl}}" -->
     <mat-card-content>
-        <p class="title">{{book.title}}</p>
+        <p class="title" (click)=toBookProfile(book.assetId)>{{book.title}}</p>
         <p class="author">{{book.author}}</p>
         <p class="type"><fa-icon [icon]="faBookOpen"></fa-icon> BOOK</p>
     </mat-card-content>

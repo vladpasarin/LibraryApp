@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Spartan&display=swap');
+
+.detailsContainer {
+    display: flex;
+    flex-direction: row;
+    color: white;
+}
+  
+.detailsRight {
+    width: 30%;
+    max-width: 30%;
+    float: left;
+}
+  
+.detailsLeft {
+    align-self: flex-start;
+    flex-direction: column;
+    width: 25%;
+    max-width: 30%;
+    margin-left: 10em;
+    margin-right: 0;
+}
+
+.photo {
+    margin: auto;
+    object-fit: cover;
+    height: 500px;
+    width: 300px;
+}
+
+.subtitle {
+    font-weight: bold;
+    margin-top: 2em;
+}
+
+.bookTitle {
+    font-size: x-large;
+}
+
+.bookDetails {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.bookType {
+    margin-bottom: 3em;
+}
+
+.bookmark {
+    margin-left: 2em !important;
+}
+
+.mat-tab-label {
+    font-family: 'Spartan', sans-serif !important;
+    background-color: transparent;
+    color: white;
+}
+
+.mat-flat-button {
+    height: 40px !important;
+    width: 140px !important;
+}
+
+.tabContent {
+    margin-top: 2em;
+}

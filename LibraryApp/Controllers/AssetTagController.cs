@@ -1,4 +1,5 @@
-﻿using LibraryApp.Entities.Assets.Tags;
+﻿using LibraryApp.DTOs.Assets;
+using LibraryApp.Entities.Assets.Tags;
 using LibraryApp.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -42,7 +43,17 @@ namespace LibraryApp.Controllers
             {
                 return StatusCode(500);
             }
-            return Ok();
+            return Ok(assetTag);
+        }
+
+        [HttpGet("asset/{id}")]
+        public async Task<IActionResult> GetTagsByAssetId(int id)
+        {
+            var tags = await _service.GetTagsByAssetId(id);
+            if (tags == null)
+                return StatusCode(500);
+
+            return Ok(tags);
         }
 
         // POST api/<AssetTagController>

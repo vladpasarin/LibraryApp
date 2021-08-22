@@ -14,6 +14,7 @@ namespace LibraryApp.Repositories.IRepositories
         //public Task<bool> Add(BookDto newBookDto);
         public Task<EBookDto> GetEBook(int id);
         public Task<AudioBookDto> GetAudioBook(int id);
+        public Task<GenericBookDto> GetGenericBook(int assetId);
         public Task<bool> AddEBook(EBookDto newEBook);
         public Task<bool> AddAudioBook(AudioBookDto newAudioBook);
         public void DeleteEBook(EBookDto eBook);

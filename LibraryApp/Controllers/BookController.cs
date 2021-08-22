@@ -83,6 +83,16 @@ namespace LibraryApp.Controllers
             return Ok(audioBook);
         }
 
+        [HttpGet("asset/{assetId:int}")]
+        public async Task<IActionResult> GetBookByAssetId(int assetId)
+        {
+            var genericBook = await _service.GetGenericBook(assetId);
+            if (genericBook == null)
+                return StatusCode(500);
+
+            return Ok(genericBook);
+        }
+
         // POST api/<BookController>
         [HttpPost("add")]
         public async Task<IActionResult> Post(BookDto newBookDto)
