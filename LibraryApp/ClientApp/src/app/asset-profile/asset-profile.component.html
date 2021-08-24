@@ -20,8 +20,13 @@
             <p class="bookTitle">{{book.title}}</p>
             <p class="author">by {{book.author}}</p>
             <p class="bookType"><fa-icon [icon]="faBookOpen"></fa-icon> &nbsp;{{asset.type}}</p>
-            <button mat-flat-button color="primary">BORROW</button>
-            <button mat-flat-button class="bookmark" color="primary"><fa-icon [icon]="faBookmarkRegular"></fa-icon>&nbsp;BOOKMARK</button>
+            <button mat-flat-button color="primary" (click)="!isLoggedIn() ? toLogin() : false">BORROW</button>
+            <button *ngIf="isBookmarked == false" (click)="addBookmark()" mat-flat-button class="bookmark" color="primary">
+                <fa-icon [icon]="faBookmarkRegular"></fa-icon>&nbsp;BOOKMARK
+            </button>
+            <button *ngIf="isBookmarked == true" (click)="removeBookmark()" mat-flat-button class="bookmark" color="primary">
+                <fa-icon [icon]="faBookmarkSolid"></fa-icon>&nbsp;BOOKMARKED
+            </button>
         </div>
         <div class="tabDetails">
             <mat-tab-group animationDuration="0ms">

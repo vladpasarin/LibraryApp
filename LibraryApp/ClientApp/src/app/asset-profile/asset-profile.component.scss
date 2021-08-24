@@ -26,6 +26,7 @@
     object-fit: cover;
     height: 500px;
     width: 300px;
+    max-width: 300px;
 }
 
 .subtitle {
@@ -50,7 +51,7 @@
     margin-left: 2em !important;
 }
 
-.mat-tab-label {
+.mat-tab-label, .mat-tab-body-content {
     font-family: 'Spartan', sans-serif !important;
     background-color: transparent;
     color: white;

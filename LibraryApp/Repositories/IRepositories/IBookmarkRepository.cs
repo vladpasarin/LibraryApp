@@ -11,5 +11,6 @@ namespace LibraryApp.Repositories.IRepositories
     {
         public Task<BookmarkDto> Get(int id);
         public Task<BookmarkDto> FindBookmarkBy(int userId, int assetId);
+        public Task<bool> Exists(int id);
     }
 }

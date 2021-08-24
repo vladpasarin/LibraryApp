@@ -45,6 +45,13 @@ namespace LibraryApp.Controllers
             return Ok(bookmark);
         }
 
+        [HttpGet("exists/{id}")]
+        public async Task<IActionResult> Exists(int id)
+        {
+            var bookmark = await _service.Exists(id);
+            return Ok(bookmark);
+        }
+
         [HttpGet("{userId}/{assetId}")]
         public async Task<IActionResult> FindByUserAndAssetIds(int userId, int assetId)
         {

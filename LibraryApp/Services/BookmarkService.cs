@@ -50,5 +50,10 @@ namespace LibraryApp.Services
             _repo.Delete(bookmark);
             return await _repo.SaveChanges();
         }
+
+        public async Task<bool> Exists(int id)
+        {
+            return await _repo.Exists(id);
+        }
     }
 }

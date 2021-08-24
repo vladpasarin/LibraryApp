@@ -41,5 +41,19 @@ namespace LibraryApp.Repositories.Users
                 .FirstAsync();
             return _mapper.Map<BookmarkDto>(bookmark);
         }
+
+        public async Task<bool> Exists(int id)
+        {
+            var bookmark = await _context.Bookmarks
+                .AsNoTracking()
+                .Include(b => b.Asset)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(b => b.Id == id);
+            if (bookmark == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

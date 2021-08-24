@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { GenericBook } from '../models/genericBook';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { AuthService } from '../shared/services/auth.service';
 import { Asset } from '../models/asset';
@@ -8,7 +8,9 @@ import { faBookOpen, faBookmark as faBookmarkSolid } from '@fortawesome/free-sol
 import { faBookmark as faBookmarkRegular } from '@fortawesome/free-regular-svg-icons';
 import { TimeoutError } from 'rxjs';
 import { Tag } from '../models/tag';
-import {cloneDeep} from 'lodash';
+import { cloneDeep } from 'lodash';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Bookmark } from '../models/bookmark';
 
 @Component({
   selector: 'app-asset-profile',
@@ -20,7 +22,8 @@ export class AssetProfileComponent implements OnInit {
 
   private endpoint = 'asset';
   private bookEndpoint = 'book';
-  private tagEndpoing = 'assetTag';
+  private tagEndpoint = 'assetTag';
+  private bookmarkEndpoint = 'bookmark';
   faBookOpen = faBookOpen;
   faBookmarkSolid = faBookmarkSolid;
   faBookmarkRegular = faBookmarkRegular;
@@ -29,7 +32,11 @@ export class AssetProfileComponent implements OnInit {
   assetId: string;
   currentUserId: string;
   tags: Tag[] = [];
-  constructor(private route: ActivatedRoute, private api: ApiService, private authService: AuthService) { }
+  bookmark = {} as Bookmark;
+  isBookmarked: boolean;
+  deletedBookmarkId: number;
+  constructor(private route: ActivatedRoute, private api: ApiService, private authService: AuthService,
+    private _snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => this.assetId = params['id']);
@@ -38,6 +45,7 @@ export class AssetProfileComponent implements OnInit {
     this.getAssetById();
     this.getBookByAssetId();
     this.getTagsByAssetId();
+    this.loadBookmarks();
   }
 
   getAssetById() {
@@ -59,7 +67,7 @@ export class AssetProfileComponent implements OnInit {
   }
 
   getTagsByAssetId() {
-    this.api.get<Tag[]>(`${this.tagEndpoing}/` + 'asset/' + this.assetId).subscribe((response: Tag[]) => {
+    this.api.get<Tag[]>(`${this.tagEndpoint}/` + 'asset/' + this.assetId).subscribe((response: Tag[]) => {
       console.log(response);
       this.tags = cloneDeep(response);
       console.log(this.tags);
@@ -68,35 +76,56 @@ export class AssetProfileComponent implements OnInit {
     });
   }
 
-  checkForISBN(): boolean {
-    if (this.book.isbn == null){
-      return false;
-    }
-    else return true;
-  }
-
-  checkForASIN(): boolean {
-    if (this.book.asin == null){
-      return false;
-    }
-    else return true;
-  }
-
-  checkSize(): boolean {
-    if (this.book.size == 0) {
-      return false;
-    }
-    else return true;
-  }
-
-  checkLength(): boolean {
-    if (this.book.lengthMinutes == 0) {
-      return false;
-    }
-    else return true;
-  }
-
   isLoggedIn() {
     return this.authService.isLoggedIn();
+  }
+
+  openSnackBar() {
+    if (this.currentUserId == null) {
+      this._snackBar.open('Account required!', 'Sign in', { duration: 3000});
+    }
+  }
+
+  loadBookmarks() {
+    if (this.currentUserId == null) {
+      return false;
+    }
+    this.api.get<Bookmark>(`${this.bookmarkEndpoint}/` + this.currentUserId + '/' + this.assetId)
+      .subscribe((response: Bookmark) => {
+        console.log(response);
+        this.isBookmarked = true;
+      }, error => {
+        console.log(error);
+        this.isBookmarked = false;
+    });
+  }
+
+  addBookmark() {
+    this.bookmark.userId = parseInt(this.currentUserId);
+    this.bookmark.assetId = this.book.assetId;
+    this.api.post<Bookmark>(`${this.bookmarkEndpoint}`, this.bookmark)
+      .subscribe(() => {
+        console.log("Bookmark added successfully");
+        this.loadBookmarks();
+    });
+  }
+
+  removeBookmark() {
+    this.api.get<Bookmark>(`${this.bookmarkEndpoint}/` + this.currentUserId +'/' + this.book.assetId)
+      .subscribe((response: Bookmark) => {
+        this.deletedBookmarkId = response.id;
+        console.log(this.deletedBookmarkId);
+        this.api.delete(`${this.bookmarkEndpoint}/` + this.deletedBookmarkId)
+          .subscribe(() => {
+            console.log("Bookmark deleted");
+            this.loadBookmarks();
+          });
+      }, error => {
+        console.log(error);
+    });
+  }
+
+  toLogin() {
+    this.router.navigate(["login"]);
   }
 }
