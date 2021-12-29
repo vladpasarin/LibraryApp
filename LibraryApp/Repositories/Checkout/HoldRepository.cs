@@ -80,11 +80,14 @@ namespace LibraryApp.Repositories
                 .FirstAsync(c => c.Id == cardId);
 
             _context.Update(asset);
-
-            if (asset.AvailabilityStatus.Name == "Available")
+            if (asset.NrOfAvailableCopies < 1)
             {
                 asset.AvailabilityStatus = await _context.AvailabilityStatuses
                     .FirstAsync(a => a.Name == "On Hold");
+            }
+            else
+            {
+                asset.NrOfAvailableCopies -= 1;
             }
 
             var hold = new Hold

@@ -88,6 +88,7 @@ namespace LibraryApp.Repositories
                 history.CheckedIn = now;
             }
 
+            asset.NrOfAvailableCopies += 1;
             var wasCheckedOut = await CheckoutEarliestHold(assetId);
             if (wasCheckedOut)
             {
@@ -103,19 +104,21 @@ namespace LibraryApp.Repositories
         public async Task<bool> CheckOutItem(int assetId, int cardId)
         {
             var now = DateTime.UtcNow;
-            var isCheckedOut = await IsCheckedOut(assetId);
-
-            if (isCheckedOut)
-            {
-                return await _holdRepo.PlaceHold(assetId, cardId);
-            }
 
             var asset = await _context.Assets
                 .Include(a => a.AvailabilityStatus)
                 .FirstAsync(a => a.Id == assetId);
             _context.Update(asset);
-            asset.AvailabilityStatus = await _context.AvailabilityStatuses
+            if (asset.NrOfAvailableCopies > 0)
+            {
+                asset.NrOfAvailableCopies -= 1;
+            }
+            if (asset.NrOfAvailableCopies < 1)
+            {
+                asset.AvailabilityStatus = await _context.AvailabilityStatuses
                 .FirstAsync(a => a.Name == "On Hold");
+                return await _holdRepo.PlaceHold(assetId, cardId);
+            }
 
             var libraryCard = await _context.LibraryCards
                 .Include(c => c.Checkouts)
