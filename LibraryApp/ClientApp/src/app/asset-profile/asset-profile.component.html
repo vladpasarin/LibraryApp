@@ -1,51 +1,85 @@
 <app-header></app-header>
 <div class="detailsContainer">
-    <div class="detailsLeft">
-        <img class="photo" mat-card-image src="../../assets/images/book-cover.jpg"
-            alt="Book cover photo"
-        >
-        <div class="belowPhoto">
-            <p class="subtitle">Tags</p>
-            <mat-chip-list>
-                <mat-chip *ngFor="let tag of tags">{{tag.name}}</mat-chip>
-            </mat-chip-list>
-            <!--TODO: Get asset tags-->
-            <p class="subtitle">Languages</p>
-            <!--TODO: Get asset language-->
-            <p>{{book.language}}</p>
-        </div>
+  <div class="detailsLeft">
+    <img
+      class="photo"
+      mat-card-image
+      src="../../assets/images/book-cover.jpg"
+      alt="Book cover photo"
+    />
+    <div class="belowPhoto">
+      <p class="subtitle">Tags</p>
+      <mat-chip-list>
+        <mat-chip *ngFor="let tag of tags">{{ tag.name }}</mat-chip>
+      </mat-chip-list>
+      <!--TODO: Get asset tags-->
+      <p class="subtitle">Languages</p>
+      <!--TODO: Get asset language-->
+      <p>{{ book.language }}</p>
     </div>
-    <div class="detailsRight">
-        <div class="bookDetails">
-            <p class="bookTitle">{{book.title}}</p>
-            <p class="author">by {{book.author}}</p>
-            <p class="bookType"><fa-icon [icon]="faBookOpen"></fa-icon> &nbsp;{{asset.type}}</p>
-            <button mat-flat-button color="primary" (click)="!isLoggedIn() ? toLogin() : false">BORROW</button>
-            <button *ngIf="isBookmarked == false" (click)="addBookmark()" mat-flat-button class="bookmark" color="primary">
-                <fa-icon [icon]="faBookmarkRegular"></fa-icon>&nbsp;BOOKMARK
-            </button>
-            <button *ngIf="isBookmarked == true" (click)="removeBookmark()" mat-flat-button class="bookmark" color="primary">
-                <fa-icon [icon]="faBookmarkSolid"></fa-icon>&nbsp;BOOKMARKED
-            </button>
-        </div>
-        <div class="tabDetails">
-            <mat-tab-group animationDuration="0ms">
-                <mat-tab label="Description">
-                    <div class="tabContent">
-                        <p>{{book.summary}}</p>
-                    </div>
-                </mat-tab>
-                <mat-tab label="Details">
-                    <div class="tabContent">
-                        <p>Publisher: {{book.publisher}}</p>
-                        <p *ngIf="book.isbn != null">ISBN: {{book.isbn}}</p>
-                        <p *ngIf="book.asin != null">ASIN: {{book.asin}}</p>
-                        <p>Publication Year: {{book.publicationYear}}</p>
-                        <p *ngIf="book.size != 0">File Size: {{book.size}}</p>
-                        <p *ngIf="book.lengthMinutes != 0">Length in Minutes: {{book.lengthMinutes}}</p>
-                    </div>
-                </mat-tab>
-            </mat-tab-group>
-        </div>
+  </div>
+  <div class="detailsRight">
+    <div class="bookDetails">
+      <p class="bookTitle">{{ book.title }}</p>
+      <p class="author">by {{ book.author }}</p>
+      <p class="bookType">
+        <fa-icon [icon]="faBookOpen"></fa-icon> &nbsp;{{ asset.type }}
+      </p>
+      <button
+        *ngIf="borrowed == false"
+        mat-flat-button
+        color="primary"
+        (click)="!isLoggedIn() ? toLogin() : false; borrowBook()"
+      >
+        BORROW
+      </button>
+      <button
+        *ngIf="borrowed == true"
+        mat-flat-button
+        color="primary"
+        (click)="!isLoggedIn() ? toLogin() : false; turnInBook()"
+      >
+        BORROWED
+      </button>
+      <button
+        *ngIf="isBookmarked == false"
+        (click)="addBookmark()"
+        mat-flat-button
+        class="bookmark"
+        color="primary"
+      >
+        <fa-icon [icon]="faBookmarkRegular"></fa-icon>&nbsp;BOOKMARK
+      </button>
+      <button
+        *ngIf="isBookmarked == true"
+        (click)="removeBookmark()"
+        mat-flat-button
+        class="bookmark"
+        color="primary"
+      >
+        <fa-icon [icon]="faBookmarkSolid"></fa-icon>&nbsp;BOOKMARKED
+      </button>
     </div>
+    <div class="tabDetails">
+      <mat-tab-group animationDuration="0ms">
+        <mat-tab label="Description">
+          <div class="tabContent">
+            <p>{{ book.summary }}</p>
+          </div>
+        </mat-tab>
+        <mat-tab label="Details">
+          <div class="tabContent">
+            <p>Publisher: {{ book.publisher }}</p>
+            <p *ngIf="book.isbn != null">ISBN: {{ book.isbn }}</p>
+            <p *ngIf="book.asin != null">ASIN: {{ book.asin }}</p>
+            <p>Publication Year: {{ book.publicationYear }}</p>
+            <p *ngIf="book.size != 0">File Size: {{ book.size }}</p>
+            <p *ngIf="book.lengthMinutes != 0">
+              Length in Minutes: {{ book.lengthMinutes }}
+            </p>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
 </div>

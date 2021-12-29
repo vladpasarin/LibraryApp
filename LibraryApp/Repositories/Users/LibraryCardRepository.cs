@@ -23,7 +23,6 @@ namespace LibraryApp.Repositories
         public async Task<IEnumerable<LibraryCardDto>> GetAllLibraryCards()
         {
             var libraryCards = await _context.LibraryCards
-                .Include(l => l.Checkouts)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<LibraryCardDto>>(libraryCards);
@@ -36,6 +35,15 @@ namespace LibraryApp.Repositories
                 .FirstAsync(l => l.Id == cardId);
 
             return _mapper.Map<LibraryCardDto>(libraryCard);
+        }
+
+        public async Task<int> GetIdByUserId(int userId)
+        {
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .FirstAsync();
+
+            return user.Id;
         }
     }
 }

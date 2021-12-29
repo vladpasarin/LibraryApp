@@ -16,5 +16,6 @@ namespace LibraryApp.IServices
         Task<bool> CheckOutItem(int assetId, int cardId);
         Task<bool> IsCheckedOut(int assetId);
         Task<UserDto> GetCurrentUser(int assetId);
+        Task<bool> GetByCardAndAsset(int assetId, int cardId);
     }
 }

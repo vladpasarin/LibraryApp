@@ -11,5 +11,6 @@ namespace LibraryApp.IServices
         Task<IEnumerable<LibraryCardDto>> GetAllLibraryCards();
         Task<LibraryCardDto> Get(int cardId);
         Task<bool> Add(LibraryCardDto newLibraryCard);
+        Task<int> GetIdByUserId(int userId);
     }
 }

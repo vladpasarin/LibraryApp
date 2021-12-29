@@ -56,5 +56,10 @@ namespace LibraryApp.Services
         {
             return await _repo.IsCheckedOut(assetId);
         }
+
+        public async Task<bool> GetByCardAndAsset(int assetId, int cardId)
+        {
+            return (await _repo.GetByCardAndAsset(assetId, cardId) != null);
+        }
     }
 }

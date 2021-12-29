@@ -32,7 +32,10 @@ namespace LibraryApp.Repositories
 
         public async Task<CheckoutDto> Get(int id)
         {
-            var checkout = await _context.Checkouts.FirstAsync(c => c.Id == id);
+            var checkout = await _context.Checkouts
+                .Include(c => c.Asset)
+                .Include(c => c.LibraryCard)
+                .FirstAsync(c => c.Id == id);
             return _mapper.Map<CheckoutDto>(checkout);
         }
 
@@ -174,6 +177,18 @@ namespace LibraryApp.Repositories
                 .FirstAsync(u => u.LibraryCardId == history.LibraryCard.Id);
 
             return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task<CheckoutDto> GetByCardAndAsset(int assetId, int cardId)
+        {
+            var checkout = await _context.Checkouts
+                .Include(c => c.Asset)
+                .Include(c => c.LibraryCard)
+                .Where(c => c.Asset.Id == assetId)
+                .Where(c => c.LibraryCard.Id == cardId)
+                .FirstAsync();
+
+            return _mapper.Map<CheckoutDto>(checkout);
         }
     }
 }

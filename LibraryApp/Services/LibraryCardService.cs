@@ -37,5 +37,10 @@ namespace LibraryApp.Services
         {
             return await _repo.GetAllLibraryCards();
         }
+
+        public async Task<int> GetIdByUserId(int userId)
+        {
+            return await _repo.GetIdByUserId(userId);
+        }
     }
 }

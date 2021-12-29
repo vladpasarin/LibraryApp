@@ -38,6 +38,16 @@ namespace LibraryApp.Controllers
             return Ok(checkout);
         }
 
+        [HttpGet("{assetId}/{cardId}")]
+        public async Task<IActionResult> GetByCardAndAsset(int assetId, int cardId)
+        {
+            var checkout = await _service.GetByCardAndAsset(assetId, cardId);
+            if (checkout == null)
+                return StatusCode(500);
+
+            return Ok(checkout);
+        }
+
         [HttpGet("user/{assetId}")]
         public async Task<IActionResult> GetCurrentUser(int assetId)
         {
@@ -65,7 +75,7 @@ namespace LibraryApp.Controllers
             return Ok(await _service.Add(newCheckoutDto));
         }
 
-        [HttpPost("checkout/{assetId}/{cardId}")]
+        [HttpPost("{assetId}/{cardId}")]
         public async Task<IActionResult> CheckOutItem(int assetId, int cardId)
         {
             return Ok(await _service.CheckOutItem(assetId, cardId));

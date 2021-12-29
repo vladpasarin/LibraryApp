@@ -11,5 +11,6 @@ namespace LibraryApp.Repositories.IRepositories
     {
         public Task<LibraryCardDto> Get(int cardId);
         public Task<IEnumerable<LibraryCardDto>> GetAllLibraryCards();
+        public Task<int> GetIdByUserId(int userId);
     }
 }

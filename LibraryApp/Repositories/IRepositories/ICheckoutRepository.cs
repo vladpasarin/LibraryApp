@@ -17,5 +17,6 @@ namespace LibraryApp.Repositories.IRepositories
         Task<bool> CheckOutItem(int assetId, int cardId);
         Task<bool> IsCheckedOut(int assetId);
         Task<UserDto> GetCurrentUser(int assetId);
+        Task<CheckoutDto> GetByCardAndAsset(int assetId, int cardId);
     }
 }

@@ -63,6 +63,7 @@ namespace LibraryApp
             services.AddScoped<IAssetTagRepository, AssetTagRepository>();
             services.AddScoped<IAssetTagService, AssetTagService>();
             services.AddScoped<ICheckoutRepository, CheckoutRepository>();
+            services.AddScoped<ICheckoutService, CheckoutService>();
             services.AddScoped<IHoldRepository, HoldRepository>();
             services.AddScoped<IHoldService, HoldService>();
             services.AddScoped<ILibraryCardRepository, LibraryCardRepository>();
