@@ -186,7 +186,7 @@ namespace LibraryApp.Repositories
                 .Include(c => c.LibraryCard)
                 .Where(c => c.Asset.Id == assetId)
                 .Where(c => c.LibraryCard.Id == cardId)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
             return _mapper.Map<CheckoutDto>(checkout);
         }

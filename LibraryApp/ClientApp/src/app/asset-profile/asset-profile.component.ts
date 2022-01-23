@@ -188,6 +188,7 @@ export class AssetProfileComponent implements OnInit {
       )
       .subscribe((response: boolean) => {
         this.borrowed = response;
+        console.log(response);
       });
   }
 

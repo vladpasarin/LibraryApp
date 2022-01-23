@@ -42,8 +42,6 @@ namespace LibraryApp.Controllers
         public async Task<IActionResult> GetByCardAndAsset(int assetId, int cardId)
         {
             var checkout = await _service.GetByCardAndAsset(assetId, cardId);
-            if (checkout == null)
-                return StatusCode(500);
 
             return Ok(checkout);
         }

@@ -59,7 +59,12 @@ namespace LibraryApp.Services
 
         public async Task<bool> GetByCardAndAsset(int assetId, int cardId)
         {
-            return (await _repo.GetByCardAndAsset(assetId, cardId) != null);
+            var checkout = await _repo.GetByCardAndAsset(assetId, cardId);
+            if (checkout == null)
+            {
+                return false;
+            }
+            else return true;
         }
     }
 }
