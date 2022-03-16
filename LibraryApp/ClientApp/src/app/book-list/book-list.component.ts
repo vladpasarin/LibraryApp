@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faXMark } from '@fortawesome/fontawesome-free';
 import { Tag } from '../models/tag';
 import { GenericBook } from '../models/genericBook';
 
@@ -18,9 +19,11 @@ export class BookListComponent implements OnInit {
   genericBooks: GenericBook[];
   filteredBooks: GenericBook[];
   tags: Tag[];
-  selectedTag: number = null;
+  selectedTag: Tag = null;
   searchValue: string = "";
   faSearch = faSearch;
+  faXMark = faXMark;
+  clickValue: number;
 
   constructor(private apiService: ApiService,
     private router: Router) { 
@@ -30,6 +33,7 @@ export class BookListComponent implements OnInit {
     this.loadBooks();
     this.loadBookTags();
     this.loadGenericBooks();
+    this.clickValue = 0;
     //this.filterBooks();
   }
 
@@ -62,9 +66,15 @@ export class BookListComponent implements OnInit {
       });
   }
 
-  selectTag(tagId: number) {
-    this.selectedTag = tagId; 
-    console.log(this.selectedTag)
+  selectTag(tag: Tag) {
+    if (this.clickValue == 0) {
+      this.selectedTag = tag; 
+      this.clickValue = 1;
+      console.log(this.selectedTag)
+    } else {
+      this.selectedTag = null;
+      this.clickValue = 0;
+    }
   }
 /*
   filterBooks() {

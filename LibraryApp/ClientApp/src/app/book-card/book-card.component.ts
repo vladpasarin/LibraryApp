@@ -22,6 +22,7 @@ import { Tag } from '../models/tag';
 })
 export class BookCardComponent implements OnInit {
   @Input() book: GenericBook;
+  @Input() selectedTag: Tag;
 
   private readonly bookmarkEndpoint = 'bookmark';
   private readonly assetEndpoint = 'asset';
@@ -40,6 +41,7 @@ export class BookCardComponent implements OnInit {
   deletedBookmarkId: number;
   status = {} as Status;
   tags: Tag[];
+  bookTags: String[] = [];
   //userToken: string;
   cards = [
     {
@@ -81,6 +83,7 @@ export class BookCardComponent implements OnInit {
       this.loadBorrowedBooks();
     }
     this.getBookStatus();
+    this.getBookTags();
     console.log(this.currentUserId);
   }
 
@@ -202,9 +205,23 @@ export class BookCardComponent implements OnInit {
       .get<Tag[]>(`${this.tagEndpoint}/` + 'asset/' + this.book.assetId)
       .subscribe((response: Tag[]) => {
         this.tags = response;
+        if (response.length != 0) {
+          response.forEach(el => {
+            this.bookTags.push(el.name);
+          });
+          console.log(this.bookTags);
+        }
       }, error => {
         console.log(error);
       });
+  }
+
+  showBookCard() {
+    console.log("Selected tag: " + this.selectedTag);
+    if (this.selectedTag != null) {
+      return this.bookTags.includes(this.selectedTag.name);
+    }
+    return true;
   }
 
   toBookProfile(assetId: number) {

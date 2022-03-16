@@ -11,14 +11,17 @@
 <h4>Tags</h4>
 <div class="book-tag">
     <mat-chip-list>
-        <mat-chip *ngFor="let tag of tags" (click)="selectTag(tag.id);filterBooks()">{{ tag.name }}</mat-chip>
+        <mat-chip *ngFor="let tag of tags" (click)="selectTag(tag)">{{ tag.name }}</mat-chip>
+        <button>
+            <mat-icon><fa-icon [icon]="faXMark"></fa-icon></mat-icon>
+        </button>
     </mat-chip-list>
 </div>
 
 <div class="container">
     <div class="row">
         <div *ngFor="let book of books | searchFilter: {title: searchValue}" class="col-lg-3 col-md-6 col-sm-8">
-            <app-book-card [book]="book"></app-book-card>
+            <app-book-card [book]="book" [selectedTag] = "selectedTag"></app-book-card>
             <br>
         </div>
     </div>
@@ -26,9 +29,9 @@
 
 <div class="container">
     <div class="row">
-        <div *ngIf="searchValue.length == null && selectedTag == null">
+        <div *ngIf="searchValue.length == null">
             <div *ngFor="let book of books" class="col-lg-3 col-md-6 col-sm-8">
-                <app-book-card [book]="book"></app-book-card>
+                <app-book-card [book]="book" [selectedTag]="selectedTag"></app-book-card>
                 <br>
             </div>
         </div>
