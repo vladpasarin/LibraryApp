@@ -23,5 +23,6 @@ namespace LibraryApp.Repositories.IRepositories
         public Task<List<AudioBook>> GetAllAudioBooks();
         public void UpdateEBook(EBook eBook);
         public void UpdateAudioBook(AudioBook audioBook);
+        public Task<List<GenericBookDto>> GetAllGenericBooks(); 
     }
 }

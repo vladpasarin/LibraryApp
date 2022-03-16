@@ -39,7 +39,7 @@
         color="primary"
         (click)="!isLoggedIn() ? toLogin() : false; turnInBook()"
       >
-        BORROWED
+        CHECK IN
       </button>
       <button
         *ngIf="isBookmarked == false"

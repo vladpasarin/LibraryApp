@@ -17,12 +17,14 @@ namespace LibraryApp.Repositories.Assets
         private readonly IMapper _mapper;
         private readonly DbSet<EBook> _eBooksTable;
         private readonly DbSet<AudioBook> _audioBooksTable;
+        private readonly IAssetTagRepository _assetTagRepo;
 
-        public BookRepository(LibraryDbContext context, IMapper mapper) : base(context)
+        public BookRepository(LibraryDbContext context, IMapper mapper, IAssetTagRepository assetTagRepo) : base(context)
         {
             _mapper = mapper;
             _eBooksTable = context.Set<EBook>();
             _audioBooksTable = context.Set<AudioBook>();
+            _assetTagRepo = assetTagRepo;
         }
 
         public async Task<BookDto> Get(int id)
@@ -97,13 +99,16 @@ namespace LibraryApp.Repositories.Assets
 
         public async Task<GenericBookDto> GetGenericBook(int assetId)
         {
+            var tags = await _assetTagRepo.GetTagsByAssetId(assetId);
             var book = await _context.Books
                 .Include(b => b.Asset)
                 .FirstAsync(b => b.AssetId == assetId);
 
             if (book != null)
             {
-                return _mapper.Map<GenericBookDto>(book);
+                var genericBookDto = _mapper.Map<GenericBookDto>(book);
+                genericBookDto.Tags = tags;
+                return _mapper.Map<GenericBookDto>(genericBookDto);
             }
 
             var ebook = await _context.EBooks
@@ -127,6 +132,17 @@ namespace LibraryApp.Repositories.Assets
             {
                 return null;
             }
+        }
+
+        async Task<List<GenericBookDto>> IBookRepository.GetAllGenericBooks()
+        {
+            var books = await _context.Books.ToListAsync();
+            var genericBooks = _mapper.Map<List<GenericBookDto>>(books);
+            for (int i = 0; i < books.Count; i++)
+            {
+                genericBooks[i].Tags = await _assetTagRepo.GetTagsByAssetId(books[i].AssetId);
+            }
+            return genericBooks;
         }
     }
 }

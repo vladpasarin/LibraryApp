@@ -93,6 +93,16 @@ namespace LibraryApp.Controllers
             return Ok(genericBook);
         }
 
+        [HttpGet("generic")]
+        public async Task<IActionResult> GetAllGenericBooks()
+        {
+            var genericBooks = await _service.GetAllGenericBooks();
+            if (genericBooks == null)
+                return StatusCode(500);
+
+            return Ok(genericBooks);
+        }
+
         // POST api/<BookController>
         [HttpPost("add")]
         public async Task<IActionResult> Post(BookDto newBookDto)

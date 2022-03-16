@@ -18,5 +18,6 @@ namespace LibraryApp.IServices
         Task<GenericBookDto> GetGenericBook(int assetId);
         Task<bool> AddEBook(EBookDto newEBook);
         Task<bool> AddAudioBook(AudioBookDto newAudioBook);
+        Task<List<GenericBookDto>> GetAllGenericBooks();
     }
 }

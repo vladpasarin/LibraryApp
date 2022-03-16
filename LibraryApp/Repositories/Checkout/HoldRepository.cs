@@ -14,22 +14,23 @@ namespace LibraryApp.Repositories
     public class HoldRepository : GenericRepository<Hold>, IHoldRepository
     {
         private readonly IMapper _mapper;
+        private readonly int holdExpireTerm = 30;
 
         public HoldRepository(LibraryDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }
 
-        public async Task<HoldDto> GetEarliestHold(int assetId)
+        public async Task<Hold> GetEarliestHold(int assetId)
         {
             var hold = await _context.Holds
                 .Include(h => h.Asset)
                 .Include(h => h.LibraryCard)
                 .Where(h => h.Asset.Id == assetId)
                 .OrderBy(h => h.HoldPlaced)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
-            return _mapper.Map<HoldDto>(hold);
+            return hold;
         }
 
         public async Task<IEnumerable<HoldDto>> GetCurrentHolds(int assetId)
@@ -79,6 +80,17 @@ namespace LibraryApp.Repositories
             var card = await _context.LibraryCards
                 .FirstAsync(c => c.Id == cardId);
 
+            var existingHold = await _context.Holds
+                .Include(h => h.Asset)
+                .Include(h => h.LibraryCard)
+                .Where(h => h.LibraryCard.Id == cardId)
+                .FirstOrDefaultAsync(h => h.Asset.Id == assetId);
+
+            if (existingHold != null)
+            {
+                return false;
+            }
+
             _context.Update(asset);
             if (asset.NrOfAvailableCopies < 1)
             {
@@ -94,7 +106,9 @@ namespace LibraryApp.Repositories
             {
                 HoldPlaced = now,
                 Asset = asset,
-                LibraryCard = card
+                LibraryCard = card,
+                UpdatedOn = now,
+                HoldValidUntil = now.AddDays(holdExpireTerm)
             };
 
             await _context.AddAsync(hold);

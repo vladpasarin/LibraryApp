@@ -74,5 +74,10 @@ namespace LibraryApp.Services
         {
             return await _repo.GetGenericBook(assetId);
         }
+
+        public async Task<List<GenericBookDto>> GetAllGenericBooks()
+        {
+            return await _repo.GetAllGenericBooks();
+        }
     }
 }

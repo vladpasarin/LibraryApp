@@ -9,7 +9,7 @@ namespace LibraryApp.Repositories.IRepositories
 {
     public interface IHoldRepository : IGenericRepository<Hold>
     {
-        public Task<HoldDto> GetEarliestHold(int assetId);
+        public Task<Hold> GetEarliestHold(int assetId);
         public Task<IEnumerable<HoldDto>> GetCurrentHolds(int assetId);
         public Task<UserDto> GetCurrentHoldUser(int holdId);
         public Task<HoldDto> GetCurrentHoldPlaced(int holdId);

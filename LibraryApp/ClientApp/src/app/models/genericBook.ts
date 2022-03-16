@@ -1,4 +1,5 @@
 import { Asset } from "./asset";
+import { Tag } from "./tag";
 
 export interface GenericBook {
     id: number;
@@ -16,4 +17,5 @@ export interface GenericBook {
     asset: Asset;
     size: number;
     lengthMinutes: number;
+    tags: Tag[];
 }

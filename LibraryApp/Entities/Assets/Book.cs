@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryApp.Entities
 {
@@ -20,5 +21,9 @@ namespace LibraryApp.Entities
         public string Language { get; set; }
         public string Summary { get; set; }
         public Asset Asset { get; set; }
+        public IEnumerator GetEnumerator()
+        {
+            return (IEnumerator)this;
+        }
     }
 }

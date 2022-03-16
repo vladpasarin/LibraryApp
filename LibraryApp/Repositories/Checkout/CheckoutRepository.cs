@@ -116,7 +116,7 @@ namespace LibraryApp.Repositories
             {
                 asset.NrOfAvailableCopies -= 1;
             }
-            if (asset.NrOfAvailableCopies < 1)
+            else if (asset.NrOfAvailableCopies < 1)
             {
                 asset.AvailabilityStatus = await _context.AvailabilityStatuses
                 .FirstAsync(a => a.Name == "On Hold");
@@ -126,6 +126,7 @@ namespace LibraryApp.Repositories
             var libraryCard = await _context.LibraryCards
                 .Include(c => c.Checkouts)
                 .FirstAsync(l => l.Id == cardId);
+            libraryCard.MaxCheckout = true;
 
             var checkout = new Checkout
             {

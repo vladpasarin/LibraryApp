@@ -24,5 +24,6 @@ namespace LibraryApp.DTOs.Assets
         public int LengthMinutes { get; set; }
         // EBook
         public Double Size { get; set; }
+        public IEnumerable<TagDto> Tags { get; set; }
     }
 }

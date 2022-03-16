@@ -1,4 +1,5 @@
 ﻿using LibraryApp.DTOs;
+using LibraryApp.Entities;
 using LibraryApp.IServices;
 using LibraryApp.Repositories.IRepositories;
 using System;
@@ -32,7 +33,7 @@ namespace LibraryApp.Services
             return await _repo.GetCurrentHoldUser(holdId);
         }
 
-        public async Task<HoldDto> GetEarliestHold(int assetId)
+        public async Task<Hold> GetEarliestHold(int assetId)
         {
             return await _repo.GetEarliestHold(assetId);
         }
