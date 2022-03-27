@@ -212,6 +212,10 @@ export class AssetProfileComponent implements OnInit {
       });
   }
 
+  toBookList(tag: Tag) {
+    this.router.navigate(['books', {tag: tag.name}]);
+  }
+
   toLogin() {
     this.router.navigate(['login']);
   }

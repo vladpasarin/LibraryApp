@@ -12,9 +12,9 @@
 <div class="book-tag">
     <mat-chip-list>
         <mat-chip *ngFor="let tag of tags" (click)="selectTag(tag)">{{ tag.name }}</mat-chip>
-        <button>
-            <mat-icon><fa-icon [icon]="faXMark"></fa-icon></mat-icon>
-        </button>
+        <mat-chip (click)="resetSelectedTags()">
+            <fa-icon [icon]="faBan"></fa-icon>
+        </mat-chip>
     </mat-chip-list>
 </div>
 

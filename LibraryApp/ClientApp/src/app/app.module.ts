@@ -33,6 +33,7 @@ import { SearchFilterPipe } from './searchfilter.pipe';
 import { AssetProfileComponent } from './asset-profile/asset-profile.component';
 import { MatLabel } from '@angular/material/form-field';
 import { MatTabNav, MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
 import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
@@ -72,6 +73,7 @@ import {MatChipsModule} from '@angular/material/chips';
     FormsModule,
     MatTabsModule,
     MatChipsModule,
+    MatIconModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

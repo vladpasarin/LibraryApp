@@ -10,7 +10,7 @@
     <div class="belowPhoto">
       <p class="subtitle">Tags</p>
       <mat-chip-list>
-        <mat-chip *ngFor="let tag of tags">{{ tag.name }}</mat-chip>
+        <mat-chip *ngFor="let tag of tags" (click)="toBookList(tag)">{{ tag.name }}</mat-chip>
       </mat-chip-list>
       <!--TODO: Get asset tags-->
       <p class="subtitle">Languages</p>

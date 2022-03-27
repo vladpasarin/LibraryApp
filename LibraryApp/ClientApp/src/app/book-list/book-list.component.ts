@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { faXMark } from '@fortawesome/fontawesome-free';
+import { faSearch, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Tag } from '../models/tag';
 import { GenericBook } from '../models/genericBook';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
@@ -12,6 +12,7 @@ import { GenericBook } from '../models/genericBook';
   styleUrls: ['./book-list.component.scss']
 })
 export class BookListComponent implements OnInit {
+
   private readonly endpoint = 'book';
   private readonly genericBookEndpoint = 'book/generic';
   private readonly tagEndpoint = 'tag';
@@ -22,18 +23,18 @@ export class BookListComponent implements OnInit {
   selectedTag: Tag = null;
   searchValue: string = "";
   faSearch = faSearch;
-  faXMark = faXMark;
-  clickValue: number;
+  faBan = faBan;
+  listTag: string = "";
 
   constructor(private apiService: ApiService,
-    private router: Router) { 
+    private router: Router,
+    private route: ActivatedRoute) { 
   }
 
   ngOnInit(): void {
     this.loadBooks();
     this.loadBookTags();
     this.loadGenericBooks();
-    this.clickValue = 0;
     //this.filterBooks();
   }
 
@@ -61,20 +62,35 @@ export class BookListComponent implements OnInit {
     this.apiService.get<Tag>(`${this.tagEndpoint}`)
       .subscribe((response: Tag[]) => {
         this.tags = response;
+        this.checkListTag();
       }, error => {
         console.log(error);
       });
   }
 
-  selectTag(tag: Tag) {
-    if (this.clickValue == 0) {
-      this.selectedTag = tag; 
-      this.clickValue = 1;
-      console.log(this.selectedTag)
-    } else {
-      this.selectedTag = null;
-      this.clickValue = 0;
+  checkListTag() {
+    this.listTag = this.route.snapshot.paramMap.get('tag');
+    console.log("List tag: " + this.listTag);
+    if (this.listTag != null) {
+      this.selectTagByName(this.listTag);
     }
+  }
+
+  selectTagByName(tagName: string) {
+    this.tags.forEach(tag => {
+      if (tag.name == tagName) {
+        this.selectTag(tag);
+      }
+    })
+  }
+
+  selectTag(tag: Tag) {
+    this.selectedTag = tag; 
+    console.log(this.selectedTag)
+  }
+
+  resetSelectedTags() {
+    this.selectTag(null);
   }
 /*
   filterBooks() {
