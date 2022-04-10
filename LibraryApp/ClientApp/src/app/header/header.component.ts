@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {faBookReader, faHome, faBook, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faBookReader, faHome, faBook, faUser, faBell} from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { SharedDataService } from '../shared/services/shared-data.service';
@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   faHome = faHome;
   faBook = faBook;
   faUser = faUser;
+  faBell = faBell;
   email: string;
   userId: string;
   message: string;
