@@ -16,5 +16,6 @@ namespace LibraryApp.Entities
         public int NrOfAvailableCopies { get; set; }
         public List<AssetTag> AssetTags { get; set; }
         public List<Bookmark> Bookmarks { get; set; }
+        public List<Rating> AssetRatings { get; set; }
     }
 }
