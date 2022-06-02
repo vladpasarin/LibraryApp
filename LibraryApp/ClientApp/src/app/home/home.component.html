@@ -43,6 +43,19 @@
   </carousel>
 
   <div class="books-preview">
+    <h3>Books recommended for you</h3>
+  </div>
+
+  <carousel *ngIf="isLoggedIn()"
+    [height] = "600"
+    [cellWidth] = "350"
+  >
+    <div *ngFor="let recommended of recommendedBooks" class="carousel-cell">
+      <app-book-card [book]="recommended"></app-book-card>
+    </div>
+  </carousel>
+
+  <div class="books-preview">
     <h3>Popular ebooks to download...</h3>
   </div>
 </div>

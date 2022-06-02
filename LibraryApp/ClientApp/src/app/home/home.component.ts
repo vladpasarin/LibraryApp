@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 import { MatCarousel, MatCarouselComponent } from '@ngbmodule/material-carousel';
 import { MatCarouselSlide, MatCarouselSlideComponent } from '@ngbmodule/material-carousel';
 import { GenericBook } from '../models/genericBook';
+import { Prediction } from '../models/prediction';
+import { PredictionInput } from '../models/predictionInput';
 import { ApiService } from '../shared/services/api.service';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -15,10 +18,15 @@ export class HomeComponent implements OnInit {
   private readonly bookEndpoint = 'book';
   private readonly eBookEndpoint = 'book/ebook';
   private readonly audioBookEndpoint = 'book/audiobook';
+  private readonly recommenderEndpoint = 'predict';
   books: any[];
   eBooks: any[];
   audioBooks: any[];
+  predictions: Prediction[];
+  recommendedBooks = [];
+  predInput = {} as PredictionInput;
   constructor(private apiService: ApiService,
+    private authService: AuthService,
     private router: Router) { 
   }
 
@@ -26,15 +34,36 @@ export class HomeComponent implements OnInit {
     this.loadBooks();
     this.loadEBooks();
     this.loadAudioBooks();
+    this.loadRecommendedBooks();
   }
 
   loadBooks() {
     this.apiService.get<any>(`${this.bookEndpoint}/all`)
       .subscribe(response => {
         this.books = response;
-        console.log(response);
       }, error => {
         console.log(error);
+      });
+  }
+
+  loadRecommendedBooks() {
+    this.predInput.input = sessionStorage.getItem('userId');
+    console.log(this.predInput.input);
+    this.apiService.post<any>(`${this.recommenderEndpoint}`, this.predInput)
+      .subscribe((response: Prediction[]) => {
+        this.predictions = response;
+        this.predictions.forEach(el => {
+          this.apiService.get<any>(`${this.bookEndpoint}/${el.value}`)
+            .subscribe((response: GenericBook) => {
+              console.log(response);
+              this.recommendedBooks.push(response);
+              console.log(this.recommendedBooks);
+            }, err => {
+              console.error(err);
+            });
+        });
+      }, err => {
+        console.log(err);
       });
   }
 
@@ -42,7 +71,6 @@ export class HomeComponent implements OnInit {
     this.apiService.get<any>(`${this.eBookEndpoint}/all`)
       .subscribe(response => {
         this.eBooks = response;
-        console.log(response);
       }, error => {
         console.log(error);
       });
@@ -52,10 +80,13 @@ export class HomeComponent implements OnInit {
     this.apiService.get<any>(`${this.audioBookEndpoint}/all`)
       .subscribe(response => {
         this.audioBooks = response;
-        console.log(response);
       }, error => {
         console.log(error);
       });
+  }
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
   }
 
   slides = [{'image': 'https://i.guim.co.uk/img/media/a7c46bbd5365d7a46cd4ea95fa7b418f5c906ab5/1_0_2418_1451/master/2418.jpg?width=445&quality=45&auto=format&fit=max&dpr=2&s=b2698c618d416aa1999f53275a79f91e'},

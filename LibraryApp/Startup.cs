@@ -19,6 +19,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.ML;
+using RecommendationSystem.DataModels;
+using System;
+using System.IO;
 
 namespace LibraryApp
 {
@@ -90,6 +94,11 @@ namespace LibraryApp
                         ValidateAudience = false
                     };
                 });
+
+            services.AddPredictionEnginePool<RatingData, RatingPrediction>()
+                .FromFile(modelName: "BookRecommenderModel", 
+                    filePath: "C:\\Users\\vlada\\Desktop\\myapp\\LibraryApp\\RecommendationSystem\\MLModels\\BookRecommenderModel.zip", 
+                    watchForChanges: true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

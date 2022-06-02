@@ -84,7 +84,6 @@ export class BookCardComponent implements OnInit {
     }
     this.getBookStatus();
     this.getBookTags();
-    console.log(this.currentUserId);
   }
 
   chunk(arr: any, chunkSize: any) {
@@ -217,7 +216,6 @@ export class BookCardComponent implements OnInit {
   }
 
   showBookCard() {
-    console.log("Selected tag: " + this.selectedTag);
     if (this.selectedTag != null) {
       return this.bookTags.includes(this.selectedTag.name);
     }
