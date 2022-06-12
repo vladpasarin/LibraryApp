@@ -1,1 +1,33 @@
-<p>profile works!</p>
+<app-header></app-header>
+<div class="flex-container">
+    <div class="profile-details">
+        <div class="profile-icon">
+            <fa-icon [icon]="faUser" size="10x"></fa-icon>
+            <p class="profile-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</p>
+            <p class="text-content"> What we know <br> about you: </p>
+            <div class="user-details">
+                <p>Address: {{ currentUser.address }}</p>
+                <p>Email: {{ currentUser.email }}</p>
+                <p>Phone Nr: {{ currentUser.phoneNr }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="others">
+        <mat-tab-group mat-align-tabs="start" dynamicHeight>
+            <mat-tab label="Wishlist">
+               <div class="wishlist-content">
+                    Wishlist content
+               </div></mat-tab>
+            <mat-tab label="Challenges">
+                <div class="challenges-content">
+                    Challenges content
+                </div>
+            </mat-tab>
+            <mat-tab label="Stats">
+                <div class="stats-content">
+                    Stats content
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

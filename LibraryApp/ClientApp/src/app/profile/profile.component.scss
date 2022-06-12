@@ -1,0 +1,42 @@
+.flex-container {
+    display: flex;
+}
+
+.profile-details {
+    flex: 1;
+    margin-right: 2em;
+    margin-left: 2em;
+}
+
+.others {
+    flex: 2;
+    color: white;
+}
+
+.profile-icon {
+    margin: auto;
+}
+
+.profile-name {
+    margin-top: 1em;
+    color: white;
+    margin-bottom: 2em;
+}
+
+.text-content {
+    color: white;
+}
+
+.user-details {
+    color: white;
+}
+
+.mat-tab-label, .mat-tab-body-content {
+    font-family: 'Spartan', sans-serif !important;
+    background-color: transparent;
+    color: white;
+}
+
+.wishlist-content, .challenges-content, .stats-content {
+    margin-top: 2em;
+}

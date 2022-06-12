@@ -99,6 +99,10 @@ namespace LibraryApp
                 .FromFile(modelName: "BookRecommenderModel", 
                     filePath: "C:\\Users\\vlada\\Desktop\\myapp\\LibraryApp\\RecommendationSystem\\MLModels\\BookRecommenderModel.zip", 
                     watchForChanges: true);
+
+            services.AddMvc();
+            services.AddProgressiveWebApp();
+            services.AddServiceWorker();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
