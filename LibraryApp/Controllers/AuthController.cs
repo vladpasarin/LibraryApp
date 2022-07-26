@@ -1,4 +1,5 @@
-﻿using LibraryApp.DTOs;
+﻿using EmailService;
+using LibraryApp.DTOs;
 using LibraryApp.IServices;
 using LibraryApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,12 @@ namespace LibraryApp.Controllers
     public class AuthController : ControllerBase
     {
         public readonly IUserService _service;
+        public readonly IEmailSender _emailSender;
 
-        public AuthController(IUserService service)
+        public AuthController(IUserService service, IEmailSender emailSender)
         {
             _service = service;
+            _emailSender = emailSender;
         }
 
         [HttpPost("register")]
@@ -56,6 +59,19 @@ namespace LibraryApp.Controllers
                 return StatusCode(500);
 
             return Ok(users);
+        }
+
+        [HttpPut("resetPassword")]
+        public async Task<IActionResult> ResetPassword(AuthRequest request)
+        {
+            return Ok(await _service.ResetPassword(request));
+        }
+
+        [HttpGet("send-mail")]
+        public async Task SendMail()
+        {
+            var message = new Message(new string[] { "vladpasarin@yahoo.com" }, "Test email", "This is the content from our email.");
+            await _emailSender.SendEmailAsync(message);
         }
     }
 }

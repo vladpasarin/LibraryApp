@@ -23,6 +23,7 @@ using Microsoft.Extensions.ML;
 using RecommendationSystem.DataModels;
 using System;
 using System.IO;
+using EmailService;
 
 namespace LibraryApp
 {
@@ -103,6 +104,13 @@ namespace LibraryApp
             services.AddMvc();
             services.AddProgressiveWebApp();
             services.AddServiceWorker();
+
+            var emailConfig = Configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfig>();
+            services.AddSingleton(emailConfig);
+
+            services.AddScoped<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -151,6 +159,8 @@ namespace LibraryApp
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
     }
 }

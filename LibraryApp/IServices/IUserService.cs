@@ -19,5 +19,6 @@ namespace LibraryApp.IServices
         Task<bool> Register(RegisterRequest request);
         Task<AuthResponse> Login(AuthRequest request);
         Task<bool> EmailExists(string email);
+        Task<bool> ResetPassword(AuthRequest request);
     }
 }

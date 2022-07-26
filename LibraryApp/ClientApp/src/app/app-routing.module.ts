@@ -6,6 +6,7 @@ import { BookListComponent } from './book-list/book-list.component';
 import { EbookListComponent } from './ebook-list/ebook-list.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: "ebooks", component: EbookListComponent },
   { path: "audiobooks", component: AudiobookListComponent },
   { path: "profile", component: ProfileComponent },
-  { path: "asset/:id", component: AssetProfileComponent }, 
+  { path: "asset/:id", component: AssetProfileComponent },
+  { path: "password-reset", component: PasswordResetComponent },
 ];
 
 @NgModule({

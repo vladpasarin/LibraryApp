@@ -113,6 +113,11 @@ namespace LibraryApp.Services
             return await _userRepo.SaveChanges();
         }
 
+        public async Task<bool> ResetPassword(AuthRequest request)
+        {
+            return await _userRepo.ResetPassword(request.Email, request.Password);
+        }
+
         private string GenerateJwtForUser(User user)
         {
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);

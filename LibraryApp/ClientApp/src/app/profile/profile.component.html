@@ -16,7 +16,10 @@
         <mat-tab-group mat-align-tabs="start" dynamicHeight>
             <mat-tab label="Wishlist">
                <div class="wishlist-content">
-                    Wishlist content
+                    <div *ngFor="let book of bookmarkedBooks" class="col-lg-3 col-md-4 col-sm-6">
+                        <app-book-card [book]="book"></app-book-card>
+                        <br>
+                    </div>
                </div></mat-tab>
             <mat-tab label="Challenges">
                 <div class="challenges-content">

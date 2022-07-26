@@ -55,5 +55,17 @@ namespace LibraryApp.Repositories.Users
             }
             return true;
         }
+
+        public async Task<List<BookmarkDto>> GetUserBookmarks(int userId)
+        {
+            var bookmarks = await _context.Bookmarks
+                .AsNoTracking()
+                .Include(b => b.Asset)
+                .Include(b => b.User)
+                .Where(b => b.UserId == userId)
+                .ToListAsync();
+
+            return _mapper.Map<List<BookmarkDto>>(bookmarks);
+        }
     }
 }

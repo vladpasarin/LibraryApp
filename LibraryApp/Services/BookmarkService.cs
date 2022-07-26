@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LibraryApp.DTOs;
+using LibraryApp.DTOs.Assets;
 using LibraryApp.Entities;
 using LibraryApp.IServices;
 using LibraryApp.Repositories.IRepositories;
@@ -13,12 +14,14 @@ namespace LibraryApp.Services
     public class BookmarkService : IBookmarkService
     {
         private readonly IBookmarkRepository _repo;
+        private readonly IAssetRepository _assetRepo;
         private readonly IMapper _mapper;
 
-        public BookmarkService(IBookmarkRepository repo, IMapper mapper)
+        public BookmarkService(IBookmarkRepository repo, IMapper mapper, IAssetRepository assetRepo)
         {
             _repo = repo;
             _mapper = mapper;
+            _assetRepo = assetRepo;
         }
 
         public async Task<bool> Add(BookmarkDto newBookmark)
@@ -54,6 +57,20 @@ namespace LibraryApp.Services
         public async Task<bool> Exists(int id)
         {
             return await _repo.Exists(id);
+        }
+
+        public async Task<List<AssetDto>> GetUserBookmarkedAssets(int userId)
+        {
+            var bookmarks = await _repo.GetUserBookmarks(userId);
+            List<AssetDto> assets = new List<AssetDto>();
+
+            foreach(var bookmark in bookmarks)
+            {
+                var asset = await _assetRepo.Get(bookmark.AssetId);
+                assets.Add(asset);
+            }
+
+            return assets;
         }
     }
 }

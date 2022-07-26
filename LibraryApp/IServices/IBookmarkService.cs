@@ -1,4 +1,5 @@
 ﻿using LibraryApp.DTOs;
+using LibraryApp.DTOs.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace LibraryApp.IServices
         Task<BookmarkDto> FindBookmarkByUserAndAsset(int userId, int assetId);
         Task<bool> Delete(BookmarkDto deletedBookmark);
         Task<bool> Exists(int id);
+        Task<List<AssetDto>> GetUserBookmarkedAssets(int userId);
     }
 }

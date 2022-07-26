@@ -37,6 +37,7 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatChipsModule} from '@angular/material/chips';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { environment } from '../environments/environment';
     ProfileComponent,
     SearchFilterPipe,
     AssetProfileComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,

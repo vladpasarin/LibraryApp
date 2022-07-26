@@ -63,6 +63,17 @@ namespace LibraryApp.Controllers
             return Ok(bookmark);
         }
 
+        [HttpGet("assets/{userId}")]
+        public async Task<IActionResult> GetUserBookmarkedAssets(int userId)
+        {
+            var assets = await _service.GetUserBookmarkedAssets(userId);
+            if (assets == null)
+            {
+                return StatusCode(500);
+            }
+            return Ok(assets);
+        }
+
         // POST api/<BookmarkController>
         [HttpPost]
         public async Task<IActionResult> Add(BookmarkDto newBookmark)
