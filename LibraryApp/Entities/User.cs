@@ -22,7 +22,8 @@ namespace LibraryApp.Entities
         public string Password { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public int LibraryCardId { get; set; }
+        public int LibraryCardId { get; set; }  
+        public string PasswordResetToken { get; set; } = string.Empty;
         public LibraryCard LibraryCard { get; set; }
         public List<Bookmark> Bookmarks { get; set; }
         public List<Rating> UserRatings { get; set; }

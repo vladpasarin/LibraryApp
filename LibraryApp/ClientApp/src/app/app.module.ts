@@ -38,6 +38,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
     SearchFilterPipe,
     AssetProfileComponent,
     PasswordResetComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,

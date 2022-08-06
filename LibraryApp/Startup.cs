@@ -24,6 +24,8 @@ using RecommendationSystem.DataModels;
 using System;
 using System.IO;
 using EmailService;
+using Microsoft.AspNetCore.Identity;
+using LibraryApp.Entities;
 
 namespace LibraryApp
 {
@@ -77,6 +79,8 @@ namespace LibraryApp
             services.AddScoped<IBookmarkService, BookmarkService>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
+            services.AddScoped<IRatingService, RatingService>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
@@ -111,6 +115,15 @@ namespace LibraryApp
             services.AddSingleton(emailConfig);
 
             services.AddScoped<IEmailSender, EmailSender>();
+            /*services.AddIdentity<User, IdentityRole>(opt =>
+            {
+                opt.Password.RequiredLength = 7;
+                opt.Password.RequireDigit = false;
+                opt.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<LibraryDbContext>()
+                .AddDefaultTokenProviders();
+            services.Configure<DataProtectionTokenProviderOptions>(opt =>
+                opt.TokenLifespan = TimeSpan.FromHours(1));*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

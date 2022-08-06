@@ -36,6 +36,7 @@ namespace LibraryApp.Serialization
             CreateMap<EBook, GenericBookDto>().ReverseMap();
             CreateMap<AudioBook, GenericBookDto>().ReverseMap();
             CreateMap<TagDto, Tag>().ReverseMap();
+            CreateMap<Rating, RatingDto>().ReverseMap();
         }
     }
 }

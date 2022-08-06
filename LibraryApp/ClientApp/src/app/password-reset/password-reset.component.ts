@@ -8,6 +8,7 @@ import { AuthRequest } from "../shared/authRequest";
 import { RequestResponse } from "../shared/requestResponse";
 import { SharedDataService } from "../shared/services/shared-data.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { resetPassword } from '../models/resetPassword';
 
 @Component({
   selector: 'app-password-reset',
@@ -22,7 +23,7 @@ export class PasswordResetComponent implements OnInit {
   ) { }
 
   success: boolean;
-  resetReq: AuthRequest;
+  resetReq: resetPassword;
   requestResponse: RequestResponse;
   passwordResetForm: FormGroup;
   message: string;
@@ -31,7 +32,8 @@ export class PasswordResetComponent implements OnInit {
   ngOnInit(): void {
     this.resetReq = {
       email: '',
-      password: ''
+      password: '',
+      token: ''
     };
     this.passwordResetForm = this.fb.group({
       email: ['', [
@@ -41,15 +43,17 @@ export class PasswordResetComponent implements OnInit {
       password: ['', [
         Validators.required,
         Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')
-      ]]
+      ]],
+      token: ['']
     });
   }
 
   resetPassword() {
     this.resetReq.email = this.f.email.value;
     this.resetReq.password = this.f.password.value;
+    this.resetReq.token = this.f.token.value;
 
-    this.api.put<AuthRequest>(`${this.paswordResetEndpoint}`, this.resetReq)
+    this.api.put<resetPassword>(`${this.paswordResetEndpoint}`, this.resetReq)
       .subscribe((response: Boolean) =>{
         if (response == true) {
           this.logPasswordChanged();
@@ -77,5 +81,9 @@ export class PasswordResetComponent implements OnInit {
 
   get password() {
     return this.passwordResetForm.get('password');
+  }
+
+  get token() {
+    return this.passwordResetForm.get('token');
   }
 }

@@ -29,6 +29,7 @@ export class AssetProfileComponent implements OnInit {
   private bookmarkEndpoint = 'bookmark';
   private checkoutEndpoint = 'checkout';
   private userEndpoint = 'auth';
+  private ratingEndpoint = 'rating';
 
   faBookOpen = faBookOpen;
   faBookmarkSolid = faBookmarkSolid;
@@ -43,6 +44,7 @@ export class AssetProfileComponent implements OnInit {
   deletedBookmarkId: number;
   borrowed: boolean;
   libraryCardId: number;
+  ratingExists: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -210,6 +212,20 @@ export class AssetProfileComponent implements OnInit {
         this._snackBar.open('Book turnt in!', '', { duration: 2000 });
         this.checkIfBorrowed();
       });
+  }
+
+  getRating() {
+    this.api.get(`${this.ratingEndpoint}/ratingExists/` + this.currentUserId + '/' + this.assetId)
+      .subscribe(response => {
+        if (response == null) {
+          this.ratingExists = false;
+        }
+        this.ratingExists = true;
+    });
+  }
+
+  openRatingModal() {
+
   }
 
   toBookList(tag: Tag) {

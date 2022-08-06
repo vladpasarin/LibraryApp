@@ -59,6 +59,15 @@
       >
         <fa-icon [icon]="faBookmarkSolid"></fa-icon>&nbsp;BOOKMARKED
       </button>
+      <button
+        *ngIf="!ratingExists"
+        mat-flat-button
+        color="warn"
+        class="bookmark"
+        (click)="openRatingModal()"
+      >
+        RATE
+      </button>
     </div>
     <div class="tabDetails">
       <mat-tab-group animationDuration="0ms">

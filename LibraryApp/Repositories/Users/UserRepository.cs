@@ -160,7 +160,7 @@ namespace LibraryApp.Repositories
             return false;
         }
 
-        public async Task<bool> ResetPassword(string email, string newPassword)
+        public async Task<bool> ResetPassword(string email, string newPassword, string token)
         {
             var emailExists = await EmailExists(email);
 
@@ -172,6 +172,11 @@ namespace LibraryApp.Repositories
             var user = await _context.Users
                 .SingleAsync(x => x.Email == email);
 
+            if (!user.PasswordResetToken.Equals(token))
+            {
+                return false;
+            }
+
             CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
@@ -180,6 +185,12 @@ namespace LibraryApp.Repositories
 
             Update(user);
             return await SaveChanges();
+        }
+
+        public async Task<User> FindByMail(string mailAddress)
+        {
+            var user = await _context.Users.FirstAsync(x => x.Email == mailAddress);
+            return user;
         }
     }
 }
