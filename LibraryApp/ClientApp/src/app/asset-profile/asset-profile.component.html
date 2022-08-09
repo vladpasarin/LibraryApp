@@ -60,7 +60,7 @@
         <fa-icon [icon]="faBookmarkSolid"></fa-icon>&nbsp;BOOKMARKED
       </button>
       <button
-        *ngIf="!ratingExists"
+        *ngIf="!ratingExists && isLoggedIn()"
         mat-flat-button
         color="warn"
         class="bookmark"

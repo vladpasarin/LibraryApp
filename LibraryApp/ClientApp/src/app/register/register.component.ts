@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
   }
 
   openSnackBar() {
-    this._snackBar.open('Register succesful!', 'Sign in', { duration: 3000});
+    this._snackBar.open('Register successful!', 'Sign in', { duration: 3000});
   }
 
   register() {
@@ -66,7 +66,7 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(this.registerRequest)
     .subscribe(data => {
-      console.log('Succesfully registered', data);
+      console.log('Successfully registered', data);
       this.openSnackBar();
       this.router.navigateByUrl('login');
     });

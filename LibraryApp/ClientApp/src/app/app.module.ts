@@ -39,6 +39,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RatingModalComponent } from './rating-modal/rating-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -56,6 +60,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     AssetProfileComponent,
     PasswordResetComponent,
     ForgotPasswordComponent,
+    RatingModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +85,9 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     MatTabsModule,
     MatChipsModule,
     MatIconModule,
+    MatDialogModule,
+    MatSliderModule,
+    MatSlideToggleModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable

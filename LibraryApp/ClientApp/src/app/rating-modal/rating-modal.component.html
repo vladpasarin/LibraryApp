@@ -1,0 +1,23 @@
+<h1 mat-dialog-title class="title">Give a rating</h1>
+<div mat-dialog-content>
+    <h2>Your Rating: {{ value }}</h2>
+    <mat-slider
+        class="ratingSlider"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [thumbLabel]="thumbLabel"
+        [tickInterval]="getSliderTickInterval()"
+        [(ngModel)]="value">
+    </mat-slider>
+    <form class="ratingForm" [formGroup]="ratingForm">
+        <mat-form-field class="full-width">
+            <mat-label>Leave a review</mat-label>
+            <textarea formControlName="review" matInput name="review" id="review" rows="2"></textarea>
+        </mat-form-field>
+    </form>
+</div>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="getSubmitAction()">Submit</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

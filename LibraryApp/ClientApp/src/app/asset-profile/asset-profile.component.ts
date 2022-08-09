@@ -15,6 +15,9 @@ import { cloneDeep } from 'lodash';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Bookmark } from '../models/bookmark';
 import { User } from '../shared/user.model';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { RatingModalComponent } from '../rating-modal/rating-modal.component';
+import { Rating } from '../models/rating';
 
 @Component({
   selector: 'app-asset-profile',
@@ -51,7 +54,8 @@ export class AssetProfileComponent implements OnInit {
     private api: ApiService,
     private authService: AuthService,
     private _snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +69,7 @@ export class AssetProfileComponent implements OnInit {
     this.getTagsByAssetId();
     this.loadBookmarks();
     this.getLibraryCardId();
+    this.getRating();
   }
 
   getAssetById() {
@@ -216,16 +221,22 @@ export class AssetProfileComponent implements OnInit {
 
   getRating() {
     this.api.get(`${this.ratingEndpoint}/ratingExists/` + this.currentUserId + '/' + this.assetId)
-      .subscribe(response => {
+      .subscribe((response: Rating) => {
         if (response == null) {
           this.ratingExists = false;
         }
-        this.ratingExists = true;
+        else {
+          this.ratingExists = true;
+        }
+        console.log(this.ratingExists);
     });
   }
 
   openRatingModal() {
-
+    let config = new MatDialogConfig();
+    let dialogRef: MatDialogRef<RatingModalComponent> = this.dialog.open(RatingModalComponent, config);
+    dialogRef.componentInstance.assetId = this.assetId;
+    dialogRef.componentInstance.createRating = true;
   }
 
   toBookList(tag: Tag) {

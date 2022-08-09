@@ -1,4 +1,5 @@
 ﻿using LibraryApp.DTOs;
+using LibraryApp.DTOs.Assets;
 using LibraryApp.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,10 +16,12 @@ namespace LibraryApp.Controllers
     public class BookmarkController : ControllerBase
     {
         public readonly IBookmarkService _service;
+        private readonly IBookService _bookService;
 
-        public BookmarkController(IBookmarkService service)
+        public BookmarkController(IBookmarkService service, IBookService bookService)
         {
             _service = service;
+            _bookService = bookService;
         }
 
         // GET: api/<BookmarkController>
@@ -72,6 +75,24 @@ namespace LibraryApp.Controllers
                 return StatusCode(500);
             }
             return Ok(assets);
+        }
+
+        [HttpGet("books/{userId}")]
+        public async Task<IActionResult> GetUserBookmarkedBooks(int userId)
+        {
+            var assets = await _service.GetUserBookmarkedAssets(userId);
+            if (assets == null)
+            {
+                return StatusCode(500);
+            }
+
+            var books = new List<GenericBookDto>();
+            foreach (var asset in assets)
+            {
+                var book = await _bookService.GetGenericBook(asset.Id);
+                books.Add(book);
+            }
+            return Ok(books);
         }
 
         // POST api/<BookmarkController>

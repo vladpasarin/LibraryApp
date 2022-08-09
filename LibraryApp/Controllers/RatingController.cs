@@ -56,8 +56,9 @@ namespace LibraryApp.Controllers
 
         // PUT api/<RatingController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> UpdateRating(int id, RatingDto ratingDto)
         {
+            return Ok(await _service.UpdateRating(id, ratingDto));
         }
 
         // DELETE api/<RatingController>/5

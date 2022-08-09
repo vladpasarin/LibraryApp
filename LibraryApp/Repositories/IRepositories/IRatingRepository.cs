@@ -12,5 +12,6 @@ namespace LibraryApp.Repositories.IRepositories
         public Task<List<RatingDto>> GetUserRatings(int userId);
         public Task<bool> Add(RatingDto ratingDto);
         public Task<RatingDto> RatingExists(int userId, int assetId);
+        public Task<bool> UpdateRating(int ratingId, RatingDto ratingDto);
     }
 }

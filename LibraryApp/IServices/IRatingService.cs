@@ -10,5 +10,6 @@ namespace LibraryApp.IServices
         Task<List<RatingDto>> GetUserRatings(int userId);
         Task<bool> Add(RatingDto ratingDto);
         Task<RatingDto> RatingExists(int userId, int assetId);
+        Task<bool> UpdateRating(int ratingId, RatingDto ratingDto);
     }
 }

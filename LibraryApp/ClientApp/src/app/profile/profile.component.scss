@@ -40,3 +40,26 @@
 .wishlist-content, .challenges-content, .stats-content {
     margin-top: 2em;
 }
+
+.wishlist-content {
+    display: flex;
+}
+
+.bookContainer {
+    width: 16em;
+    max-width: 16em;
+    margin-left: 2em;
+    display: inline-block;
+}
+
+.rating-container {
+    margin: 2em;
+}
+
+.rating-score {
+    float: left;
+}
+
+.btn {
+    float: right;
+}

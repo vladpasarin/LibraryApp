@@ -16,7 +16,7 @@
         <mat-tab-group mat-align-tabs="start" dynamicHeight>
             <mat-tab label="Wishlist">
                <div class="wishlist-content">
-                    <div *ngFor="let book of bookmarkedBooks" class="col-lg-3 col-md-4 col-sm-6">
+                    <div *ngFor="let book of bookmarkedBooks" class="bookContainer">
                         <app-book-card [book]="book"></app-book-card>
                         <br>
                     </div>
@@ -29,6 +29,21 @@
             <mat-tab label="Stats">
                 <div class="stats-content">
                     Stats content
+                </div>
+            </mat-tab>
+            <mat-tab label="Ratings">
+                <div class="ratings-content">
+                    <mat-card *ngFor="let rating of userRatings" class="rating-container">
+                        <p class="rating-score">Rating: {{ rating.score }} </p>
+                        <span class="btn btn-secondary" (click)="openRatingModal(rating.assetId)"><fa-icon [icon]="faPen"></fa-icon>&nbsp;&nbsp;Edit</span>
+                        <br>
+                        <div *ngIf="rating.review" class="review-content">
+                            <p>Review: </p><br><br>
+                            <p>{{ rating.review }}</p>
+                        </div>
+                        <br>
+                        <p>for Book: <a [routerLink]="['/asset', rating.assetId]">{{ rating.ratedBook.title }} by {{ rating.ratedBook.author }}</a></p>
+                    </mat-card>
                 </div>
             </mat-tab>
         </mat-tab-group>

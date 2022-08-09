@@ -56,5 +56,21 @@ namespace LibraryApp.Repositories.Users
                 return null;
             return _mapper.Map<RatingDto>(rating);
         }
+
+        public async Task<bool> UpdateRating(int ratingId, RatingDto ratingDto)
+        {
+            var rating = await _context.Ratings
+                .Where(r => r.Id == ratingId)
+                .FirstOrDefaultAsync();
+
+            if (rating == null)
+                return false;
+
+            rating.Score = ratingDto.Score;
+            rating.Review = ratingDto.Review;
+
+            Update(rating);
+            return await SaveChanges();
+        }
     }
 }

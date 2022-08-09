@@ -33,5 +33,10 @@ namespace LibraryApp.Services
         {
             return await _repo.RatingExists(userId, assetId);
         }
+
+        public async Task<bool> UpdateRating(int ratingId, RatingDto ratingDto)
+        {
+            return await _repo.UpdateRating(ratingId, ratingDto);
+        }
     }
 }
