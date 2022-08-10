@@ -7,6 +7,7 @@ import { Asset } from '../models/asset';
 import {
   faBookOpen,
   faBookmark as faBookmarkSolid,
+  faPen, faQuoteLeft, faQuoteRight
 } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as faBookmarkRegular } from '@fortawesome/free-regular-svg-icons';
 import { TimeoutError } from 'rxjs';
@@ -37,6 +38,9 @@ export class AssetProfileComponent implements OnInit {
   faBookOpen = faBookOpen;
   faBookmarkSolid = faBookmarkSolid;
   faBookmarkRegular = faBookmarkRegular;
+  faPen = faPen;
+  faQuoteLeft = faQuoteLeft;
+  faQuoteRight = faQuoteRight;
   book = {} as GenericBook;
   asset = {} as Asset;
   assetId: string;
@@ -48,6 +52,7 @@ export class AssetProfileComponent implements OnInit {
   borrowed: boolean;
   libraryCardId: number;
   ratingExists: boolean;
+  assetRatings: Rating[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -70,6 +75,7 @@ export class AssetProfileComponent implements OnInit {
     this.loadBookmarks();
     this.getLibraryCardId();
     this.getRating();
+    this.getAssetRatings();
   }
 
   getAssetById() {
@@ -232,11 +238,23 @@ export class AssetProfileComponent implements OnInit {
     });
   }
 
+  getAssetRatings() {
+    this.api.get(`${this.ratingEndpoint}/asset/${this.assetId}`)
+      .subscribe((response: Rating[]) => {
+        this.assetRatings = response;
+      }, err => {
+        console.error(err);
+    })
+  }
+
   openRatingModal() {
     let config = new MatDialogConfig();
     let dialogRef: MatDialogRef<RatingModalComponent> = this.dialog.open(RatingModalComponent, config);
     dialogRef.componentInstance.assetId = this.assetId;
     dialogRef.componentInstance.createRating = true;
+    dialogRef.afterClosed().subscribe(() => {
+      this.getAssetRatings();
+    });
   }
 
   toBookList(tag: Tag) {

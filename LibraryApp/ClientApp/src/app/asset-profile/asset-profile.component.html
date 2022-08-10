@@ -88,6 +88,22 @@
             </p>
           </div>
         </mat-tab>
+        <mat-tab label="Reviews">
+          <div class="asset-ratings">
+            <mat-card *ngFor="let rating of assetRatings" class="rating-container">
+              <p class="rating-score">Rating: {{ rating.score }} </p>
+                <br>
+                <div *ngIf="rating.review" class="review-content">
+                    <p class="review-title">Review: </p>
+                    <div class="review-text-container">
+                        <fa-icon class="quote-left" [icon]="faQuoteLeft"></fa-icon>
+                        <p class="review-text">{{ rating.review }}</p>
+                        <fa-icon class="quote-right" [icon]="faQuoteRight"></fa-icon>
+                    </div>
+                </div>
+            </mat-card>
+          </div>
+        </mat-tab>
       </mat-tab-group>
     </div>
   </div>

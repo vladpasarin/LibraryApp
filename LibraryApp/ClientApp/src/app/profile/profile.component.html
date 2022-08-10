@@ -35,13 +35,16 @@
                 <div class="ratings-content">
                     <mat-card *ngFor="let rating of userRatings" class="rating-container">
                         <p class="rating-score">Rating: {{ rating.score }} </p>
-                        <span class="btn btn-secondary" (click)="openRatingModal(rating.assetId)"><fa-icon [icon]="faPen"></fa-icon>&nbsp;&nbsp;Edit</span>
+                        <span class="btn btn-secondary" (click)="openRatingModal(rating.assetId, rating.id)"><fa-icon [icon]="faPen"></fa-icon>&nbsp;&nbsp;Edit</span>
                         <br>
                         <div *ngIf="rating.review" class="review-content">
-                            <p>Review: </p><br><br>
-                            <p>{{ rating.review }}</p>
+                            <p class="review-title">Review: </p>
+                            <div class="review-text-container">
+                                <fa-icon class="quote-left" [icon]="faQuoteLeft"></fa-icon>
+                                <p class="review-text">{{ rating.review }}</p>
+                                <fa-icon class="quote-right" [icon]="faQuoteRight"></fa-icon>
+                            </div>
                         </div>
-                        <br>
                         <p>for Book: <a [routerLink]="['/asset', rating.assetId]">{{ rating.ratedBook.title }} by {{ rating.ratedBook.author }}</a></p>
                     </mat-card>
                 </div>

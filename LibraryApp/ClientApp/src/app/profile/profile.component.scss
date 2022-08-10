@@ -1,3 +1,7 @@
+body {
+    font-family: 'Spartan', sans-serif !important;
+}
+
 .flex-container {
     display: flex;
 }
@@ -54,6 +58,7 @@
 
 .rating-container {
     margin: 2em;
+    font-family: 'Spartan', sans-serif !important;
 }
 
 .rating-score {
@@ -62,4 +67,36 @@
 
 .btn {
     float: right;
+}
+
+.review-content {
+    text-align: left;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.review-text {
+    display: inline;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin-bottom: 0px;
+}
+
+.quote-left {
+    top: 1em;
+    left: 1em;
+}
+
+.quote-right {
+    bottom: 1em;
+    right: 1em;
+}
+
+.review-title {
+    margin-bottom: 8px;
+}
+
+.review-text-container {
+    display: inline;
+    margin-bottom: 8px;
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Rating } from '../models/rating';
@@ -31,7 +32,8 @@ export class RatingModalComponent implements OnInit {
     private route: ActivatedRoute,
     private api: ApiService,
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private dialogRef: MatDialogRef<RatingModalComponent>
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +58,7 @@ export class RatingModalComponent implements OnInit {
     else {
       this.updateRating();
     }
+    this.dialogRef.close();
   }
 
   addRating() {

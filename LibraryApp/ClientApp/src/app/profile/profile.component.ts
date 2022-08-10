@@ -5,7 +5,7 @@ import { GenericBook } from '../models/genericBook';
 import { Rating } from '../models/rating';
 import { ApiService } from '../shared/services/api.service';
 import { User } from '../shared/user.model'; 
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { RatingModalComponent } from '../rating-modal/rating-modal.component';
 
@@ -27,6 +27,8 @@ export class ProfileComponent implements OnInit {
 
   faUser = faUserAlt;
   faPen = faPen;
+  faQuoteLeft = faQuoteLeft;
+  faQuoteRight = faQuoteRight;
   currentUserId: string;
   currentUser: User;
   bookmarkedBooks: Book[];
@@ -55,17 +57,18 @@ export class ProfileComponent implements OnInit {
         console.log(this.bookmarkedBooks);
       }, err => {
         console.error(err);
-      });
+    });
   }
 
   getUserRatings() {
     this.apiService.get<Rating>(`${this.ratingEndpoint}/user/${this.currentUserId}`)
       .subscribe((response: Rating[]) => {
         this.userRatings = response;
+        console.log(this.userRatings);
         this.getRatedBooks();
       }, err => {
         console.error(err);
-      });
+    });
   }
 
   getRatedBooks() {
@@ -79,10 +82,15 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  openRatingModal(assetId: number) {
+  openRatingModal(assetId: number, ratingId: number) {
+    console.log("sent assetId: " + assetId);
     let config = new MatDialogConfig();
     let dialogRef: MatDialogRef<RatingModalComponent> = this.dialog.open(RatingModalComponent, config);
     dialogRef.componentInstance.assetId = assetId.toString();
+    dialogRef.componentInstance.rating.id = ratingId;
     dialogRef.componentInstance.createRating = false;
+    dialogRef.afterClosed().subscribe(() => {
+      this.getUserRatings();
+    });
   }
 }
