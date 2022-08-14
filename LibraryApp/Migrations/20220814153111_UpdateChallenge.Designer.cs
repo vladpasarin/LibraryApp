@@ -3,6 +3,7 @@ using System;
 using LibraryApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220814153111_UpdateChallenge")]
+    partial class UpdateChallenge
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,7 +304,7 @@ namespace LibraryApp.Migrations
                     b.Property<DateTime?>("DateCompleted")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DateStarted")
+                    b.Property<DateTime>("DateStarted")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")

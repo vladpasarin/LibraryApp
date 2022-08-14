@@ -81,6 +81,8 @@ namespace LibraryApp
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<IChallengeRepository, ChallengeRepository>();
+            services.AddScoped<IChallengeService, ChallengeService>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>

@@ -14,6 +14,7 @@ import { map } from 'rxjs/operators';
 import { Status } from '../models/status';
 import { User } from '../shared/user.model';
 import { Tag } from '../models/tag';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-book-card',
@@ -23,6 +24,7 @@ import { Tag } from '../models/tag';
 export class BookCardComponent implements OnInit {
   @Input() book: GenericBook;
   @Input() selectedTag: Tag;
+  @Output() childTriggeredEvent = new EventEmitter<boolean>();
 
   private readonly bookmarkEndpoint = 'bookmark';
   private readonly assetEndpoint = 'asset';
@@ -174,6 +176,7 @@ export class BookCardComponent implements OnInit {
             .subscribe(() => {
               console.log('Bookmark deleted');
               this.loadBookmarks();
+              this.refreshProfileWishlist();
             });
         },
         (error) => {
@@ -224,5 +227,10 @@ export class BookCardComponent implements OnInit {
 
   toBookProfile(assetId: number) {
     this.router.navigate(['asset', assetId]);
+  }
+
+  refreshProfileWishlist() {
+    console.log("Child isBookmarked value: " + this.isBookmarked);
+    this.childTriggeredEvent.emit(true);
   }
 }

@@ -34,6 +34,7 @@ namespace LibraryApp.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Bookmark> Bookmarks { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<UserChallenge> UserChallenges { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -98,7 +99,6 @@ namespace LibraryApp.Data
                 .HasForeignKey(b => b.AssetId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             builder.Entity<Bookmark>()
                 .HasOne(b => b.User)
                 .WithMany(u => u.Bookmarks)
@@ -115,6 +115,18 @@ namespace LibraryApp.Data
                 .HasOne(r => r.User)
                 .WithMany(u => u.UserRatings)
                 .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserChallenge>()
+                .HasOne(uc => uc.User)
+                .WithMany(u => u.UserChallenges)
+                .HasForeignKey(uc => uc.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserChallenge>()
+                .HasOne(uc => uc.Challenge)
+                .WithMany(c => c.UserChallenges)
+                .HasForeignKey(uc => uc.ChallengeId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 

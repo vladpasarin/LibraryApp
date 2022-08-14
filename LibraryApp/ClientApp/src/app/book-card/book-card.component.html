@@ -29,7 +29,7 @@
     </button>
     <button
       *ngIf="isLoggedIn() && isBookmarked == true"
-      (click)="removeBookmark()"
+      (click)="removeBookmark();"
       mat-button
       class="bookmark"
     >
@@ -37,7 +37,7 @@
     </button>
     <button
       *ngIf="isLoggedIn() && isBookmarked == false"
-      (click)="addBookmark()"
+      (click)="addBookmark();"
       mat-button
       class="bookmark"
     >

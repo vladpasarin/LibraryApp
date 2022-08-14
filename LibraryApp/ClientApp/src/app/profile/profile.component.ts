@@ -8,6 +8,7 @@ import { User } from '../shared/user.model';
 import { faPen, faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { RatingModalComponent } from '../rating-modal/rating-modal.component';
+import { Challenge } from '../models/challenge';
 
 @Component({
   selector: 'app-profile',
@@ -19,6 +20,7 @@ export class ProfileComponent implements OnInit {
   private bookmarkEndpoint = 'bookmark';
   private ratingEndpoint = 'rating';
   private bookEndpoint = 'book';
+  private challengeEndpoint = 'challenge';
 
   constructor(
     private apiService: ApiService,
@@ -33,12 +35,14 @@ export class ProfileComponent implements OnInit {
   currentUser: User;
   bookmarkedBooks: Book[];
   userRatings: Rating[];
+  challenges: Challenge[];
 
   ngOnInit(): void {
     this.currentUserId = sessionStorage.getItem('userId');
     this.getUserProfile();
     this.getBookmarkedBooks();
     this.getUserRatings();
+    this.getChallenges();
   }
 
   getUserProfile() {
@@ -51,6 +55,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getBookmarkedBooks() {
+    console.log("getting bookmarked books...")
     this.apiService.get<any>(`${this.bookmarkEndpoint}/books/${this.currentUserId}`)
       .subscribe(response => {
         this.bookmarkedBooks = response;
@@ -92,5 +97,25 @@ export class ProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.getUserRatings();
     });
+  }
+
+  reloadBookmarks(value: boolean) {
+    console.log("Parent isBookmarked value: " + value)
+    if (value == true) {
+      this.getBookmarkedBooks();
+    }
+  }
+
+  getChallenges() {
+    this.apiService.get<Challenge>(`${this.challengeEndpoint}`)
+      .subscribe((response: Challenge[]) => {
+        this.challenges = response;
+      }, err => {
+        console.error(err);
+    });
+  }
+
+  startChallenge(challengeId: number) {
+
   }
 }

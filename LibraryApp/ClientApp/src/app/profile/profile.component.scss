@@ -56,7 +56,7 @@ body {
     display: inline-block;
 }
 
-.rating-container {
+.rating-container, .challenge-container {
     margin: 2em;
     font-family: 'Spartan', sans-serif !important;
 }
@@ -69,7 +69,7 @@ body {
     float: right;
 }
 
-.review-content {
+.review-content, .challenges-content {
     text-align: left;
     padding-top: 1em;
     padding-bottom: 1em;
@@ -92,7 +92,7 @@ body {
     right: 1em;
 }
 
-.review-title {
+.review-title, .achievement-title {
     margin-bottom: 8px;
 }
 

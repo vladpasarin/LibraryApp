@@ -3,6 +3,7 @@ using System;
 using LibraryApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220814112250_AddedUserChallengeEntity")]
+    partial class AddedUserChallengeEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,7 +304,7 @@ namespace LibraryApp.Migrations
                     b.Property<DateTime?>("DateCompleted")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DateStarted")
+                    b.Property<DateTime>("DateStarted")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -313,13 +315,12 @@ namespace LibraryApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Started")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Threshold")
+                    b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Challenges");
                 });
@@ -708,9 +709,6 @@ namespace LibraryApp.Migrations
                     b.Property<int>("ChallengeId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Progress")
-                        .HasColumnType("integer");
-
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
@@ -801,6 +799,15 @@ namespace LibraryApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Asset");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Challenge", b =>
+                {
+                    b.HasOne("LibraryApp.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -952,13 +959,13 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.UserChallenge", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Challenge", "Challenge")
-                        .WithMany("UserChallenges")
+                        .WithMany()
                         .HasForeignKey("ChallengeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LibraryApp.Entities.User", "User")
-                        .WithMany("UserChallenges")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -987,11 +994,6 @@ namespace LibraryApp.Migrations
                     b.Navigation("Assets");
                 });
 
-            modelBuilder.Entity("LibraryApp.Entities.Challenge", b =>
-                {
-                    b.Navigation("UserChallenges");
-                });
-
             modelBuilder.Entity("LibraryApp.Entities.LibraryCard", b =>
                 {
                     b.Navigation("Checkouts");
@@ -1000,8 +1002,6 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.User", b =>
                 {
                     b.Navigation("Bookmarks");
-
-                    b.Navigation("UserChallenges");
 
                     b.Navigation("UserRatings");
                 });

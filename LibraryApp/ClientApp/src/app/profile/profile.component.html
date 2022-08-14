@@ -17,13 +17,17 @@
             <mat-tab label="Wishlist">
                <div class="wishlist-content">
                     <div *ngFor="let book of bookmarkedBooks" class="bookContainer">
-                        <app-book-card [book]="book"></app-book-card>
-                        <br>
+                        <app-book-card [book]="book" (childTriggeredEvent)="reloadBookmarks($event)"></app-book-card>
                     </div>
                </div></mat-tab>
             <mat-tab label="Challenges">
                 <div class="challenges-content">
-                    Challenges content
+                    <mat-card *ngFor="let challenge of challenges" class="challenge-container">
+                        <p class="achievement-title"><b>Achievement: {{ challenge.name }}</b></p>
+                        <span class="btn btn-secondary" (click)="startChallenge(challenge.id)">&nbsp;&nbsp;Start</span>
+                        <br>
+                        <p class="challenge-desc"><b>Challenge</b>: {{ challenge.description }}</p>
+                    </mat-card>
                 </div>
             </mat-tab>
             <mat-tab label="Stats">
