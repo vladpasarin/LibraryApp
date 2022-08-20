@@ -38,6 +38,9 @@ namespace LibraryApp.Serialization
             CreateMap<TagDto, Tag>().ReverseMap();
             CreateMap<Rating, RatingDto>().ReverseMap();
             CreateMap<UserChallenge, UserChallengeDto>().ReverseMap();
+            CreateMap<Goal, GoalDto>().ReverseMap();
+            CreateMap<GoalType, GoalTypeDto>().ReverseMap();
+            CreateMap<Quote, QuoteDto>().ReverseMap();
         }
     }
 }

@@ -87,6 +87,8 @@ namespace LibraryApp
             services.AddScoped<ICheckoutHistoryRepository, CheckoutHistoryRepository>();
             services.AddScoped<IUserChallengeRepository, UserChallengeRepository>();
             services.AddScoped<IUserChallengeService, UserChallengeService>();
+            services.AddScoped<IGoalRepository, GoalRepository>();
+            services.AddScoped<IGoalServices, GoalServices>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>

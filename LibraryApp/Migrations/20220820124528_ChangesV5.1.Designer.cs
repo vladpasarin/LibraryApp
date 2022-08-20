@@ -3,6 +3,7 @@ using System;
 using LibraryApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220820124528_ChangesV5.1")]
+    partial class ChangesV51
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -524,7 +526,7 @@ namespace LibraryApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("GoalTypeId")
+                    b.Property<int?>("GoalTypeId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Progress")
@@ -533,7 +535,7 @@ namespace LibraryApp.Migrations
                     b.Property<int>("Target")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -1017,15 +1019,11 @@ namespace LibraryApp.Migrations
                 {
                     b.HasOne("LibraryApp.Entities.GoalType", "GoalType")
                         .WithMany("Goals")
-                        .HasForeignKey("GoalTypeId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .HasForeignKey("GoalTypeId");
 
                     b.HasOne("LibraryApp.Entities.User", "User")
                         .WithMany("UserGoals")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("GoalType");
 

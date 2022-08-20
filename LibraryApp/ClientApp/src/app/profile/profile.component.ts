@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
   private bookmarkEndpoint = 'bookmark';
   private ratingEndpoint = 'rating';
   private bookEndpoint = 'book';
-  private challengeEndpoint = 'challenge';
+  private checkoutEndpoint = 'checkout';
 
   constructor(
     private apiService: ApiService,
@@ -38,13 +38,14 @@ export class ProfileComponent implements OnInit {
   userRatings: Rating[];
   challenges: Challenge[];
   challengeDict = {};
+  booksRead: number;
 
   ngOnInit(): void {
     this.currentUserId = sessionStorage.getItem('userId');
     this.getUserProfile();
     this.getBookmarkedBooks();
     this.getUserRatings();
-    this.getChallenges();
+    //this.getChallenges();
   }
 
   getUserProfile() {
@@ -108,12 +109,16 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  getChallenges() {
+  /*getChallenges() {
     this.apiService.get<Challenge>(`${this.challengeEndpoint}`)
       .subscribe((response: Challenge[]) => {
         this.challenges = response;
       }, err => {
         console.error(err);
     });
+  }*/
+
+  getBooksRead() {
+
   }
 }

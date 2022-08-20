@@ -3,6 +3,7 @@ using System;
 using LibraryApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220820100411_FinishGoalChanges")]
+    partial class FinishGoalChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -524,7 +526,7 @@ namespace LibraryApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("GoalTypeId")
+                    b.Property<int?>("GoalTypeId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Progress")
@@ -533,7 +535,7 @@ namespace LibraryApp.Migrations
                     b.Property<int>("Target")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -581,12 +583,6 @@ namespace LibraryApp.Migrations
                             Id = 3,
                             Description = "Rate a set number of books!",
                             Name = "Opinionated Reader"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "",
-                            Name = "User Defined"
                         });
                 });
 
@@ -652,18 +648,13 @@ namespace LibraryApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Content")
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
 
                     b.HasIndex("UserId");
 
@@ -1017,15 +1008,11 @@ namespace LibraryApp.Migrations
                 {
                     b.HasOne("LibraryApp.Entities.GoalType", "GoalType")
                         .WithMany("Goals")
-                        .HasForeignKey("GoalTypeId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .HasForeignKey("GoalTypeId");
 
                     b.HasOne("LibraryApp.Entities.User", "User")
                         .WithMany("UserGoals")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("GoalType");
 
@@ -1049,19 +1036,9 @@ namespace LibraryApp.Migrations
 
             modelBuilder.Entity("LibraryApp.Entities.Quote", b =>
                 {
-                    b.HasOne("LibraryApp.Entities.Book", "Book")
-                        .WithMany("BookQuotes")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("LibraryApp.Entities.User", "User")
                         .WithMany("UserQuotes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Book");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -1156,11 +1133,6 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.AvailabilityStatus", b =>
                 {
                     b.Navigation("Assets");
-                });
-
-            modelBuilder.Entity("LibraryApp.Entities.Book", b =>
-                {
-                    b.Navigation("BookQuotes");
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Challenge", b =>

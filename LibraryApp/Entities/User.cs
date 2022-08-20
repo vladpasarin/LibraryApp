@@ -28,5 +28,7 @@ namespace LibraryApp.Entities
         public List<Bookmark> Bookmarks { get; set; }
         public List<Rating> UserRatings { get; set; }
         public List<UserChallenge> UserChallenges { get; set; }
+        public List<Goal> UserGoals { get; set; }
+        public List<Quote> UserQuotes { get; set; }
     }
 }

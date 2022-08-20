@@ -36,6 +36,9 @@ namespace LibraryApp.Data
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<UserChallenge> UserChallenges { get; set; }
         //public virtual DbSet<ChallengeType> ChallengeTypes { get; set; }
+        public virtual DbSet<Goal> Goals { get; set; }
+        public virtual DbSet<GoalType> GoalTypes { get; set; }
+        public virtual DbSet<Quote> Quotes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -44,6 +47,7 @@ namespace LibraryApp.Data
             LinkAssetTags(builder);
             LinkOneToOne(builder);
             LinkManyToMany(builder);
+            LinkOneToMany(builder);
 
             base.OnModelCreating(builder);
         }
@@ -99,6 +103,21 @@ namespace LibraryApp.Data
             */
         }
 
+        private static void LinkOneToMany(ModelBuilder builder)
+        {
+            builder.Entity<Goal>()
+                .HasOne(g => g.GoalType)
+                .WithMany(gt => gt.Goals)
+                .OnDelete(DeleteBehavior.SetNull)
+                .IsRequired();
+
+            builder.Entity<Goal>()
+                .HasOne(g => g.User)
+                .WithMany(u => u.UserGoals)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+        }
+
         private static void LinkManyToMany(ModelBuilder builder)
         {
             builder.Entity<Bookmark>()
@@ -136,6 +155,18 @@ namespace LibraryApp.Data
                 .WithMany(c => c.UserChallenges)
                 .HasForeignKey(uc => uc.ChallengeId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Quote>()
+                .HasOne(q => q.User)
+                .WithMany(u => u.UserQuotes)
+                .HasForeignKey(q => q.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Quote>()
+                .HasOne(q => q.Book)
+                .WithMany(b => b.BookQuotes)
+                .HasForeignKey(q => q.BookId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         private static void LoadDefaultAssetStatuses(ModelBuilder builder)
@@ -186,8 +217,40 @@ namespace LibraryApp.Data
                 }
             };
 
+            var defaultGoalTypes = new List<GoalType>
+            {
+                new GoalType
+                {
+                    Id = 1,
+                    Name = "Newbie reader",
+                    Description = "Borrow a set number of books"
+                },
+                
+                new GoalType
+                {
+                    Id = 2,
+                    Name = "Bookmark Enjoyer",
+                    Description = "Bookmark a set number of books"
+                },
+
+                new GoalType
+                {
+                    Id = 3,
+                    Name = "Opinionated Reader",
+                    Description = "Rate a set number of books!"
+                },
+
+                new GoalType
+                {
+                    Id = 4,
+                    Name = "User Defined",
+                    Description = String.Empty
+                }
+            };
+
             builder.Entity<AvailabilityStatus>().HasData(defaultStatuses);
             builder.Entity<Challenge>().HasData(defaultChallenges);
+            builder.Entity<GoalType>().HasData(defaultGoalTypes);
         }
     }
 }
