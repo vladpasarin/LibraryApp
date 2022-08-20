@@ -9,6 +9,7 @@ import { faPen, faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-ic
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { RatingModalComponent } from '../rating-modal/rating-modal.component';
 import { Challenge } from '../models/challenge';
+import { UserChallenge } from '../models/userChallenge';
 
 @Component({
   selector: 'app-profile',
@@ -36,6 +37,7 @@ export class ProfileComponent implements OnInit {
   bookmarkedBooks: Book[];
   userRatings: Rating[];
   challenges: Challenge[];
+  challengeDict = {};
 
   ngOnInit(): void {
     this.currentUserId = sessionStorage.getItem('userId');
@@ -113,9 +115,5 @@ export class ProfileComponent implements OnInit {
       }, err => {
         console.error(err);
     });
-  }
-
-  startChallenge(challengeId: number) {
-
   }
 }

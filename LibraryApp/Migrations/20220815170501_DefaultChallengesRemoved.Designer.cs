@@ -3,6 +3,7 @@ using System;
 using LibraryApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220815170501_DefaultChallengesRemoved")]
+    partial class DefaultChallengesRemoved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,6 +298,15 @@ namespace LibraryApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Completed")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("DateCompleted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateStarted")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -313,32 +324,6 @@ namespace LibraryApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Challenges");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Borrow your first book!",
-                            Name = "Newbie Reader",
-                            Started = false,
-                            Threshold = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Bookmark 3 or more books!",
-                            Name = "Bookmark Enthusiast",
-                            Started = false,
-                            Threshold = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Rate 3 or more books!",
-                            Name = "Opinionated Reader",
-                            Started = false,
-                            Threshold = 0
-                        });
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Checkout", b =>
@@ -725,19 +710,7 @@ namespace LibraryApp.Migrations
                     b.Property<int>("ChallengeId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("Completed")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("DateCompleted")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DateStarted")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("Progress")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Threshold")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserId")

@@ -43,6 +43,7 @@ import { RatingModalComponent } from './rating-modal/rating-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { ChallengeComponent } from './challenge/challenge.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     PasswordResetComponent,
     ForgotPasswordComponent,
     RatingModalComponent,
+    ChallengeComponent,
   ],
   imports: [
     BrowserModule,

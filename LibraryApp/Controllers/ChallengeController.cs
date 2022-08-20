@@ -47,9 +47,10 @@ namespace LibraryApp.Controllers
         }
 
         // PUT api/<ChallengeController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("start/{id}/{userId}")]
+        public async Task<IActionResult> StartChallenge(int id, int userId)
         {
+            return Ok(await _service.StartChallenge(id, userId));
         }
 
         // DELETE api/<ChallengeController>/5

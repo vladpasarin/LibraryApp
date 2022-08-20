@@ -3,6 +3,7 @@ using System;
 using LibraryApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220815171746_UpdateUserChallenges")]
+    partial class UpdateUserChallenges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -304,9 +306,6 @@ namespace LibraryApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Started")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("Threshold")
                         .HasColumnType("integer");
 
@@ -320,7 +319,6 @@ namespace LibraryApp.Migrations
                             Id = 1,
                             Description = "Borrow your first book!",
                             Name = "Newbie Reader",
-                            Started = false,
                             Threshold = 0
                         },
                         new
@@ -328,7 +326,6 @@ namespace LibraryApp.Migrations
                             Id = 2,
                             Description = "Bookmark 3 or more books!",
                             Name = "Bookmark Enthusiast",
-                            Started = false,
                             Threshold = 0
                         },
                         new
@@ -336,7 +333,6 @@ namespace LibraryApp.Migrations
                             Id = 3,
                             Description = "Rate 3 or more books!",
                             Name = "Opinionated Reader",
-                            Started = false,
                             Threshold = 0
                         });
                 });
@@ -728,14 +724,17 @@ namespace LibraryApp.Migrations
                     b.Property<bool>("Completed")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("DateCompleted")
+                    b.Property<DateTime>("DateCompleted")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DateStarted")
+                    b.Property<DateTime>("DateStarted")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Progress")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("Started")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("Threshold")
                         .HasColumnType("integer");

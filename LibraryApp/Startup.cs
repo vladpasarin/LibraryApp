@@ -26,6 +26,7 @@ using System.IO;
 using EmailService;
 using Microsoft.AspNetCore.Identity;
 using LibraryApp.Entities;
+using LibraryApp.Repositories.Gamification;
 
 namespace LibraryApp
 {
@@ -83,6 +84,9 @@ namespace LibraryApp
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<IChallengeRepository, ChallengeRepository>();
             services.AddScoped<IChallengeService, ChallengeService>();
+            services.AddScoped<ICheckoutHistoryRepository, CheckoutHistoryRepository>();
+            services.AddScoped<IUserChallengeRepository, UserChallengeRepository>();
+            services.AddScoped<IUserChallengeService, UserChallengeService>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>

@@ -35,6 +35,7 @@ namespace LibraryApp.Data
         public virtual DbSet<Bookmark> Bookmarks { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<UserChallenge> UserChallenges { get; set; }
+        //public virtual DbSet<ChallengeType> ChallengeTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -89,6 +90,13 @@ namespace LibraryApp.Data
             builder.Entity<Badge>().HasOne(b => b.Challenge)
                 .WithOne().HasForeignKey<Badge>(b => b.ChallengeId)
                 .OnDelete(DeleteBehavior.Restrict);
+            
+            /*
+            builder.Entity<ChallengeType>()
+                .HasOne(ct => ct.Challenge)
+                .WithOne(c => c.ChallengeType)
+                .HasForeignKey<Challenge>(c => c.ChallengeTypeId);
+            */
         }
 
         private static void LinkManyToMany(ModelBuilder builder)
@@ -154,7 +162,32 @@ namespace LibraryApp.Data
                 },
             };
 
+            var defaultChallenges = new List<Challenge>
+            {
+                new Challenge
+                {
+                    Id = 1,
+                    Name = "Newbie Reader",
+                    Description = "Borrow your first book!"
+                },
+
+                new Challenge
+                {
+                    Id = 2,
+                    Name = "Bookmark Enthusiast",
+                    Description = "Bookmark 3 or more books!"
+                },
+
+                new Challenge
+                {
+                    Id = 3,
+                    Name = "Opinionated Reader",
+                    Description = "Rate 3 or more books!"
+                }
+            };
+
             builder.Entity<AvailabilityStatus>().HasData(defaultStatuses);
+            builder.Entity<Challenge>().HasData(defaultChallenges);
         }
     }
 }

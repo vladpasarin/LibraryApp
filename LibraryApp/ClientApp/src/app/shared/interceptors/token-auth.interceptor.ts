@@ -22,7 +22,7 @@ export class TokenAuthInterceptor implements HttpInterceptor {
     const hardcodedToken = '1d38d128-0671-4121-8084-f6332a992a40';
     request = request.clone({
       setHeaders: {
-        Authorization: 'Bearer ${hardcodedToken}'
+        Authorization: `Bearer ${hardcodedToken}`
       }
     });
 
