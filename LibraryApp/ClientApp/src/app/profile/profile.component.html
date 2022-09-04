@@ -35,14 +35,74 @@
             </mat-tab>-->
             <mat-tab label="Stats">
                 <div class="stats-content">
-                    <p>Books read: (0)</p>
-                    <p>Currently reading: (0)</p>
+                    <p>Books read: ({{ booksRead }})</p>
+                    <mat-progress-bar class="progress-bar"
+                        [color]="color"
+                        [mode]="mode"
+                        [value]="booksRead * 10">
+                    </mat-progress-bar><br>
+                    <p>Book holds: ({{ bookHolds }})</p>
+                    <p>Currently reading: ({{ currentReads.length }})</p>
+                    <ul class="current-reads">
+                        <li *ngFor="let book of currentReads">
+                            <a class="current-read-link" [routerLink]="['/asset', book.assetId]">{{ book.title }} by {{ book.author }}</a>
+                        </li>
+                    </ul>
+                    <p>Books rated: ({{ userRatings.length }})</p>
+                    <mat-progress-bar class="progress-bar"
+                        [color]="color"
+                        [mode]="mode"
+                        [value]="userRatings.length * 10">
+                    </mat-progress-bar><br>
+                    <p>Books bookmarked: ({{ bookmarkedBooks.length }})</p>
+                    <mat-progress-bar class="progress-bar"
+                        [color]="color"
+                        [mode]="mode"
+                        [value]="bookmarkedBooks.length * 10">
+                    </mat-progress-bar><br>
                     <p>Stats content</p> 
                 </div>
             </mat-tab>
             <mat-tab label="Quotes">
                 <div class="quotes-content">
-                    <p>Add quotes from your favorite books</p>
+                    <p>Add quotes from your favorite books</p><br>
+                    <h3>Quote</h3><span class="quote-small-text">(No need for quotation marks)</span>
+                    <form class="quote-form" (ngSubmit)="addQuote()">
+                            <div class="quote-form-container">
+                                <textarea class="quote-textarea" name="quote" id="quote-text" cols="80" rows="5" [formControl]="quote"></textarea>
+                                <p>Author</p>
+                                <input type="text" id="quoteAuthorForm"
+                                    matInput 
+                                    [formControl]="author" 
+                                    [matAutocomplete]="auto"
+                                    (keyup)="searchAuthors()"
+                                    required>
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let author of authorList" 
+                                    [value]="author"
+                                    (click)="getSelectedAuthor()">
+                                        {{ author }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <!--<span class="btn btn-secondary" (click)="getSelectedAuthor(); searchBooksByAuthor()">Find Books</span>-->
+                                <div *ngIf="selectedAuthor != null">
+                                    <p>Book</p>
+                                    <input type="text" id="quoteBookForm"
+                                    matInput 
+                                    [formControl]="bookQuote" 
+                                    [matAutocomplete]="auto"
+                                    (keyup)="searchBooksByAuthor()"
+                                    required>
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let book of bookList" 
+                                    [value]="book.title">
+                                        {{ book.title }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <button class="btn btn-secondary" type="submit">Add Quote</button>
+                                </div>
+                            </div>
+                    </form>
                 </div>
             </mat-tab>
             <mat-tab label="Ratings">

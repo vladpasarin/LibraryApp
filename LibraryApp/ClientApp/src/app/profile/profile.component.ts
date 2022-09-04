@@ -10,6 +10,13 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { RatingModalComponent } from '../rating-modal/rating-modal.component';
 import { Challenge } from '../models/challenge';
 import { UserChallenge } from '../models/userChallenge';
+import { ProgressBarMode } from '@angular/material/progress-bar';
+import { ThemePalette } from '@angular/material/core';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { map, startWith } from 'rxjs/operators';
+import { Quote } from '../models/quote';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
@@ -22,10 +29,14 @@ export class ProfileComponent implements OnInit {
   private ratingEndpoint = 'rating';
   private bookEndpoint = 'book';
   private checkoutEndpoint = 'checkout';
+  private quoteEndpoint = 'quote';
+  mode: ProgressBarMode = 'determinate';
+  color: ThemePalette = 'primary';
 
   constructor(
     private apiService: ApiService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) { }
 
   faUser = faUserAlt;
@@ -39,6 +50,16 @@ export class ProfileComponent implements OnInit {
   challenges: Challenge[];
   challengeDict = {};
   booksRead: number;
+  bookHolds: number;
+  currentReads: GenericBook[];
+  author = new FormControl('');
+  quote = new FormControl('');
+  bookQuote = new FormControl('');
+  authorList: string[];
+  selectedAuthor = null;
+  selectedBook: GenericBook;
+  bookList: GenericBook[];
+  quoteModel = {} as Quote;
 
   ngOnInit(): void {
     this.currentUserId = sessionStorage.getItem('userId');
@@ -46,6 +67,9 @@ export class ProfileComponent implements OnInit {
     this.getBookmarkedBooks();
     this.getUserRatings();
     //this.getChallenges();
+    this.getNumberOfBooksRead();
+    this.getNumberOfBookHolds();
+    this.getCurrentRead();
   }
 
   getUserProfile() {
@@ -118,7 +142,79 @@ export class ProfileComponent implements OnInit {
     });
   }*/
 
-  getBooksRead() {
+  getNumberOfBooksRead() {
+    this.apiService.get<number>(`${this.userEndpoint}/history/${this.currentUserId}`)
+      .subscribe((response: number) => {
+        this.booksRead = response;
+      });
+  }
 
+  getNumberOfBookHolds() {
+    this.apiService.get<number>(`${this.userEndpoint}/holds/${this.currentUserId}`)
+      .subscribe((response: number) => {
+        this.bookHolds = response;
+      });
+  }
+
+  getCurrentRead() {
+    this.apiService.get<any>(`${this.userEndpoint}/currentRead/${this.currentUserId}`)
+      .subscribe((response: GenericBook[]) => {
+        this.currentReads = response;
+      });
+  }
+
+  searchAuthors() {
+    let value = this.author.value;
+    console.log(value);
+    this.apiService.get<any>(`${this.bookEndpoint}/searchAuthor/${value.toLowerCase()}`)
+      .subscribe((response: string[]) => {
+        console.log(response);
+        this.authorList = response;
+    });
+  }
+
+  searchBooksByAuthor() {
+    console.log(this.selectedAuthor);
+    this.apiService.get<any>(`${this.bookEndpoint}/searchBookByAuthor/${this.author.value.toLowerCase()}`)
+      .subscribe((response: GenericBook[]) => {
+        this.bookList = response;
+        console.log(this.bookList);
+      });
+  }
+
+  getSelectedAuthor() {
+    this.selectedAuthor = this.author.value;
+    console.log(this.selectedAuthor);
+  }
+
+  addQuote() {
+    this.quoteModel.content = this.quote.value;
+    console.log('author' + this.author.value);
+    console.log('book' + this.bookQuote.value);
+    console.log('list ' + this.bookList);
+    let books = this.bookList.filter(book => {
+      book.title.includes(this.bookQuote.value)
+      && book.author.includes(this.author.value);
+    });
+    console.log(books);
+    this.quoteModel.bookId = books[0]?.id;
+    this.quoteModel.userId = parseInt(this.currentUserId);
+    this.apiService.post<any>(`${this.quoteEndpoint}`, this.quoteModel)
+      .subscribe((response: boolean) => {
+        if (response == true) {
+          this.logQuoteAdded();
+        }
+        else {
+          this.logQuoteAddingFailure();
+        }
+      })
+  }
+
+  logQuoteAdded() {
+    this._snackBar.open('Quote successfully added!', '', { duration: 3000});
+  }
+
+  logQuoteAddingFailure() {
+    this._snackBar.open('Failed to add quote!', '', { duration: 3000});
   }
 }

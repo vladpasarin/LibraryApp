@@ -18,6 +18,9 @@ namespace LibraryApp.Repositories.Assets
         private readonly DbSet<EBook> _eBooksTable;
         private readonly DbSet<AudioBook> _audioBooksTable;
         private readonly IAssetTagRepository _assetTagRepo;
+        private const int MaxAuthors = 5;
+        private const int MaxBookSearch = 5;
+        private const int AllBooksMax = 20;
 
         public BookRepository(LibraryDbContext context, IMapper mapper, IAssetTagRepository assetTagRepo) : base(context)
         {
@@ -79,12 +82,12 @@ namespace LibraryApp.Repositories.Assets
 
         public async Task<List<EBook>> GetAllEBooks()
         {
-            return await _eBooksTable.ToListAsync();
+            return await _eBooksTable.Take(AllBooksMax).ToListAsync();
         }
 
         public async Task<List<AudioBook>> GetAllAudioBooks()
         {
-            return await _audioBooksTable.ToListAsync();
+            return await _audioBooksTable.Take(AllBooksMax).ToListAsync();
         }
 
         public void UpdateEBook(EBook ebook) 
@@ -136,13 +139,78 @@ namespace LibraryApp.Repositories.Assets
 
         async Task<List<GenericBookDto>> IBookRepository.GetAllGenericBooks()
         {
-            var books = await _context.Books.ToListAsync();
+            var books = await _context.Books.Take(AllBooksMax).ToListAsync();
             var genericBooks = _mapper.Map<List<GenericBookDto>>(books);
             for (int i = 0; i < books.Count; i++)
             {
                 genericBooks[i].Tags = await _assetTagRepo.GetTagsByAssetId(books[i].AssetId);
             }
             return genericBooks;
+        }
+
+        public async Task<List<GenericBookDto>> SearchBooksByTitle(string searchValue, string searchType)
+        {
+            var books = new List<GenericBookDto>();
+            if (searchType.Equals("book"))
+            {
+                 books = _mapper.Map<List<GenericBookDto>>(await _context.Books
+                    .Where(b => b.Title.ToLower().Contains(searchValue))
+                    .Take(MaxBookSearch).ToListAsync());
+            } else if (searchType.Equals("ebook"))
+            {
+                books = _mapper.Map<List<GenericBookDto>>(await _context.EBooks
+                    .Where(b => b.Title.ToLower().Contains(searchValue))
+                    .Take(MaxBookSearch).ToListAsync());
+            } else
+            {
+                books = _mapper.Map<List<GenericBookDto>>(await _context.AudioBooks
+                    .Where(b => b.Title.ToLower().Contains(searchValue))
+                    .Take(MaxBookSearch).ToListAsync());
+            }
+
+            return books;
+        }
+
+        public async Task<List<string>> SearchBookAuthors(string author)
+        {
+            var books = _mapper.Map<List<GenericBookDto>>(await _context.Books
+                    .Where(b => b.Author.ToLower().Contains(author))
+                    .Take(MaxAuthors).ToListAsync());
+            var ebooks = _mapper.Map<List<GenericBookDto>>(await _context.EBooks
+                    .Where(b => b.Author.ToLower().Contains(author))
+                    .Take(MaxAuthors).ToListAsync());
+            var audiobooks = _mapper.Map<List<GenericBookDto>>(await _context.AudioBooks
+                    .Where(b => b.Author.ToLower().Contains(author))
+                    .Take(MaxAuthors).ToListAsync());
+
+            books.AddRange(ebooks);
+            books.AddRange(audiobooks);
+
+            var authorList = new List<string>();
+            foreach (var book in books)
+            {
+                authorList.Add(book.Author);
+            }
+
+            return authorList;
+        }
+
+        public async Task<List<GenericBookDto>> GetBooksByAuthor(string author)
+        {
+            var books = _mapper.Map<List<GenericBookDto>>(await _context.Books
+                    .Where(b => b.Author.ToLower().Contains(author))
+                    .Take(MaxAuthors).ToListAsync());
+            var ebooks = _mapper.Map<List<GenericBookDto>>(await _context.EBooks
+                    .Where(b => b.Author.ToLower().Contains(author))
+                    .Take(MaxAuthors).ToListAsync());
+            var audiobooks = _mapper.Map<List<GenericBookDto>>(await _context.AudioBooks
+                    .Where(b => b.Author.ToLower().Contains(author))
+                    .Take(MaxAuthors).ToListAsync());
+
+            books.AddRange(ebooks);
+            books.AddRange(audiobooks);
+
+            return books;
         }
     }
 }

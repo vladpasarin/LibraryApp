@@ -1,4 +1,5 @@
 ﻿using LibraryApp.DTOs;
+using LibraryApp.DTOs.Assets;
 using LibraryApp.Entities;
 using LibraryApp.Models;
 using System;
@@ -22,5 +23,6 @@ namespace LibraryApp.IServices
         Task<bool> ResetPassword(ResetPasswordRequest request);
         Task<User> FindByMail(string mailAddress);
         Task<bool> ForgotPassword(string email);
+        Task<List<GenericBookDto>> GetCurrentReads(int id);
     }
 }

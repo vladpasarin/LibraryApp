@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EmailService;
 using LibraryApp.DTOs;
+using LibraryApp.DTOs.Assets;
 using LibraryApp.Entities;
 using LibraryApp.IServices;
 using LibraryApp.Models;
@@ -24,14 +25,16 @@ namespace LibraryApp.Services
         private readonly IMapper _mapper;
         private readonly ILibraryCardService _lcService;
         private readonly IEmailSender _emailSender;
+        private readonly IBookService _bookService;
 
-        public UserService(IUserRepository userRepo, IOptions<AppSettings> options, IMapper mapper, ILibraryCardService lcService, IEmailSender emailSender)
+        public UserService(IUserRepository userRepo, IOptions<AppSettings> options, IMapper mapper, ILibraryCardService lcService, IEmailSender emailSender, IBookService bookService)
         {
             _userRepo = userRepo;
             _appSettings = options.Value;
             _mapper = mapper;
             _lcService = lcService;
             _emailSender = emailSender;
+            _bookService = bookService;
         }
 
         public async Task<bool> Add(UserDto newUserDto)
@@ -97,6 +100,31 @@ namespace LibraryApp.Services
         public async Task<IEnumerable<CheckoutDto>> GetCheckouts(int id)
         {
             return await _userRepo.GetCheckouts(id);
+        }
+
+        public async Task<List<GenericBookDto>> GetCurrentReads(int id)
+        {
+            var history = await GetCheckoutHistory(id);
+
+            var currentlyReading = history.Where(h => h.CheckedIn == null).ToList();
+            if (currentlyReading.Count == 0)
+            {
+                return null;
+            }
+            
+            List<AssetDto> assets = new List<AssetDto>();
+            foreach (var reading in currentlyReading)
+            {
+                assets.Add(reading.Asset);
+            }
+
+            List<GenericBookDto> genericBooks = new List<GenericBookDto>();
+            foreach (var asset in assets)
+            {
+                genericBooks.Add(await _bookService.GetGenericBook(asset.Id));
+            }
+
+            return genericBooks;
         }
 
         public async Task<IEnumerable<HoldDto>> GetHolds(int userId)

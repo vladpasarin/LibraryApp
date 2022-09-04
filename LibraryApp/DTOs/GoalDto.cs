@@ -11,6 +11,8 @@ namespace LibraryApp.DTOs
         [Required]
         public int Target { get; set; }
         public UserDto User { get; set; }
+        public int UserId { get; set; }
         public GoalTypeDto GoalType { get; set; }
+        public int GoalTypeId { get; set; }
     }
 }

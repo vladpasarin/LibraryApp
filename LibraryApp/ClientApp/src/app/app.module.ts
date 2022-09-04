@@ -44,6 +44,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ChallengeComponent } from './challenge/challenge.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -90,6 +93,9 @@ import { ChallengeComponent } from './challenge/challenge.component';
     MatDialogModule,
     MatSliderModule,
     MatSlideToggleModule,
+    MatProgressBarModule,
+    MatAutocompleteModule,
+    MatSelectModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable

@@ -11,6 +11,8 @@ namespace LibraryApp.Entities
         public int Progress { get; set; } = 0;
         public int Target { get; set; } = 0;
         public User User { get; set; }
+        public int UserId { get; set; }
         public GoalType GoalType { get; set; }
+        public int GoalTypeId { get; set; }
     }
 }

@@ -108,14 +108,14 @@ namespace LibraryApp.Data
             builder.Entity<Goal>()
                 .HasOne(g => g.GoalType)
                 .WithMany(gt => gt.Goals)
-                .OnDelete(DeleteBehavior.SetNull)
-                .IsRequired();
+                .HasForeignKey(g => g.GoalTypeId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Goal>()
                 .HasOne(g => g.User)
                 .WithMany(u => u.UserGoals)
-                .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+                .HasForeignKey(g => g.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         private static void LinkManyToMany(ModelBuilder builder)

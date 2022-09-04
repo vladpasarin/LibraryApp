@@ -78,6 +78,37 @@ namespace LibraryApp.Controllers
             await _emailSender.SendEmailAsync(message);
         }
 
+        [HttpGet("history/{id}")]
+        public async Task<IActionResult> GetNumberOfReadBooks(int id)
+        {
+            var readBooks = await _service.GetCheckoutHistory(id);
+            if (readBooks == null)
+            {
+                return Ok(0);
+            }
+            return Ok(readBooks.Count());
+        }
+
+        [HttpGet("holds/{id}")]
+        public async Task<IActionResult> GetNumberOfHolds(int id)
+        {
+            var holds = await _service.GetHolds(id);
+            if (holds == null)
+            {
+                return Ok(0);
+            }
+            return Ok(holds.Count());
+        }
+
+        [HttpGet("currentRead/{id}")]
+        public async Task<IActionResult> GetCurrentRead(int id)
+        {
+            var genericBooks = await _service.GetCurrentReads(id);
+            if (genericBooks == null)
+                return null;
+            return Ok(genericBooks);
+        }
+
         [HttpPost("forgotPassword")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {

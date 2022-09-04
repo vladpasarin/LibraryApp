@@ -19,5 +19,8 @@ namespace LibraryApp.IServices
         Task<bool> AddEBook(EBookDto newEBook);
         Task<bool> AddAudioBook(AudioBookDto newAudioBook);
         Task<List<GenericBookDto>> GetAllGenericBooks();
+        Task<List<GenericBookDto>> SearchBooksByTitle(string searchValue, string searchType);
+        Task<List<string>> SearchBookAuthors(string author);
+        Task<List<GenericBookDto>> GetBooksByAuthor(string author);
     }
 }

@@ -103,6 +103,18 @@ namespace LibraryApp.Controllers
             return Ok(genericBooks);
         }
 
+        [HttpGet("searchAuthor/{value}")]
+        public async Task<IActionResult> SearchAuthor(string value)
+        {
+            return Ok(await _service.SearchBookAuthors(value));
+        }
+
+        [HttpGet("searchBookByAuthor/{value}")]
+        public async Task<IActionResult> SearchBookByAuthor(string value)
+        {
+            return Ok(await _service.GetBooksByAuthor(value));
+        }
+
         // POST api/<BookController>
         [HttpPost("add")]
         public async Task<IActionResult> Post(BookDto newBookDto)

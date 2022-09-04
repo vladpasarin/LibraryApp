@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Spartan&display=swap');
+
 body {
     font-family: 'Spartan', sans-serif !important;
 }
@@ -35,6 +37,12 @@ body {
     color: white;
 }
 
+.mat-tab-group {
+    font-family: 'Spartan', sans-serif;
+    background-color: transparent;
+    color: white;
+}
+
 .mat-tab-label, .mat-tab-body-content {
     font-family: 'Spartan', sans-serif !important;
     background-color: transparent;
@@ -56,7 +64,7 @@ body {
     display: inline-block;
 }
 
-.rating-container, .challenge-container {
+.rating-container, .challenge-container, .quotes-content {
     margin: 2em;
     font-family: 'Spartan', sans-serif !important;
 }
@@ -67,6 +75,12 @@ body {
 
 .btn {
     float: right;
+}
+
+.quote-form-container .btn {
+    margin-left: 2em;
+    float: none;
+    line-height: 12px;
 }
 
 .review-content, .challenges-content {
@@ -99,4 +113,25 @@ body {
 .review-text-container {
     display: inline;
     margin-bottom: 8px;
+}
+
+.progress-bar {
+    width: 80%;
+}
+
+.current-read-link {
+    color:burlywood;
+}
+
+.quote-small-text {
+    font-size: 14px;
+}
+
+.quote-form {
+    padding-top: 15px;
+}
+
+.quote-textarea, #quoteAuthorForm {
+    border-radius: 5px;
+    margin-bottom: 30px;
 }

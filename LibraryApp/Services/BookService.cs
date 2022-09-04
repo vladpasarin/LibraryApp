@@ -79,5 +79,20 @@ namespace LibraryApp.Services
         {
             return await _repo.GetAllGenericBooks();
         }
+
+        public async Task<List<string>> SearchBookAuthors(string author)
+        {
+            return await _repo.SearchBookAuthors(author);
+        }
+
+        public async Task<List<GenericBookDto>> SearchBooksByTitle(string searchValue, string searchType)
+        {
+            return await _repo.SearchBooksByTitle(searchValue, searchType);
+        }
+
+        public async Task<List<GenericBookDto>> GetBooksByAuthor(string author)
+        {
+            return await _repo.GetBooksByAuthor(author);
+        }
     }
 }
