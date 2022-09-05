@@ -26,8 +26,10 @@ namespace LibraryApp.Services
         private readonly ILibraryCardService _lcService;
         private readonly IEmailSender _emailSender;
         private readonly IBookService _bookService;
+        private readonly INotificationRepository _notifRepo;
 
-        public UserService(IUserRepository userRepo, IOptions<AppSettings> options, IMapper mapper, ILibraryCardService lcService, IEmailSender emailSender, IBookService bookService)
+        public UserService(IUserRepository userRepo, IOptions<AppSettings> options, IMapper mapper, ILibraryCardService lcService, 
+            IEmailSender emailSender, IBookService bookService, INotificationRepository notifRepo)
         {
             _userRepo = userRepo;
             _appSettings = options.Value;
@@ -35,6 +37,7 @@ namespace LibraryApp.Services
             _lcService = lcService;
             _emailSender = emailSender;
             _bookService = bookService;
+            _notifRepo = notifRepo;
         }
 
         public async Task<bool> Add(UserDto newUserDto)
@@ -180,6 +183,21 @@ namespace LibraryApp.Services
         public async Task<bool> ResetPassword(ResetPasswordRequest request)
         {
             return await _userRepo.ResetPassword(request.Email, request.Password, request.Token);
+        }
+
+        public async Task<bool> UpdateNotifications(List<NotificationDto> displayedNotifs)
+        {
+            return await _notifRepo.UpdateNotifications(displayedNotifs);
+        }
+
+        public async Task<List<NotificationDto>> GetLatestNotifications(int userId)
+        {
+            return await _notifRepo.GetLatestNotifications(userId);
+        }
+
+        public async Task<int> GetNumberOfUnseenNotifs(int userId)
+        {
+            return await _notifRepo.GetNumberOfUnseenNotifs(userId);
         }
 
         private string GenerateJwtForUser(User user)

@@ -1,5 +1,6 @@
 ﻿using LibraryApp.DTOs.Assets;
 using LibraryApp.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -116,18 +117,21 @@ namespace LibraryApp.Controllers
         }
 
         // POST api/<BookController>
+        [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> Post(BookDto newBookDto)
         {
             return Ok(await _service.Add(newBookDto));
         }
 
+        [Authorize]
         [HttpPost("ebook/add")]
         public async Task<IActionResult> Post(EBookDto newEBook)
         {
             return Ok(await _service.AddEBook(newEBook));
         }
 
+        [Authorize]
         [HttpPost("audiobook/add")]
         public async Task<IActionResult> Post(AudioBookDto newAudioBook)
         {
@@ -135,12 +139,14 @@ namespace LibraryApp.Controllers
         }
 
         // PUT api/<BookController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/<BookController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

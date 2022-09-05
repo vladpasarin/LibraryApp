@@ -12,5 +12,6 @@ namespace LibraryApp.IServices
         Task<GoalDto> GetById(int id);
         Task<List<GoalDto>> GetAll();
         Task<bool> Delete(int id);
+        Task<List<GoalTypeDto>> GetGoalTypes();
     }
 }

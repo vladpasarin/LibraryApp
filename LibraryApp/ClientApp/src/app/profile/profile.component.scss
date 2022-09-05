@@ -64,7 +64,7 @@ body {
     display: inline-block;
 }
 
-.rating-container, .challenge-container, .quotes-content {
+.rating-container, .challenge-container, .quotes-content, .goal-container {
     margin: 2em;
     font-family: 'Spartan', sans-serif !important;
 }
@@ -106,7 +106,7 @@ body {
     right: 1em;
 }
 
-.review-title, .achievement-title {
+.review-title, .achievement-title, .quotes-list {
     margin-bottom: 8px;
 }
 
@@ -134,4 +134,8 @@ body {
 .quote-textarea, #quoteAuthorForm {
     border-radius: 5px;
     margin-bottom: 30px;
+}
+
+#start-list {
+    padding-top: 15px;
 }

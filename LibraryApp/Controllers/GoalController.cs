@@ -1,5 +1,6 @@
 ﻿using LibraryApp.DTOs;
 using LibraryApp.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace LibraryApp.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GoalController : ControllerBase
@@ -40,6 +42,17 @@ namespace LibraryApp.Controllers
                 return StatusCode(500);
 
             return Ok(goals);
+        }
+
+        [HttpGet("types")]
+        public async Task<IActionResult> GetAllGoalTypes()
+        {
+            var goalTypes = await _service.GetGoalTypes();
+
+            if (goalTypes == null)
+                return StatusCode(500);
+
+            return Ok(goalTypes);
         }
 
         [HttpGet("user/{id}")]

@@ -1,5 +1,6 @@
 ﻿using LibraryApp.DTOs;
 using LibraryApp.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace LibraryApp.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class RatingController : ControllerBase
@@ -29,6 +31,7 @@ namespace LibraryApp.Controllers
         }
 
         // GET api/<RatingController>/5
+        [Authorize]
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserRatings(int userId)
         {
@@ -38,6 +41,7 @@ namespace LibraryApp.Controllers
             return Ok(ratings);
         }
 
+        [Authorize]
         [HttpGet("ratingExists/{userId}/{assetId}")]
         public async Task<IActionResult> RatingExists(int userId, int assetId)
         {
@@ -48,6 +52,7 @@ namespace LibraryApp.Controllers
         }
 
         // POST api/<RatingController>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(RatingDto ratingDto)
         {
@@ -55,6 +60,7 @@ namespace LibraryApp.Controllers
         }
 
         // PUT api/<RatingController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRating(int id, RatingDto ratingDto)
         {
@@ -62,6 +68,7 @@ namespace LibraryApp.Controllers
         }
 
         // DELETE api/<RatingController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

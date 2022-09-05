@@ -7,7 +7,8 @@ import { Asset } from '../models/asset';
 import {
   faBookOpen,
   faBookmark as faBookmarkSolid,
-  faPen, faQuoteLeft, faQuoteRight
+  faPen, faQuoteLeft, faQuoteRight,
+  faStar
 } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as faBookmarkRegular } from '@fortawesome/free-regular-svg-icons';
 import { TimeoutError } from 'rxjs';
@@ -19,6 +20,7 @@ import { User } from '../shared/user.model';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { RatingModalComponent } from '../rating-modal/rating-modal.component';
 import { Rating } from '../models/rating';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-asset-profile',
@@ -41,6 +43,7 @@ export class AssetProfileComponent implements OnInit {
   faPen = faPen;
   faQuoteLeft = faQuoteLeft;
   faQuoteRight = faQuoteRight;
+  faStar = faStar;
   book = {} as GenericBook;
   asset = {} as Asset;
   assetId: string;
@@ -53,6 +56,7 @@ export class AssetProfileComponent implements OnInit {
   libraryCardId: number;
   ratingExists: boolean;
   assetRatings: Rating[] = [];
+  assetAvgScore: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -242,9 +246,18 @@ export class AssetProfileComponent implements OnInit {
     this.api.get(`${this.ratingEndpoint}/asset/${this.assetId}`)
       .subscribe((response: Rating[]) => {
         this.assetRatings = response;
+        this.getAssetAverageScore();
       }, err => {
         console.error(err);
     })
+  }
+
+  getAssetAverageScore(){
+    if (this.assetRatings.length > 0){
+      this.assetAvgScore = this.assetRatings.reduce((a, b) => a + b.score, 0) / this.assetRatings.length;
+    } else {
+      this.assetAvgScore = 0;
+    }
   }
 
   openRatingModal() {

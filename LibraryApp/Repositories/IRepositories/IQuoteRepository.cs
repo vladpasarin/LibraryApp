@@ -10,5 +10,6 @@ namespace LibraryApp.Repositories.IRepositories
         public Task<bool> CreateAsync(QuoteDto quoteDto);
         public Task<List<QuoteDto>> GetBookQuotes(int bookId);
         public Task<QuoteDto> GetById(int id);
+        public Task<List<QuoteDto>> GetUserQuotes(int userId);
     }
 }

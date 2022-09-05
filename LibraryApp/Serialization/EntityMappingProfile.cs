@@ -41,6 +41,7 @@ namespace LibraryApp.Serialization
             CreateMap<Goal, GoalDto>().ReverseMap();
             CreateMap<GoalType, GoalTypeDto>().ReverseMap();
             CreateMap<Quote, QuoteDto>().ReverseMap();
+            CreateMap<Notification, NotificationDto>().ReverseMap();
         }
     }
 }

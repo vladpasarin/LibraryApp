@@ -1,5 +1,6 @@
 ﻿using LibraryApp.DTOs.Assets;
 using LibraryApp.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,7 @@ namespace LibraryApp.Controllers
             return Ok(status);
         }
 
+        [Authorize]
         // POST api/<AssetController>
         [HttpPost]
         public async Task<IActionResult> Post(AssetDto newAssetDto)
@@ -61,12 +63,14 @@ namespace LibraryApp.Controllers
         }
 
         // PUT api/<AssetController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/<AssetController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

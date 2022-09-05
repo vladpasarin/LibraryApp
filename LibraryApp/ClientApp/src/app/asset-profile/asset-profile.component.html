@@ -8,6 +8,7 @@
       alt="Book cover photo"
     />
     <div class="belowPhoto">
+      <p class="subtitle">Rating: {{ assetAvgScore }} <fa-icon [icon]="faStar"></fa-icon></p>
       <p class="subtitle">Tags</p>
       <mat-chip-list>
         <mat-chip *ngFor="let tag of tags" (click)="toBookList(tag)">{{ tag.name }}</mat-chip>

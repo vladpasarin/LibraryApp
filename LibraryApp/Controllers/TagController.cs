@@ -1,5 +1,6 @@
 ﻿using LibraryApp.DTOs.Assets;
 using LibraryApp.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace LibraryApp.Controllers
         }
 
         // POST api/<TagController>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post(TagDto newTagDto)
         {
@@ -51,12 +53,14 @@ namespace LibraryApp.Controllers
         }
 
         // PUT api/<TagController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/<TagController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

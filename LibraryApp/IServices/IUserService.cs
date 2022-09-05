@@ -24,5 +24,8 @@ namespace LibraryApp.IServices
         Task<User> FindByMail(string mailAddress);
         Task<bool> ForgotPassword(string email);
         Task<List<GenericBookDto>> GetCurrentReads(int id);
+        Task<List<NotificationDto>> GetLatestNotifications(int userId);
+        Task<bool> UpdateNotifications(List<NotificationDto> displayedNotifs);
+        Task<int> GetNumberOfUnseenNotifs(int userId);
     }
 }

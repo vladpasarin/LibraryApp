@@ -17,6 +17,7 @@ import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { Quote } from '../models/quote';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GoalType } from '../models/goalType';
 
 @Component({
   selector: 'app-profile',
@@ -28,8 +29,8 @@ export class ProfileComponent implements OnInit {
   private bookmarkEndpoint = 'bookmark';
   private ratingEndpoint = 'rating';
   private bookEndpoint = 'book';
-  private checkoutEndpoint = 'checkout';
   private quoteEndpoint = 'quote';
+  private goalEndpoint = 'goal';
   mode: ProgressBarMode = 'determinate';
   color: ThemePalette = 'primary';
 
@@ -58,8 +59,10 @@ export class ProfileComponent implements OnInit {
   authorList: string[];
   selectedAuthor = null;
   selectedBook: GenericBook;
-  bookList: GenericBook[];
+  bookList = {} as GenericBook[];
   quoteModel = {} as Quote;
+  userQuotes: Quote[];
+  goalTypes: GoalType[];
 
   ngOnInit(): void {
     this.currentUserId = sessionStorage.getItem('userId');
@@ -70,6 +73,7 @@ export class ProfileComponent implements OnInit {
     this.getNumberOfBooksRead();
     this.getNumberOfBookHolds();
     this.getCurrentRead();
+    this.getUserQuotes();
   }
 
   getUserProfile() {
@@ -189,13 +193,10 @@ export class ProfileComponent implements OnInit {
 
   addQuote() {
     this.quoteModel.content = this.quote.value;
-    console.log('author' + this.author.value);
-    console.log('book' + this.bookQuote.value);
-    console.log('list ' + this.bookList);
-    let books = this.bookList.filter(book => {
+    let books = this.bookList.filter((book) => 
       book.title.includes(this.bookQuote.value)
-      && book.author.includes(this.author.value);
-    });
+      && book.author.includes(this.author.value)
+    );
     console.log(books);
     this.quoteModel.bookId = books[0]?.id;
     this.quoteModel.userId = parseInt(this.currentUserId);
@@ -203,6 +204,7 @@ export class ProfileComponent implements OnInit {
       .subscribe((response: boolean) => {
         if (response == true) {
           this.logQuoteAdded();
+          this.getUserQuotes();
         }
         else {
           this.logQuoteAddingFailure();
@@ -216,5 +218,19 @@ export class ProfileComponent implements OnInit {
 
   logQuoteAddingFailure() {
     this._snackBar.open('Failed to add quote!', '', { duration: 3000});
+  }
+
+  getUserQuotes() {
+    this.apiService.get<Quote[]>(`${this.quoteEndpoint}/userQuotes/${this.currentUserId}`)
+      .subscribe((response: Quote[]) => {
+        this.userQuotes = response;
+      });
+  }
+
+  getGoalTypes() {
+    this.apiService.get<GoalType[]>(`${this.goalEndpoint}/types`)
+      .subscribe((response: GoalType[]) => {
+        this.goalTypes = response;
+      });
   }
 }

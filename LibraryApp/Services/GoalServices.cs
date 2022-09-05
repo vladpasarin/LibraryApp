@@ -13,6 +13,7 @@ namespace LibraryApp.Services
         private readonly IBookmarkService _bookmarkService;
         private readonly ICheckoutHistoryRepository _checkoutHistoryRepository;
         private readonly IRatingService _ratingService;
+        private readonly IGoalTypeRepository _goalTypeRepository;
         private readonly IMapper _mapper;
 
         public GoalServices(IGoalRepository repo, IBookmarkService bookmarkService, ICheckoutHistoryRepository checkoutHistoryRepository, IRatingService ratingService, IMapper mapper)
@@ -44,6 +45,11 @@ namespace LibraryApp.Services
         public async Task<GoalDto> GetById(int id)
         {
             return _mapper.Map<GoalDto>(await _repo.GetById(id));
+        }
+
+        public async Task<List<GoalTypeDto>> GetGoalTypes()
+        {
+            return await _goalTypeRepository.GetAllGoalTypes();
         }
 
         public async Task<List<GoalDto>> GetUserGoals(int userId)

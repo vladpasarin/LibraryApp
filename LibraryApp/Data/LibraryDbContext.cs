@@ -39,6 +39,7 @@ namespace LibraryApp.Data
         public virtual DbSet<Goal> Goals { get; set; }
         public virtual DbSet<GoalType> GoalTypes { get; set; }
         public virtual DbSet<Quote> Quotes { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

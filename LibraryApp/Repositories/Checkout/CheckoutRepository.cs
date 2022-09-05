@@ -15,12 +15,17 @@ namespace LibraryApp.Repositories
     {
         private readonly IMapper _mapper;
         private readonly IHoldRepository _holdRepo;
+        private readonly INotificationRepository _notifRepo;
+        private readonly IBookRepository _bookRepo;
         private const int dueDays = 14;
 
-        public CheckoutRepository(LibraryDbContext context, IMapper mapper, IHoldRepository holdRepo) : base(context)
+        public CheckoutRepository(LibraryDbContext context, IMapper mapper, IHoldRepository holdRepo,
+            INotificationRepository notifRepo, IBookRepository bookRepo) : base(context)
         {
             _mapper = mapper;
             _holdRepo = holdRepo;
+            _notifRepo = notifRepo;
+            _bookRepo = bookRepo;
         }
 
         public async Task<bool> Add(CheckoutDto newCheckout)
@@ -112,15 +117,22 @@ namespace LibraryApp.Repositories
                 .Include(a => a.AvailabilityStatus)
                 .FirstAsync(a => a.Id == assetId);
             _context.Update(asset);
-            if (asset.NrOfAvailableCopies > 0)
-            {
-                asset.NrOfAvailableCopies -= 1;
-            }
-            else if (asset.NrOfAvailableCopies < 1)
+
+            if (asset.NrOfAvailableCopies < 1)
             {
                 asset.AvailabilityStatus = await _context.AvailabilityStatuses
                 .FirstAsync(a => a.Name == "On Hold");
                 return await _holdRepo.PlaceHold(assetId, cardId);
+            }
+
+            if (asset.NrOfAvailableCopies > 0)
+            {
+                asset.NrOfAvailableCopies -= 1;
+                if (asset.NrOfAvailableCopies < 1)
+                {
+                    asset.AvailabilityStatus = await _context.AvailabilityStatuses
+                        .FirstAsync(a => a.Name == "On Hold");
+                }
             }
 
             var libraryCard = await _context.LibraryCards
@@ -151,13 +163,18 @@ namespace LibraryApp.Repositories
         public async Task<bool> CheckoutEarliestHold(int assetId)
         {
             var hold = await _holdRepo.GetEarliestHold(assetId);
+            var book = await _bookRepo.GetGenericBook(assetId);
 
             if (hold == null)
             {
                 return false;
             }
 
+            var user = await _context.Users
+                .FirstAsync(u => u.LibraryCardId == hold.LibraryCard.Id);
             var card = hold.LibraryCard;
+            await _notifRepo.CreateAsync("Book " + book.Title + "by " +
+                book.Author + "has been lent to you!", user.Id);
             _context.Remove(hold);
             await _context.SaveChangesAsync();
 

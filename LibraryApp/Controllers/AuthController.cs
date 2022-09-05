@@ -3,6 +3,7 @@ using LibraryApp.DTOs;
 using LibraryApp.Entities;
 using LibraryApp.IServices;
 using LibraryApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -43,6 +44,7 @@ namespace LibraryApp.Controllers
             return Ok(await _service.Login(request));
         }
 
+        [Authorize]
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
@@ -54,6 +56,7 @@ namespace LibraryApp.Controllers
             return Ok(users);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -78,6 +81,7 @@ namespace LibraryApp.Controllers
             await _emailSender.SendEmailAsync(message);
         }
 
+        [Authorize]
         [HttpGet("history/{id}")]
         public async Task<IActionResult> GetNumberOfReadBooks(int id)
         {
@@ -89,6 +93,7 @@ namespace LibraryApp.Controllers
             return Ok(readBooks.Count());
         }
 
+        [Authorize]
         [HttpGet("holds/{id}")]
         public async Task<IActionResult> GetNumberOfHolds(int id)
         {
@@ -100,6 +105,7 @@ namespace LibraryApp.Controllers
             return Ok(holds.Count());
         }
 
+        [Authorize]
         [HttpGet("currentRead/{id}")]
         public async Task<IActionResult> GetCurrentRead(int id)
         {
@@ -114,6 +120,34 @@ namespace LibraryApp.Controllers
         {
             return Ok(await _service.ForgotPassword(forgotPasswordDto.Email));
         }
+
+        [Authorize]
+        [HttpGet("latestNotifications")]
+        public async Task<IActionResult> GetLatestNotifications(int userId)
+        {
+            var notifs = await _service.GetLatestNotifications(userId);
+            if (notifs == null)
+            {
+                return NoContent();
+            }
+            return Ok(notifs);
+        }
+
+        [Authorize]
+        [HttpGet("newNotifications")]
+        public async Task<IActionResult> GetNumberOfUnseenNotifs(int userId)
+        {
+            var newNotifs = await _service.GetNumberOfUnseenNotifs(userId);
+            return Ok(newNotifs);
+        }
+
+        [Authorize]
+        [HttpPut("updateNotifs")]
+        public async Task<IActionResult> UpdateNotifs(List<NotificationDto> displayedNotifs)
+        {
+            return Ok(await _service.UpdateNotifications(displayedNotifs));
+        }
+
         /*
         [HttpPost("forgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)

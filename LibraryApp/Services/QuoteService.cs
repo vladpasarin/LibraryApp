@@ -29,5 +29,10 @@ namespace LibraryApp.Services
         {
             return await _repo.GetById(id);
         }
+
+        public async Task<List<QuoteDto>> GetUserQuotes(int userId)
+        {
+            return await _repo.GetUserQuotes(userId);
+        }
     }
 }

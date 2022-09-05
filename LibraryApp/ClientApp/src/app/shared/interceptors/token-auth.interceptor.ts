@@ -19,11 +19,12 @@ export class TokenAuthInterceptor implements HttpInterceptor {
     private toastService: ToastrService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const hardcodedToken = '1d38d128-0671-4121-8084-f6332a992a40';
+    const hardcodedToken = localStorage.getItem('token');
     request = request.clone({
       setHeaders: {
         Authorization: `Bearer ${hardcodedToken}`
-      }
+      },
+      withCredentials: true
     });
 
     return next.handle(request).pipe(tap(() => {

@@ -1,6 +1,7 @@
 ﻿using LibraryApp.DTOs;
 using LibraryApp.DTOs.Assets;
 using LibraryApp.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace LibraryApp.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BookmarkController : ControllerBase
@@ -95,7 +97,6 @@ namespace LibraryApp.Controllers
             return Ok(books);
         }
 
-        // POST api/<BookmarkController>
         [HttpPost]
         public async Task<IActionResult> Add(BookmarkDto newBookmark)
         {

@@ -1,5 +1,6 @@
 ﻿using LibraryApp.DTOs;
 using LibraryApp.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace LibraryApp.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuoteController : ControllerBase
@@ -26,6 +28,15 @@ namespace LibraryApp.Controllers
             if (quote == null)
                 return StatusCode(404);
             return Ok(quote);
+        }
+
+        [HttpGet("userQuotes/{userId}")]
+        public async Task<IActionResult> GetUserQuotes(int userId)
+        {
+            var userQuotes = await _service.GetUserQuotes(userId);
+            if (userQuotes == null)
+                return StatusCode(404);
+            return Ok(userQuotes);
         }
 
         [HttpGet("bookQuotes/{bookId}")]

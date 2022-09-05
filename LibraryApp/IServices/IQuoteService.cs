@@ -10,5 +10,6 @@ namespace LibraryApp.IServices
         Task<bool> CreateAsync(QuoteDto quoteDto);
         Task<List<QuoteDto>> GetBookQuotes(int bookId);
         Task<QuoteDto> GetById(int id);
+        Task<List<QuoteDto>> GetUserQuotes(int userId);
     }
 }

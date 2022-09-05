@@ -91,6 +91,8 @@ namespace LibraryApp
             services.AddScoped<IGoalServices, GoalServices>();
             services.AddScoped<IQuoteRepository, QuoteRepository>();
             services.AddScoped<IQuoteService, QuoteService>();
+            services.AddScoped<IGoalTypeRepository, GoalTypeRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>

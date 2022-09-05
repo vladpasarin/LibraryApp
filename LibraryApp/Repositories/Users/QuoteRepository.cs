@@ -39,5 +39,15 @@ namespace LibraryApp.Repositories.Users
         {
             return _mapper.Map<QuoteDto>(await FindById(id));
         }
+
+        public async Task<List<QuoteDto>> GetUserQuotes(int userId)
+        {
+            var userQuotes = await _context.Quotes
+                .Where(q => q.UserId == userId)
+                .Include(q => q.Book)
+                .ToListAsync();
+
+            return _mapper.Map<List<QuoteDto>>(userQuotes);
+        }
     }
 }

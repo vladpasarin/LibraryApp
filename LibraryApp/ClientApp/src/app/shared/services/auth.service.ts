@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthRequest } from '../authRequest';
 import { RegisterReq } from '../registerReq';
 import { RequestResponse } from '../requestResponse';
+import { User } from '../user.model';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -17,7 +18,7 @@ export class AuthService {
 
   constructor(private http: HttpClient,
               private apiService: ApiService,
-              private router: Router  
+              private router: Router,
   ) { }
 
   logout(): void {
