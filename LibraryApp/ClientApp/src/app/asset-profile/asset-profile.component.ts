@@ -21,6 +21,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { RatingModalComponent } from '../rating-modal/rating-modal.component';
 import { Rating } from '../models/rating';
 import { stringify } from 'querystring';
+import { Status } from '../models/status';
 
 @Component({
   selector: 'app-asset-profile',
@@ -36,6 +37,7 @@ export class AssetProfileComponent implements OnInit {
   private checkoutEndpoint = 'checkout';
   private userEndpoint = 'auth';
   private ratingEndpoint = 'rating';
+  private holdEndpoint = 'hold';
 
   faBookOpen = faBookOpen;
   faBookmarkSolid = faBookmarkSolid;
@@ -57,6 +59,8 @@ export class AssetProfileComponent implements OnInit {
   ratingExists: boolean;
   assetRatings: Rating[] = [];
   assetAvgScore: number;
+  availability: Status;
+  holdPlaced: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -86,12 +90,20 @@ export class AssetProfileComponent implements OnInit {
     this.api.get<Asset>(`${this.endpoint}/` + this.assetId).subscribe(
       (response: Asset) => {
         this.asset = response;
+        this.getAssetAvailability();
         console.log(this.asset.type);
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  getAssetAvailability() {
+    this.api.get<Status>(`${this.endpoint}/status/` + this.assetId)
+      .subscribe((response: Status) => {
+        this.availability = response;
+    });
   }
 
   getBookByAssetId() {
@@ -205,8 +217,17 @@ export class AssetProfileComponent implements OnInit {
       )
       .subscribe((response: boolean) => {
         this.borrowed = response;
+        this.checkforHold();
         console.log(response);
       });
+  }
+
+  checkforHold() {
+    this.api.get<boolean>(`${this.holdEndpoint}/` + this.assetId + '/' + this.libraryCardId)
+      .subscribe((response: boolean) => {
+        this.holdPlaced = response;
+        console.log('hold placed: ' + this.holdPlaced);
+    });
   }
 
   borrowBook() {
@@ -215,8 +236,18 @@ export class AssetProfileComponent implements OnInit {
         `${this.checkoutEndpoint}/` + this.assetId + '/' + this.libraryCardId
       )
       .subscribe(() => {
-        this._snackBar.open('Book borrowed!', '', { duration: 2000 });
         this.checkIfBorrowed();
+        if (this.availability.name === 'On Hold') {
+          this._snackBar.open('Hold placed!', '', { duration: 3000 });
+        } else {
+          this._snackBar.open('Book borrowed!', '', { duration: 3000 });
+        }
+      }, err => {
+        if (this.availability.name === 'On Hold') {
+          this._snackBar.open('Hold placing failed!', '', { duration: 3000 });
+        } else {
+          this._snackBar.open('Failed to borrow book!', '', { duration: 3000 });
+        }
       });
   }
 
@@ -224,7 +255,7 @@ export class AssetProfileComponent implements OnInit {
     this.api
       .post(`${this.checkoutEndpoint}/checkin/` + this.assetId)
       .subscribe(() => {
-        this._snackBar.open('Book turnt in!', '', { duration: 2000 });
+        this._snackBar.open('Book turnt in!', '', { duration: 3000 });
         this.checkIfBorrowed();
       });
   }
@@ -276,5 +307,9 @@ export class AssetProfileComponent implements OnInit {
 
   toLogin() {
     this.router.navigate(['login']);
+  }
+
+  placeHoldAlert() {
+    this._snackBar.open('Hold placed!', '', { duration: 2000 });
   }
 }

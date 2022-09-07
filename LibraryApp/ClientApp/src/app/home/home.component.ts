@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MatCarousel, MatCarouselComponent } from '@ngbmodule/material-carousel';
 import { MatCarouselSlide, MatCarouselSlideComponent } from '@ngbmodule/material-carousel';
 import { GenericBook } from '../models/genericBook';
 import { Prediction } from '../models/prediction';
 import { PredictionInput } from '../models/predictionInput';
+import { NotificationModalComponent } from '../notification-modal/notification-modal.component';
 import { ApiService } from '../shared/services/api.service';
 import { AuthService } from '../shared/services/auth.service';
 
@@ -25,9 +27,12 @@ export class HomeComponent implements OnInit {
   predictions: Prediction[];
   recommendedBooks = [];
   predInput = {} as PredictionInput;
+  userId: string;
+
   constructor(private apiService: ApiService,
     private authService: AuthService,
-    private router: Router) { 
+    private router: Router,
+    private dialog: MatDialog) { 
   }
 
   ngOnInit(): void {
@@ -35,6 +40,7 @@ export class HomeComponent implements OnInit {
     this.loadEBooks();
     this.loadAudioBooks();
     this.loadRecommendedBooks();
+    this.userId = localStorage.getItem('userId');
   }
 
   loadBooks() {
@@ -87,6 +93,13 @@ export class HomeComponent implements OnInit {
 
   isLoggedIn() {
     return this.authService.isLoggedIn();
+  }
+
+  openNotificationModal() {
+    let config = new MatDialogConfig();
+    let dialogRef: MatDialogRef<NotificationModalComponent> = this.dialog.open(NotificationModalComponent, config);
+    dialogRef.componentInstance.userId = this.userId;
+    dialogRef.componentInstance.isLoggedIn = this.isLoggedIn();
   }
 
   slides = [{'image': 'https://i.guim.co.uk/img/media/a7c46bbd5365d7a46cd4ea95fa7b418f5c906ab5/1_0_2418_1451/master/2418.jpg?width=445&quality=45&auto=format&fit=max&dpr=2&s=b2698c618d416aa1999f53275a79f91e'},

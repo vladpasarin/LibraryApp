@@ -45,6 +45,29 @@ a {
     background-color: black;
 }
 
+.notification-container {
+    margin-top: 1.5em;
+}
+
 .notification {
-    margin: auto;
+    //margin: auto;
+    margin-right: 1em;
+    position: relative;
+    font-size: 30px;
+}
+
+.badge {
+    position: relative;
+    top: -12px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: red;
+    box-shadow: red;
+    color: white;
+    font-size: 12px;
 }

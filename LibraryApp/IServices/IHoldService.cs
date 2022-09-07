@@ -14,5 +14,6 @@ namespace LibraryApp.IServices
         Task<UserDto> GetCurrentHoldUser(int holdId);
         Task<HoldDto> GetCurrentHoldPlaced(int holdId);
         Task<bool> PlaceHold(int assetId, int cardId);
+        Task<HoldDto> GetUserHoldOnAsset(int assetId, int cardId);
     }
 }

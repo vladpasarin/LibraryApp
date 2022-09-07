@@ -122,7 +122,7 @@ namespace LibraryApp.Controllers
         }
 
         [Authorize]
-        [HttpGet("latestNotifications")]
+        [HttpGet("latestNotifications/{userId:int}")]
         public async Task<IActionResult> GetLatestNotifications(int userId)
         {
             var notifs = await _service.GetLatestNotifications(userId);
@@ -134,7 +134,7 @@ namespace LibraryApp.Controllers
         }
 
         [Authorize]
-        [HttpGet("newNotifications")]
+        [HttpGet("newNotifications/{userId:int}")]
         public async Task<IActionResult> GetNumberOfUnseenNotifs(int userId)
         {
             var newNotifs = await _service.GetNumberOfUnseenNotifs(userId);

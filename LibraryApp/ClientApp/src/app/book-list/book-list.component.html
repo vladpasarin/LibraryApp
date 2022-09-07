@@ -20,7 +20,7 @@
 
 <div class="container">
     <div class="row">
-        <div *ngFor="let book of books | searchFilter: {title: searchValue}" 
+        <div *ngFor="let book of filteredBooks | searchFilter: {title: searchValue}" 
         class="col-lg-3 col-md-6 col-sm-8">
             <app-book-card [book]="book" [selectedTag] = "selectedTag">
             </app-book-card>
@@ -32,7 +32,7 @@
 <div class="container">
     <div class="row">
         <div *ngIf="searchValue.length == null">
-            <div *ngFor="let book of books" class="col-lg-3 col-md-6 col-sm-8">
+            <div *ngFor="let book of filteredBooks" class="col-lg-3 col-md-6 col-sm-8">
                 <app-book-card [book]="book" [selectedTag]="selectedTag"></app-book-card>
                 <br>
             </div>

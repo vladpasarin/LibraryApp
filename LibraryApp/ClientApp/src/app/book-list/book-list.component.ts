@@ -32,10 +32,11 @@ export class BookListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedTag = null;
     this.loadBooks();
     this.loadBookTags();
     this.loadGenericBooks();
-    //this.filterBooks();
+    this.filterBooks();
   }
 
   loadBooks() {
@@ -52,6 +53,7 @@ export class BookListComponent implements OnInit {
     this.apiService.get<any>(`${this.genericBookEndpoint}`)
       .subscribe(response => {
         this.genericBooks = response;
+        this.filteredBooks = this.genericBooks;
         console.log(response);
       }, error => {
         console.log(error);
@@ -62,7 +64,7 @@ export class BookListComponent implements OnInit {
     this.apiService.get<Tag>(`${this.tagEndpoint}`)
       .subscribe((response: Tag[]) => {
         this.tags = response;
-        this.checkListTag();
+        //this.checkListTag();
       }, error => {
         console.log(error);
       });
@@ -85,22 +87,24 @@ export class BookListComponent implements OnInit {
   }
 
   selectTag(tag: Tag) {
-    this.selectedTag = tag; 
+    this.selectedTag = tag;
+    this.filterBooks();
     console.log(this.selectedTag)
   }
 
   resetSelectedTags() {
     this.selectTag(null);
   }
-/*
+
+
   filterBooks() {
     if (this.selectedTag != null) {
-      this.filteredBooks = this.genericBooks.filter(book => book.tags.filter(tag => tag.id == this.selectedTag));
+      this.filteredBooks = this.genericBooks.filter(book => book.tags.some(tag => tag.id == this.selectedTag.id));
       console.log(this.filteredBooks);
     }
     else {
       this.filteredBooks = this.genericBooks;
     }
   }
-*/
+
 }

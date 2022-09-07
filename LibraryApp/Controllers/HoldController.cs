@@ -31,6 +31,14 @@ namespace LibraryApp.Controllers
             return Ok(holds);
         }
 
+        [HttpGet("{assetId:int}/{cardId:int}")]
+        public async Task<IActionResult> GetUserHoldOnAsset(int assetId, int cardId)
+        {
+            var hold = await _service.GetUserHoldOnAsset(assetId, cardId);
+            if (hold == null) return Ok(false);
+            return Ok(true);
+        }
+
         // GET api/<HoldController>/5
         [HttpGet("{id}")]
         public string Get(int id)

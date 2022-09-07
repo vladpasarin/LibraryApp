@@ -173,8 +173,8 @@ namespace LibraryApp.Repositories
             var user = await _context.Users
                 .FirstAsync(u => u.LibraryCardId == hold.LibraryCard.Id);
             var card = hold.LibraryCard;
-            await _notifRepo.CreateAsync("Book " + book.Title + "by " +
-                book.Author + "has been lent to you!", user.Id);
+            await _notifRepo.CreateAsync("Book " + book.Title + " by " +
+                book.Author + " has been lent to you!", user.Id);
             _context.Remove(hold);
             await _context.SaveChangesAsync();
 

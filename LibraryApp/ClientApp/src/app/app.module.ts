@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -47,6 +46,8 @@ import { ChallengeComponent } from './challenge/challenge.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from  '@angular/material/sidenav';
+import { NotificationModalComponent } from './notification-modal/notification-modal.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { MatSelectModule } from '@angular/material/select';
     ForgotPasswordComponent,
     RatingModalComponent,
     ChallengeComponent,
+    NotificationModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,6 +98,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatProgressBarModule,
     MatAutocompleteModule,
     MatSelectModule,
+    MatSidenavModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable

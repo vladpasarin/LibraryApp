@@ -114,5 +114,14 @@ namespace LibraryApp.Repositories
             await _context.AddAsync(hold);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<HoldDto> GetUserHoldOnAsset(int assetId, int cardId)
+        {
+            var hold = await _context.Holds
+                .FirstOrDefaultAsync(h => h.Asset.Id == assetId && 
+                    h.LibraryCard.Id == cardId);
+
+            return _mapper.Map<HoldDto>(hold);
+        }
     }
 }

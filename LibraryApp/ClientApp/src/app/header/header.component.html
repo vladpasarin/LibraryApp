@@ -42,7 +42,8 @@
             <a class="dropdown-item" (click)="logout()" routerLink="/home"> Logout </a>
         </div>
     </div>
-    <div>
-        <a class="notification"><fa-icon [icon]="faBell"></fa-icon></a>
+    <div *ngIf="isLoggedIn()" class="notification-container" (click)="openNotificationModal()">
+        <a class="notification" notification-count="5"><fa-icon [icon]="faBell"></fa-icon></a>
+        <span class="badge">{{ noOfNotifs }}</span>
     </div>
 </nav>

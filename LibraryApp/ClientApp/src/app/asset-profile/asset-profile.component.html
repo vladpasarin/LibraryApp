@@ -27,7 +27,34 @@
         <fa-icon [icon]="faBookOpen"></fa-icon> &nbsp;{{ asset.type }}
       </p>
       <button
-        *ngIf="borrowed == false"
+        *ngIf="availability.name === 'Unavailable'"
+        mat-flat-button
+        color="primary"
+        (click)="!isLoggedIn() ? toLogin() : false; borrowBook()"
+        [disbled]="true"
+      >
+        NOT AVAILABLE
+      </button>
+      <button
+        *ngIf="borrowed == false && availability.name === 'On Hold' && holdPlaced == true"
+        mat-flat-button
+        color="primary"
+        class="hold-placed"
+        (click)="!isLoggedIn() ? toLogin() : false; borrowBook()"
+        [disabled]="true"
+      >
+        HOLD PLACED
+      </button>
+      <button
+        *ngIf="borrowed == false && availability.name === 'On Hold' && holdPlaced == false"
+        mat-flat-button
+        color="primary"
+        (click)="!isLoggedIn() ? toLogin() : false; borrowBook()"
+      >
+        PLACE HOLD
+      </button>
+      <button
+        *ngIf="borrowed == false && availability.name === 'Available'"
         mat-flat-button
         color="primary"
         (click)="!isLoggedIn() ? toLogin() : false; borrowBook()"

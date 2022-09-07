@@ -14,5 +14,6 @@ namespace LibraryApp.Repositories.IRepositories
         public Task<UserDto> GetCurrentHoldUser(int holdId);
         public Task<HoldDto> GetCurrentHoldPlaced(int holdId);
         public Task<bool> PlaceHold(int assetId, int cardId);
+        public Task<HoldDto> GetUserHoldOnAsset(int assetId, int cardId);
     }
 }

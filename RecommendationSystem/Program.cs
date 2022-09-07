@@ -56,7 +56,6 @@ namespace RecommendationSystem
 
             var trainerEstimator = estimator.Append(context.Recommendation().Trainers.MatrixFactorization(options));
 
-            Console.WriteLine("=============== Training the model ===============");
             ITransformer model = trainerEstimator.Fit(trainDataView);
 
             return model;
@@ -64,7 +63,6 @@ namespace RecommendationSystem
 
         public static void EvaluateModel(MLContext context, IDataView testDataView, ITransformer model)
         {
-            Console.WriteLine("=============== Evaluating the model ===============");
             var prediction = model.Transform(testDataView);
 
             var metrics = context.Regression.Evaluate(prediction, labelColumnName: "Label", scoreColumnName: "Score");
@@ -75,7 +73,6 @@ namespace RecommendationSystem
 
         public static Dictionary<float, int> GeneratePrediction(MLContext context, ITransformer model)
         {
-            Console.WriteLine("=============== Making a prediction ===============");
             var predictionEngine = context.Model.CreatePredictionEngine<RatingData, RatingPrediction>(model);
 
             var userId = 6;
@@ -114,7 +111,6 @@ namespace RecommendationSystem
         {
             var modelPath = Path.Combine(Environment.CurrentDirectory, "Data", "BookRecommenderModel.zip");
 
-            Console.WriteLine("=============== Saving the model to a file ===============");
             context.Model.Save(model, trainData, modelPath);
         }
     }

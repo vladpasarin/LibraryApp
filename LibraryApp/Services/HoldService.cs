@@ -42,5 +42,10 @@ namespace LibraryApp.Services
         {
             return await _repo.PlaceHold(assetId, cardId);
         }
+
+        public async Task<HoldDto> GetUserHoldOnAsset(int assetId, int cardId)
+        {
+            return await _repo.GetUserHoldOnAsset(assetId, cardId);
+        }
     }
 }
