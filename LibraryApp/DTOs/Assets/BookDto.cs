@@ -1,4 +1,6 @@
-﻿namespace LibraryApp.DTOs.Assets
+﻿using System;
+
+namespace LibraryApp.DTOs.Assets
 {
     public class BookDto
     {

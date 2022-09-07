@@ -1,0 +1,11 @@
+<p class="achievement-title"><b>Achievement: {{ challenge.name }}</b></p>
+<div *ngIf="challenge.started == false; else elseBlock">
+    <span class="btn btn-secondary" (click)="startChallenge(challenge.id)">&nbsp;&nbsp;Start</span>
+</div>
+<ng-template #elseBlock>
+    <mat-progress-bar mode="determinate" [value]="value">
+
+    </mat-progress-bar>
+</ng-template>
+<br>
+<p class="challenge-desc"><b>Challenge</b>: {{ challenge.description }}</p>

@@ -1,0 +1,41 @@
+<app-header></app-header>
+
+<h3>Books</h3>
+<div class="search-bar">
+    <fa-icon [icon]="faSearch"></fa-icon>&nbsp;
+    <input id="searchBar" 
+    type="text"
+    placeholder="Search..."
+    [(ngModel)]="searchValue">
+</div>
+<h4>Tags</h4>
+<div class="book-tag">
+    <mat-chip-list>
+        <mat-chip *ngFor="let tag of tags" (click)="selectTag(tag)">{{ tag.name }}</mat-chip>
+        <mat-chip (click)="resetSelectedTags()">
+            <fa-icon [icon]="faBan"></fa-icon>
+        </mat-chip>
+    </mat-chip-list>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div *ngFor="let book of filteredBooks | searchFilter: {title: searchValue}" 
+        class="col-lg-3 col-md-6 col-sm-8">
+            <app-book-card [book]="book" [selectedTag] = "selectedTag">
+            </app-book-card>
+            <br>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div *ngIf="searchValue.length == null">
+            <div *ngFor="let book of filteredBooks" class="col-lg-3 col-md-6 col-sm-8">
+                <app-book-card [book]="book" [selectedTag]="selectedTag"></app-book-card>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>

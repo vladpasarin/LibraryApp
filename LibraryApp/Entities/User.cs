@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibraryApp.Entities
@@ -12,8 +13,6 @@ namespace LibraryApp.Entities
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        [Required]
-        public string Username { get; set; }
         public string Address { get; set; }
         [Required]
         public DateTime DateOfBirth { get; set; }
@@ -23,6 +22,14 @@ namespace LibraryApp.Entities
         public string Password { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public int LibraryCardId { get; set; }  
+        public string PasswordResetToken { get; set; } = string.Empty;
         public LibraryCard LibraryCard { get; set; }
+        public List<Bookmark> Bookmarks { get; set; }
+        public List<Rating> UserRatings { get; set; }
+        public List<UserChallenge> UserChallenges { get; set; }
+        public List<Goal> UserGoals { get; set; }
+        public List<Quote> UserQuotes { get; set; }
+        public List<Notification> Notifications { get; set; }
     }
 }

@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace LibraryApp.Repositories.IRepositories
 {
-    public interface ICheckoutRepository : IGenericRepository<CheckoutDto>
+    public interface ICheckoutRepository : IGenericRepository<Checkout>
     {
-        Task<IEnumerable<CheckoutHistoryDto>> GetCheckoutHistory(int id);
-        Task<bool> PlaceHold(int assetId, int libraryCardId);
+        Task<bool> Add(CheckoutDto newCheckout);
+        Task<CheckoutDto> Get(int id);
+        Task<CheckoutDto> GetLatestCheckout(int assetId);
+        Task<IEnumerable<CheckoutHistoryDto>> GetCheckoutHistory(int assetId);
         Task<bool> CheckInItem(int assetId);
-        Task<bool> CheckoutItem(int assetId, int libraryCardId);
+        Task<bool> CheckOutItem(int assetId, int cardId);
         Task<bool> IsCheckedOut(int assetId);
-        Task<string> GetCurrentUser(int assetId);
-        Task<IEnumerable<HoldDto>> GetCurrentHolds(int assetId);
+        Task<UserDto> GetCurrentUser(int assetId);
+        Task<CheckoutDto> GetByCardAndAsset(int assetId, int cardId);
     }
 }

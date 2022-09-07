@@ -1,0 +1,145 @@
+<app-header></app-header>
+<div class="flex-container">
+    <div class="profile-details">
+        <div class="profile-icon">
+            <fa-icon [icon]="faUser" size="10x"></fa-icon>
+            <p class="profile-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</p>
+            <p class="text-content"> What we know <br> about you: </p>
+            <div class="user-details">
+                <p>Address: {{ currentUser.address }}</p>
+                <p>Email: {{ currentUser.email }}</p>
+                <p>Phone Nr: {{ currentUser.phoneNr }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="others">
+        <mat-tab-group mat-align-tabs="start" dynamicHeight>
+            <mat-tab label="Wishlist">
+               <div class="wishlist-content">
+                    <div *ngFor="let book of bookmarkedBooks" class="bookContainer">
+                        <app-book-card [book]="book" (childTriggeredEvent)="reloadBookmarks($event)"></app-book-card>
+                    </div>
+               </div></mat-tab>
+            <!--<mat-tab label="Challenges">
+                <div class="challenges-content">
+                    <mat-card *ngFor="let challenge of challenges" class="challenge-container">
+                        <app-challenge [challenge]="challenge"></app-challenge>
+                    </mat-card>
+                </div>
+            </mat-tab>
+            --<mat-tab label="Goals">
+                <div class="goals-content">
+                    <mat-card class="goal-container">
+                        <p class="goal-text">Add predefined or personalized goal</p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Choose an option</mat-label>
+                            <mat-select>
+                                <mat-option *ngFor="let goalType of goalTypes" 
+                                [value]="goalType.name">
+                                    {{ goalType.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-card>
+                </div>
+            </mat-tab>-->
+            <mat-tab label="Stats">
+                <div class="stats-content">
+                    <p>Books read: ({{ booksRead }})</p>
+                    <mat-progress-bar class="progress-bar"
+                        [color]="color"
+                        [mode]="mode"
+                        [value]="booksRead * 10">
+                    </mat-progress-bar><br>
+                    <p>Book holds: ({{ bookHolds }})</p>
+                    <p>Currently reading: ({{ currentReads.length }})</p>
+                    <ul class="current-reads">
+                        <li *ngFor="let book of currentReads">
+                            <a class="current-read-link" [routerLink]="['/asset', book.assetId]">{{ book.title }} by {{ book.author }}</a>
+                        </li>
+                    </ul>
+                    <p>Books rated: ({{ userRatings.length }})</p>
+                    <mat-progress-bar class="progress-bar"
+                        [color]="color"
+                        [mode]="mode"
+                        [value]="userRatings.length * 10">
+                    </mat-progress-bar><br>
+                    <p>Books bookmarked: ({{ bookmarkedBooks.length }})</p>
+                    <mat-progress-bar class="progress-bar"
+                        [color]="color"
+                        [mode]="mode"
+                        [value]="bookmarkedBooks.length * 10">
+                    </mat-progress-bar><br>
+                    <p>Stats content</p> 
+                </div>
+            </mat-tab>
+            <mat-tab label="Quotes">
+                <div class="quotes-content">
+                    <p>Add quotes from your favorite books</p><br>
+                    <h3>Quote</h3><span class="quote-small-text">(No need for quotation marks)</span>
+                    <form class="quote-form" (ngSubmit)="addQuote()">
+                            <div class="quote-form-container">
+                                <textarea class="quote-textarea" name="quote" id="quote-text" cols="80" rows="5" [formControl]="quote"></textarea>
+                                <p>Author</p>
+                                <input type="text" id="quoteAuthorForm"
+                                    matInput 
+                                    [formControl]="author" 
+                                    [matAutocomplete]="auto"
+                                    (keyup)="searchAuthors()"
+                                    required>
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let author of authorList" 
+                                    [value]="author"
+                                    (click)="getSelectedAuthor()">
+                                        {{ author }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <!--<span class="btn btn-secondary" (click)="getSelectedAuthor(); searchBooksByAuthor()">Find Books</span>-->
+                                <div *ngIf="selectedAuthor != null">
+                                    <p>Book</p>
+                                    <input type="text" id="quoteBookForm"
+                                    matInput 
+                                    [formControl]="bookQuote" 
+                                    [matAutocomplete]="auto"
+                                    (keyup)="searchBooksByAuthor()"
+                                    required>
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let book of bookList" 
+                                    [value]="book.title">
+                                        {{ book.title }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <button class="btn btn-secondary" type="submit">Add Quote</button>
+                                </div>
+                            </div>
+                    </form>
+                    <p id="start-list">Added quotes:</p><br>
+                    <mat-card *ngFor="let quote of userQuotes" class="quotes-list">
+                        <fa-icon class="quote-left" [icon]="faQuoteLeft"></fa-icon>
+                        <p class="review-text">{{ quote.content }}</p>
+                        <fa-icon class="quote-right" [icon]="faQuoteRight"></fa-icon>
+                        <p>for Book: <a [routerLink]="['/asset', quote.book.assetId]">{{ quote.book.title }} by {{ quote.book.author }}</a></p>
+                    </mat-card>
+                </div>
+            </mat-tab>
+            <mat-tab label="Ratings">
+                <div class="ratings-content">
+                    <mat-card *ngFor="let rating of userRatings" class="rating-container">
+                        <p class="rating-score">Rating: {{ rating.score }} </p>
+                        <span class="btn btn-secondary" (click)="openRatingModal(rating.assetId, rating.id)"><fa-icon [icon]="faPen"></fa-icon>&nbsp;&nbsp;Edit</span>
+                        <br>
+                        <div *ngIf="rating.review" class="review-content">
+                            <p class="review-title">Review: </p>
+                            <div class="review-text-container">
+                                <fa-icon class="quote-left" [icon]="faQuoteLeft"></fa-icon>
+                                <p class="review-text">{{ rating.review }}</p>
+                                <fa-icon class="quote-right" [icon]="faQuoteRight"></fa-icon>
+                            </div>
+                        </div>
+                        <p>for Book: <a [routerLink]="['/asset', rating.assetId]">{{ rating.ratedBook.title }} by {{ rating.ratedBook.author }}</a></p>
+                    </mat-card>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

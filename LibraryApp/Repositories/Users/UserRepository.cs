@@ -132,8 +132,7 @@ namespace LibraryApp.Repositories
 
         public async Task<UserDto> Register(User user, string password)
         {
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
@@ -159,6 +158,39 @@ namespace LibraryApp.Repositories
                 return true;
             }
             return false;
+        }
+
+        public async Task<bool> ResetPassword(string email, string newPassword, string token)
+        {
+            var emailExists = await EmailExists(email);
+
+            if (emailExists == false)
+            {
+                return false;
+            }
+
+            var user = await _context.Users
+                .SingleAsync(x => x.Email == email);
+
+            if (!user.PasswordResetToken.Equals(token))
+            {
+                return false;
+            }
+
+            CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            user.Password = newPassword;
+            user.UpdatedOn = DateTime.UtcNow;
+
+            Update(user);
+            return await SaveChanges();
+        }
+
+        public async Task<User> FindByMail(string mailAddress)
+        {
+            var user = await _context.Users.FirstAsync(x => x.Email == mailAddress);
+            return user;
         }
     }
 }

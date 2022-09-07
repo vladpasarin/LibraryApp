@@ -17,5 +17,7 @@ namespace LibraryApp.Repositories.IRepositories
         public Task<UserDto> Register(User user, string password);
         public Task<User> Login(string email, string password);
         public Task<bool> EmailExists(string email);
+        public Task<User> FindByMail(string mailAddress);
+        public Task<bool> ResetPassword(string email, string newPassword, string token);
     }
 }

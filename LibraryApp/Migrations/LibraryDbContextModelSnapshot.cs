@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#nullable disable
+
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
@@ -15,24 +17,35 @@ namespace LibraryApp.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.4")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("LibraryApp.Entities.Asset", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
 
-                    b.Property<int?>("AvailabilityStatusId")
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AvailabilityStatusId")
                         .HasColumnType("integer");
 
                     b.Property<double>("Cost")
                         .HasColumnType("double precision");
 
                     b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
+                    b.Property<int>("NrOfAvailableCopies")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NrOfCopies")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Type")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -46,8 +59,9 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AssetId")
                         .HasColumnType("integer");
@@ -68,8 +82,9 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -83,8 +98,9 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ASIN")
                         .IsRequired()
@@ -124,7 +140,8 @@ namespace LibraryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
+                    b.HasIndex("AssetId")
+                        .IsUnique();
 
                     b.ToTable("AudioBooks");
                 });
@@ -133,8 +150,9 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -147,20 +165,41 @@ namespace LibraryApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AvailabilityStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "The item is available",
+                            Name = "Available"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "The item is currently on hold",
+                            Name = "On Hold"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "The item is unavailable",
+                            Name = "Unavailable"
+                        });
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Badge", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
 
-                    b.Property<int?>("ChallengeId")
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChallengeId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DateAcquired")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
@@ -171,7 +210,8 @@ namespace LibraryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChallengeId");
+                    b.HasIndex("ChallengeId")
+                        .IsUnique();
 
                     b.ToTable("Badges");
                 });
@@ -180,8 +220,9 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AssetId")
                         .HasColumnType("integer");
@@ -218,26 +259,42 @@ namespace LibraryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
+                    b.HasIndex("AssetId")
+                        .IsUnique();
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Bookmark", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bookmarks");
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Challenge", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("Completed")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("DateCompleted")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("DateStarted")
-                        .HasColumnType("timestamp without time zone");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -247,31 +304,59 @@ namespace LibraryApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("UserId")
+                    b.Property<bool>("Started")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Threshold")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Challenges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Borrow your first book!",
+                            Name = "Newbie Reader",
+                            Started = false,
+                            Threshold = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Bookmark 3 or more books!",
+                            Name = "Bookmark Enthusiast",
+                            Started = false,
+                            Threshold = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Rate 3 or more books!",
+                            Name = "Opinionated Reader",
+                            Started = false,
+                            Threshold = 0
+                        });
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Checkout", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AssetId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CheckedOutSince")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CheckedOutUntil")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("LibraryCardId")
                         .HasColumnType("integer");
@@ -289,19 +374,20 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
 
-                    b.Property<int?>("AssetId")
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssetId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("CheckedIn")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CheckedOut")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("LibraryCardId")
+                    b.Property<int>("LibraryCardId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -317,15 +403,16 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("DiscussionId")
                         .HasColumnType("integer");
@@ -346,8 +433,9 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AssetId")
                         .HasColumnType("integer");
@@ -376,8 +464,9 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ASIN")
                         .IsRequired()
@@ -417,32 +506,112 @@ namespace LibraryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
+                    b.HasIndex("AssetId")
+                        .IsUnique();
 
                     b.ToTable("EBooks");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Goal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("GoalTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Target")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GoalTypeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Goals");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.GoalType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GoalTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Borrow a set number of books",
+                            Name = "Newbie reader"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Bookmark a set number of books",
+                            Name = "Bookmark Enjoyer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Rate a set number of books!",
+                            Name = "Opinionated Reader"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "",
+                            Name = "User Defined"
+                        });
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Hold", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AssetId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("HoldPlaced")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("HoldValidUntil")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("LibraryCardId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedOn")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -457,33 +626,120 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<double>("CurrentFees")
                         .HasColumnType("double precision");
 
                     b.Property<DateTime>("DateIssued")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("MaxCheckout")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
                     b.ToTable("LibraryCards");
                 });
 
+            modelBuilder.Entity("LibraryApp.Entities.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Seen")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Quote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Quotes");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Rating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Review")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Ratings");
+                });
+
             modelBuilder.Entity("LibraryApp.Entities.ReadingLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Author")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("DateLogged")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("NumberOfPages")
                         .HasColumnType("integer");
@@ -512,8 +768,9 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CommentId")
                         .HasColumnType("integer");
@@ -534,17 +791,18 @@ namespace LibraryApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -558,7 +816,7 @@ namespace LibraryApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("LibraryCardId")
+                    b.Property<int>("LibraryCardId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Password")
@@ -567,6 +825,9 @@ namespace LibraryApp.Migrations
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("bytea");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("text");
+
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("bytea");
 
@@ -574,24 +835,61 @@ namespace LibraryApp.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LibraryCardId");
+                    b.HasIndex("LibraryCardId")
+                        .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.UserChallenge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChallengeId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("DateCompleted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateStarted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Threshold")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChallengeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserChallenges");
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Asset", b =>
                 {
                     b.HasOne("LibraryApp.Entities.AvailabilityStatus", "AvailabilityStatus")
-                        .WithMany()
-                        .HasForeignKey("AvailabilityStatusId");
+                        .WithMany("Assets")
+                        .HasForeignKey("AvailabilityStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AvailabilityStatus");
                 });
@@ -618,8 +916,8 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.AudioBook", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.AudioBook", "AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -629,8 +927,10 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.Badge", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Challenge", "Challenge")
-                        .WithMany()
-                        .HasForeignKey("ChallengeId");
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.Badge", "ChallengeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Challenge");
                 });
@@ -638,19 +938,29 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.Book", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.Book", "AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Asset");
                 });
 
-            modelBuilder.Entity("LibraryApp.Entities.Challenge", b =>
+            modelBuilder.Entity("LibraryApp.Entities.Bookmark", b =>
                 {
+                    b.HasOne("LibraryApp.Entities.Asset", "Asset")
+                        .WithMany("Bookmarks")
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("LibraryApp.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("Bookmarks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
 
                     b.Navigation("User");
                 });
@@ -674,11 +984,15 @@ namespace LibraryApp.Migrations
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LibraryApp.Entities.LibraryCard", "LibraryCard")
                         .WithMany()
-                        .HasForeignKey("LibraryCardId");
+                        .HasForeignKey("LibraryCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
 
@@ -718,12 +1032,31 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.EBook", b =>
                 {
                     b.HasOne("LibraryApp.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.EBook", "AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Asset");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Goal", b =>
+                {
+                    b.HasOne("LibraryApp.Entities.GoalType", "GoalType")
+                        .WithMany("Goals")
+                        .HasForeignKey("GoalTypeId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.HasOne("LibraryApp.Entities.User", "User")
+                        .WithMany("UserGoals")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GoalType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Hold", b =>
@@ -739,6 +1072,55 @@ namespace LibraryApp.Migrations
                     b.Navigation("Asset");
 
                     b.Navigation("LibraryCard");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Notification", b =>
+                {
+                    b.HasOne("LibraryApp.Entities.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Quote", b =>
+                {
+                    b.HasOne("LibraryApp.Entities.Book", "Book")
+                        .WithMany("BookQuotes")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LibraryApp.Entities.User", "User")
+                        .WithMany("UserQuotes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Rating", b =>
+                {
+                    b.HasOne("LibraryApp.Entities.Asset", "Asset")
+                        .WithMany("AssetRatings")
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LibraryApp.Entities.User", "User")
+                        .WithMany("UserRatings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.ReadingLog", b =>
@@ -768,15 +1150,40 @@ namespace LibraryApp.Migrations
             modelBuilder.Entity("LibraryApp.Entities.User", b =>
                 {
                     b.HasOne("LibraryApp.Entities.LibraryCard", "LibraryCard")
-                        .WithMany()
-                        .HasForeignKey("LibraryCardId");
+                        .WithOne()
+                        .HasForeignKey("LibraryApp.Entities.User", "LibraryCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("LibraryCard");
                 });
 
+            modelBuilder.Entity("LibraryApp.Entities.UserChallenge", b =>
+                {
+                    b.HasOne("LibraryApp.Entities.Challenge", "Challenge")
+                        .WithMany("UserChallenges")
+                        .HasForeignKey("ChallengeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LibraryApp.Entities.User", "User")
+                        .WithMany("UserChallenges")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Challenge");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LibraryApp.Entities.Asset", b =>
                 {
+                    b.Navigation("AssetRatings");
+
                     b.Navigation("AssetTags");
+
+                    b.Navigation("Bookmarks");
                 });
 
             modelBuilder.Entity("LibraryApp.Entities.Assets.Tags.Tag", b =>
@@ -784,9 +1191,44 @@ namespace LibraryApp.Migrations
                     b.Navigation("AssetTags");
                 });
 
+            modelBuilder.Entity("LibraryApp.Entities.AvailabilityStatus", b =>
+                {
+                    b.Navigation("Assets");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Book", b =>
+                {
+                    b.Navigation("BookQuotes");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.Challenge", b =>
+                {
+                    b.Navigation("UserChallenges");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.GoalType", b =>
+                {
+                    b.Navigation("Goals");
+                });
+
             modelBuilder.Entity("LibraryApp.Entities.LibraryCard", b =>
                 {
                     b.Navigation("Checkouts");
+                });
+
+            modelBuilder.Entity("LibraryApp.Entities.User", b =>
+                {
+                    b.Navigation("Bookmarks");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("UserChallenges");
+
+                    b.Navigation("UserGoals");
+
+                    b.Navigation("UserQuotes");
+
+                    b.Navigation("UserRatings");
                 });
 #pragma warning restore 612, 618
         }

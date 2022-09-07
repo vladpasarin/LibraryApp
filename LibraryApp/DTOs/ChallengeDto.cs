@@ -10,9 +10,8 @@ namespace LibraryApp.DTOs
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool Completed { get; set; }
-        public DateTime DateStarted { get; set; }
-        public DateTime? DateCompleted { get; set; }
-        public UserDto User { get; set; }
+        public int Threshold { get; set; } = 0;
+        public bool Started { get; set; } = false;
+        public List<UserChallengeDto> UserChallenges { get; set; }
     }
 }

@@ -1,0 +1,12 @@
+<app-header></app-header>
+
+<h3>Ebooks</h3>
+
+<div class="container">
+    <div class="row">
+        <div *ngFor="let ebook of ebooks" class="col-lg-3 col-md-6 col-sm-8">
+            <app-book-card [book]="ebook"></app-book-card>
+            <br>
+          </div>
+    </div>
+</div>

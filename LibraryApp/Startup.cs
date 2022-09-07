@@ -3,7 +3,9 @@ using LibraryApp.Data;
 using LibraryApp.IServices;
 using LibraryApp.Models;
 using LibraryApp.Repositories;
+using LibraryApp.Repositories.Assets;
 using LibraryApp.Repositories.IRepositories;
+using LibraryApp.Repositories.Users;
 using LibraryApp.Serialization;
 using LibraryApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,6 +19,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.ML;
+using RecommendationSystem.DataModels;
+using System;
+using System.IO;
+using EmailService;
+using Microsoft.AspNetCore.Identity;
+using LibraryApp.Entities;
+using LibraryApp.Repositories.Gamification;
 
 namespace LibraryApp
 {
@@ -38,8 +48,11 @@ namespace LibraryApp
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            services.AddDbContext<LibraryDbContext>(options => options
-                .UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LibraryDbContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                options.EnableSensitiveDataLogging();
+            });
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             // Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
@@ -51,6 +64,40 @@ namespace LibraryApp
             // Registering services
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IAssetRepository, AssetRepository>();
+            services.AddScoped<IAssetService, AssetService>();
+            services.AddScoped<IAssetTagRepository, AssetTagRepository>();
+            services.AddScoped<IAssetTagService, AssetTagService>();
+            services.AddScoped<ICheckoutRepository, CheckoutRepository>();
+            services.AddScoped<ICheckoutService, CheckoutService>();
+            services.AddScoped<IHoldRepository, HoldRepository>();
+            services.AddScoped<IHoldService, HoldService>();
+            services.AddScoped<ILibraryCardRepository, LibraryCardRepository>();
+            services.AddScoped<ILibraryCardService, LibraryCardService>();
+            services.AddScoped<IBookmarkRepository, BookmarkRepository>();
+            services.AddScoped<IBookmarkService, BookmarkService>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
+            services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<IChallengeRepository, ChallengeRepository>();
+            services.AddScoped<IChallengeService, ChallengeService>();
+            services.AddScoped<ICheckoutHistoryRepository, CheckoutHistoryRepository>();
+            services.AddScoped<IUserChallengeRepository, UserChallengeRepository>();
+            services.AddScoped<IUserChallengeService, UserChallengeService>();
+            services.AddScoped<IGoalRepository, GoalRepository>();
+            services.AddScoped<IGoalServices, GoalServices>();
+            services.AddScoped<IQuoteRepository, QuoteRepository>();
+            services.AddScoped<IQuoteService, QuoteService>();
+            services.AddScoped<IGoalTypeRepository, GoalTypeRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             // Adding authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -64,6 +111,31 @@ namespace LibraryApp
                         ValidateAudience = false
                     };
                 });
+
+            services.AddPredictionEnginePool<RatingData, RatingPrediction>()
+                .FromFile(modelName: "BookRecommenderModel", 
+                    filePath: "C:\\Users\\vlada\\Desktop\\myapp\\LibraryApp\\RecommendationSystem\\MLModels\\BookRecommenderModel.zip", 
+                    watchForChanges: true);
+
+            services.AddMvc();
+            services.AddProgressiveWebApp();
+            services.AddServiceWorker();
+
+            var emailConfig = Configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfig>();
+            services.AddSingleton(emailConfig);
+
+            services.AddScoped<IEmailSender, EmailSender>();
+            /*services.AddIdentity<User, IdentityRole>(opt =>
+            {
+                opt.Password.RequiredLength = 7;
+                opt.Password.RequireDigit = false;
+                opt.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<LibraryDbContext>()
+                .AddDefaultTokenProviders();
+            services.Configure<DataProtectionTokenProviderOptions>(opt =>
+                opt.TokenLifespan = TimeSpan.FromHours(1));*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,6 +184,8 @@ namespace LibraryApp
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
     }
 }

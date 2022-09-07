@@ -8,7 +8,7 @@ namespace LibraryApp.Repositories.IRepositories
     public interface IGenericRepository<T> where T : class
     {
         Task<List<T>> GetAll();
-        void Create(T entity);
+        Task<bool> Create(T entity);
         void Update(T entity);
         void Delete(T entity);
         void CreateRange(List<T> entities);

@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Spartan&display=swap');
+
+body {
+    font-family: 'Spartan', sans-serif !important;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.profile-details {
+    flex: 1;
+    margin-right: 2em;
+    margin-left: 2em;
+}
+
+.others {
+    flex: 2;
+    color: white;
+}
+
+.profile-icon {
+    margin: auto;
+}
+
+.profile-name {
+    margin-top: 1em;
+    color: white;
+    margin-bottom: 2em;
+}
+
+.text-content {
+    color: white;
+}
+
+.user-details {
+    color: white;
+}
+
+.mat-tab-group {
+    font-family: 'Spartan', sans-serif;
+    background-color: transparent;
+    color: white;
+}
+
+.mat-tab-label, .mat-tab-body-content {
+    font-family: 'Spartan', sans-serif !important;
+    background-color: transparent;
+    color: white;
+}
+
+.wishlist-content, .challenges-content, .stats-content {
+    margin-top: 2em;
+}
+
+.wishlist-content {
+    display: flex;
+}
+
+.bookContainer {
+    width: 16em;
+    max-width: 16em;
+    margin-left: 2em;
+    display: inline-block;
+}
+
+.rating-container, .challenge-container, .quotes-content, .goal-container {
+    margin: 2em;
+    font-family: 'Spartan', sans-serif !important;
+}
+
+.rating-score {
+    float: left;
+}
+
+.btn {
+    float: right;
+}
+
+.quote-form-container .btn {
+    margin-left: 2em;
+    float: none;
+    line-height: 12px;
+}
+
+.review-content, .challenges-content {
+    text-align: left;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.review-text {
+    display: inline;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin-bottom: 0px;
+}
+
+.quote-left {
+    top: 1em;
+    left: 1em;
+}
+
+.quote-right {
+    bottom: 1em;
+    right: 1em;
+}
+
+.review-title, .achievement-title, .quotes-list {
+    margin-bottom: 8px;
+}
+
+.review-text-container {
+    display: inline;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    width: 80%;
+}
+
+.current-read-link {
+    color:burlywood;
+}
+
+.quote-small-text {
+    font-size: 14px;
+}
+
+.quote-form {
+    padding-top: 15px;
+}
+
+.quote-textarea, #quoteAuthorForm {
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+#start-list {
+    padding-top: 15px;
+}

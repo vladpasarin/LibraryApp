@@ -1,0 +1,49 @@
+<nav class="navbar">
+    <a routerLink="/home" class="navbar-brand">
+        <p class="logo">LibraryApp &nbsp; <fa-icon [icon]="faLibrary"></fa-icon></p>
+    </a>
+    <div>
+        <ul class="nav">
+            <li>
+                <a class="nav-link" routerLink="/home"> <fa-icon [icon]="faHome"></fa-icon> Home </a>
+            </li>
+            <li>
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                        <fa-icon [icon]="faBook"></fa-icon> {{ selectedBookType }} 
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" routerLink="/books">Books</a>
+                        <a class="dropdown-item" routerLink="/ebooks">EBooks</a>
+                        <a class="dropdown-item" routerLink="/audiobooks">AudioBooks</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div *ngIf="!isLoggedIn()" class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <fa-icon [icon]="faUser"></fa-icon> My Account
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" routerLink="/login">  Sign in </a>
+            <a class="dropdown-item" routerLink="/register"> Create Account </a>
+        </div>
+    </div>
+    <div *ngIf="isLoggedIn()" class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <fa-icon [icon]="faUser"></fa-icon> {{ message }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" routerLink="/profile">  My Profile </a>
+            <a class="dropdown-item" (click)="logout()" routerLink="/home"> Logout </a>
+        </div>
+    </div>
+    <div *ngIf="isLoggedIn()" class="notification-container" (click)="openNotificationModal()">
+        <a class="notification" notification-count="5"><fa-icon [icon]="faBell"></fa-icon></a>
+        <span class="badge">{{ noOfNotifs }}</span>
+    </div>
+</nav>
